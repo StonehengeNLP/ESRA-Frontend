@@ -17,3 +17,16 @@ html, body, #root, .App {
 footer {
     background-color: #D9D9D9;
 }
+/* 
+.foot-bar {
+    width: 100vh !important;
+    height: 15vh !important;
+} */
+
+.home-search {
+    height:  85%;
+}
+
+.home-footer {
+    height: 15%;
+}
