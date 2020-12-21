@@ -7,22 +7,18 @@
 body {
     background-color: #F3F3F3 !important;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    height: 100%;
 }
 
 html, body, #root, .App {
     height: 100%;
 }
 
+/* Footer bar color */
 footer {
     background-color: #D9D9D9;
 }
-/* 
-.foot-bar {
-    width: 100vh !important;
-    height: 15vh !important;
-} */
 
+/* Custom height split */
 .home-search {
     height:  85%;
 }
@@ -31,6 +27,7 @@ footer {
     height: 15%;
 }
 
+/* Replace bootstrap default */
 h1 {
     font-size: 5rem !important;
 }
