@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: #F3F3F3;
+    background-color: #F3F3F3 !important;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     height: 100%;
 }
@@ -29,4 +29,8 @@ footer {
 
 .home-footer {
     height: 15%;
+}
+
+h1 {
+    font-size: 5rem !important;
 }

@@ -9,7 +9,7 @@ function home() {
         <div className='h-100'>
             <div className="home-search align-items-center">
                 <Container className="h-100 align-items-center">
-                    <Row className="h-100 align-items-center">
+                    <Row className="h-75 align-items-center">
                         <Col xs md>
                             <h1>ESRA</h1>
                             <h4>Explanable Scientific Research Assistant</h4>
