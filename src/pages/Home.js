@@ -14,6 +14,9 @@ function home() {
                             <h1>ESRA</h1>
                             <h4>Explanable Scientific Research Assistant</h4>
                             <Searchbar />
+                            <p>
+                                Trendy Search: <a href="#">Red Sensei</a>, <a href="#">DoubleBERT</a>
+                            </p>
                         </Col>
                     </Row>
                 </Container>

@@ -31,3 +31,7 @@ footer {
 h1 {
     font-size: 5rem !important;
 }
+
+.icon-tongue:before {
+    content: "\e9e3";
+  }
