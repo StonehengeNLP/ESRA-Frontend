@@ -1,6 +1,7 @@
 import React from 'react'
 import Searchbar from '../components/Searchbar'
-import {Container, Row, Col, Button} from 'react-bootstrap'
+import {Container, Row, Col} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 import '../css/home.css'
 
 
@@ -15,7 +16,8 @@ function home() {
                             <h4>Explanable Scientific Research Assistant</h4>
                             <Searchbar />
                             <p>
-                                Trendy Search: <a href="#">Red Sensei</a>, <a href="#">DoubleBERT</a>
+                                <span className='trendy'>Trendy Search: </span><a href="#">Red Sensei</a>, <a href="#">DoubleBERT</a>, 
+                                <Link to={{ pathname: '/search', query: { key: 'Bonk' } }}>Bonk</Link>
                             </p>
                         </Col>
                     </Row>
