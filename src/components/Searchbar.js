@@ -11,7 +11,7 @@ function Searchbar() {
     }
 
     return (
-        <form className="search-bar">
+        <div className="search-bar">
                 <input
                 id="search"
                 type="text"
@@ -24,7 +24,7 @@ function Searchbar() {
                         </path>
                     </svg>
                 </div>
-        </form>
+        </div>
     )
 }
 

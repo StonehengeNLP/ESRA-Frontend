@@ -10,7 +10,7 @@ export const App = () => {
         <Router>
             <Switch>
                 <Route exact path="/" component={Home} />
-                <Route path="/search?key=:key" component={SearchResult} />
+                <Route path="/search" component={SearchResult} />
             </Switch>
         </Router>
     )

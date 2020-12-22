@@ -1,0 +1,8 @@
+/* @import-normalize */
+
+header {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    border: 1px solid #c3c3c3;
+}
