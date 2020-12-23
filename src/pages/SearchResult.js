@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom'
 import SearchbarSm from '../components/SearchbarSm';
@@ -28,7 +28,8 @@ function PaperList(props) {
 
 function PaperItem(props) {
     const paper = props.paper;
-    let abstract = paper.abstract;
+    const [more, setMore] = useState('none');
+    const [isLess, setIsLess] = useState('abstract');
 
     return (
         <Container>
@@ -41,7 +42,17 @@ function PaperItem(props) {
                         <p className='authors'>{paper.authors.join(', ')}</p>
                         <p className='affiliations'><i>{paper.affiliations}</i></p>
                         <p className='explanation'>{paper.explanation}</p>
-                        <p className='abstract'>{paper.abstract}</p>
+                        <p className='abstract'>
+                            <span style={{display:more}}>{paper.abstract}</span>
+                            <span 
+                            className='see-more' 
+                            role='button'
+                            onClick={(e) => {
+                                isLess === 'abstract' ? setMore('inline'):setMore('none');
+                                isLess === 'abstract' ? setIsLess('less'):setIsLess('abstract');
+                            }}
+                            > see {isLess}</span>
+                        </p>
                     </li>
                 </Col>
                 <Col md={1}></Col>

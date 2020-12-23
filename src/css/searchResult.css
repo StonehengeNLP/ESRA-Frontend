@@ -34,3 +34,15 @@ ul {
 .conference, .explanation, .abstract {
     margin: 0 0 5px 0;
 }
+
+.more {
+    display: none;
+}
+
+.see-more {
+    font-weight: normal;
+}
+
+.see-more:hover {
+    border-bottom: 3px solid #000000;
+}
