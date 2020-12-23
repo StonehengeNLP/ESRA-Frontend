@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import '../css/searchbarSM.css'
 
-function SearchbarSm() {
+function SearchbarSm(props) {
     
-    const [keyword, setKeyword] = useState("")
+    const [keyword, setKeyword] = useState(props.q)
 
     const onClickSearch = () => {
         console.log(keyword);
@@ -17,6 +17,7 @@ function SearchbarSm() {
             type="text"
             placeholder="Search any topics"
             onChange={(e)=>setKeyword(e.target.value)}
+            value={keyword}
             ></input>
             <div className="search-button" role="button" onClick={onClickSearch}>
                 <svg focusable="false" xmlns="http://www.w3.org/2000/svg" width="7vh" height="7vh">

@@ -13,7 +13,7 @@ function SearchResult() {
     return (
         <div>
             <header>
-                <SearchbarSm />
+                <SearchbarSm q={q.get('q')}/>
             </header>
             Search result {q.get("q")}
         </div>
