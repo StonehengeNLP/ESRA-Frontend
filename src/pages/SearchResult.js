@@ -29,7 +29,7 @@ function PaperList(props) {
 function PaperItem(props) {
     const paper = props.paper;
     const [more, setMore] = useState('none');
-    const [isLess, setIsLess] = useState('abstract');
+    const [isLess, setIsLess] = useState('view');
 
     return (
         <Container>
@@ -48,10 +48,10 @@ function PaperItem(props) {
                             className='see-more' 
                             role='button'
                             onClick={(e) => {
-                                isLess === 'abstract' ? setMore('inline'):setMore('none');
-                                isLess === 'abstract' ? setIsLess('less'):setIsLess('abstract');
+                                isLess === 'view' ? setMore('inline'):setMore('none');
+                                isLess === 'view' ? setIsLess('hide'):setIsLess('view');
                             }}
-                            > see {isLess}</span>
+                            > {isLess} abstract</span>
                         </p>
                     </li>
                 </Col>

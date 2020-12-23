@@ -28,19 +28,19 @@ ul {
 
 .authors, .affiliations {
     font-size: 0.8rem !important;
-    margin: 0 0 5px 0;
 }
 
-.conference, .explanation, .abstract {
-    margin: 0 0 5px 0;
+.authors, .conference {
+    margin: 0 0 0px 0;
 }
 
-.more {
-    display: none;
+.affiliations, .explanation, .abstract {
+    margin: 0 0 5px 0;
 }
 
 .see-more {
     font-weight: normal;
+    opacity: 0.7;
 }
 
 .see-more:hover {
