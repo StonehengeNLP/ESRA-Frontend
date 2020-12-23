@@ -7,7 +7,7 @@ import '../css/home.css'
 
 function home() {
     return (
-        <div className='h-100'>
+        <div className='h-100 w-100 home'>
             <div className="home-search align-items-center">
                 <Container className="h-100 align-items-center">
                     <Row className="h-75 align-items-center">
