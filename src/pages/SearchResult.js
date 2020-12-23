@@ -7,7 +7,7 @@ import '../css/searchResult.css'
 
 const testPaper =  {
     'title': 'DoubleBERT: pretrained BERT for Dharma understanding',
-    'authors': 'Red Sensei',
+    'authors': ['Red Sensei', 'H. Sasada'],
     'affiliations': 'Gang of Four',
     'conference': 'GoF Con 2021',
     'explanation': 'DoubleBERT is a model presented by Red Sensei at GoF Con 2021',
@@ -25,19 +25,23 @@ function PaperList(props) {
     )
 }
 
+
 function PaperItem(props) {
-    const paper = props.paper
+    const paper = props.paper;
+    let abstract = paper.abstract;
+
     return (
         <Container>
             <Row>
                 <Col md={1}></Col>
                 <Col md={10}>
                     <li className='paper-item paper-container'>
-                        <h4><strong>{paper.title}</strong></h4>
-                        <p className='authors'>{paper.authors}</p>
-                        <p className='affiliations'>{paper.affiliations}</p>
+                        <h4 className='title'><strong>{paper.title}</strong></h4>
                         <p className='conference'>{paper.conference}</p>
+                        <p className='authors'>{paper.authors.join(', ')}</p>
+                        <p className='affiliations'><i>{paper.affiliations}</i></p>
                         <p className='explanation'>{paper.explanation}</p>
+                        <p className='abstract'>{paper.abstract}</p>
                     </li>
                 </Col>
                 <Col md={1}></Col>

@@ -21,3 +21,16 @@
 ul {
     list-style-type:none;
 }
+
+.title {
+    font-weight: lighter;
+}
+
+.authors, .affiliations {
+    font-size: 0.8rem !important;
+    margin: 0 0 5px 0;
+}
+
+.conference, .explanation, .abstract {
+    margin: 0 0 5px 0;
+}
