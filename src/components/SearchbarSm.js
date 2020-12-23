@@ -10,8 +10,9 @@ function SearchbarSm() {
     }
 
     return (
-        <div className="search-bar w-100">
+        <div className="search-bar-sm w-100">
             <input
+            className="input-sm"
             id="search"
             type="text"
             placeholder="Search any topics"

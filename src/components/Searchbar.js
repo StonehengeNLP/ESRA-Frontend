@@ -13,6 +13,7 @@ function Searchbar() {
     return (
         <div className="search-bar">
                 <input
+                className='input-lg'
                 id="search"
                 type="text"
                 placeholder="Search any topics"
