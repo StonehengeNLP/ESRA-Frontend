@@ -1,17 +1,46 @@
 import React, { Fragment, useState } from 'react'
-import Select from 'react-select';
+import Select, {defaultTheme} from 'react-select';
 
+// debug option
 const options = [
     { value: 'chocolate', label: 'Chocolate' },
     { value: 'strawberry', label: 'Strawberry' },
     { value: 'vanilla', label: 'Vanilla' }
 ]
 
+
+const { colors } = defaultTheme;
+
+const DropdownIndicator = (props) => {
+
+    return (
+        <div 
+        style={{color:colors.neutral19, height:24, width:24, margin:'0 3px'}}
+        role='button'
+        onClick={() => console.log('k')}>
+            <svg width='24' height='24' viewBox='0 0 24 24' focusable='false'>
+            <path
+            d="M16.436 15.085l3.94 4.01a1 1 0 0 1-1.425 1.402l-3.938-4.006a7.5 7.5 0 1 1 1.423-1.406zM10.5 16a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11z"
+            fill="currentColor"
+            fillRule="evenodd"/>
+            </svg>
+        </div>
+    );
+};
+
 function SingleSelect(props) {
 
+    const [query, setQuery] = useState(props.q);
+
+    const onSelectChange = (value) => {
+        // console.log(value);
+        value == null ? setQuery(''):setQuery(value.label);
+    };
+
     const customStyle = {
-        container: (provided, state) => ({
+        menu: (provided, state) => ({
             ...provided,
+            width: props.width,
         }),
         control: (provided, state) => ({
             ...provided,
@@ -22,20 +51,19 @@ function SingleSelect(props) {
                 borderColor: 'transparent',
                 borderLeft: '3px solid #76B900',
             },
-            borderLeft: '3px solid #76B900',
+            borderLeft: props.isHome ? '3px solid #76B900':'none',
             width: props.width,
             height: props.height,
             margin: '1% 0 1% 0',
         }),
     }
-
-    const [query, setQuery] = useState(props.q)
     
     return (
         <Fragment>
             <Select
             className='single-select'
             classNamePrefix='select'
+            components= {{DropdownIndicator}}
             isDisabled={false}
             isClearable={true}
             isLoading={false}
@@ -46,6 +74,7 @@ function SingleSelect(props) {
             styles={customStyle}
             placeholder='Search any topics'
             defaultInputValue={query}
+            onChange={onSelectChange}
             >
             </Select>
         </Fragment>

@@ -1,5 +1,4 @@
 import React from 'react'
-import Searchbar from '../components/Searchbar'
 import {Container, Row, Col} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import '../css/home.css'
@@ -14,7 +13,7 @@ function home() {
                         <Col xs md>
                             <h1>ESRA</h1>
                             <h4>Explanable Scientific Research Assistant</h4>
-                            <SingleSelect q="" width='75%' height='7vh'></SingleSelect>
+                            <SingleSelect q="" width='75%' height='7vh' isHome={true}></SingleSelect>
                             <p>
                                 <span className='trendy'>Trendy Search: </span><a href="#">Red Sensei</a>, <a href="#">DoubleBERT</a>, 
                                 <Link to={{ pathname: '/search', query: { key: 'Bonk' } }}>Bonk</Link>
