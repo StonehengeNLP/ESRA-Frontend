@@ -21,7 +21,9 @@ function useQuery() {
 
 function PaperList(props) {
     return (
-        <ul className='paper-list'> { props.children } </ul>
+        <Container className='paper-list'>
+            { props.children }
+        </Container>
     )
 }
 
@@ -32,32 +34,28 @@ function PaperItem(props) {
     const [isLess, setIsLess] = useState('view');
 
     return (
-        <Container>
-            <Row>
-                <Col md={1}></Col>
-                <Col md={10}>
-                    <li className='paper-item paper-container'>
-                        <h4 className='title'><strong>{paper.title}</strong></h4>
-                        <p className='conference'>{paper.conference}</p>
-                        <p className='authors'>{paper.authors.join(', ')}</p>
-                        <p className='affiliations'><i>{paper.affiliations}</i></p>
-                        <p className='explanation'>{paper.explanation}</p>
-                        <p className='abstract'>
-                            <span style={{display:more}}>{paper.abstract}</span>
-                            <span 
-                            className='see-more' 
-                            role='button'
-                            onClick={(e) => {
-                                isLess === 'view' ? setMore('inline'):setMore('none');
-                                isLess === 'view' ? setIsLess('hide'):setIsLess('view');
-                            }}
-                            > {isLess} abstract</span>
-                        </p>
-                    </li>
-                </Col>
-                <Col md={1}></Col>
-            </Row>
-        </Container>
+        <Row>
+            <Col md={1}></Col>
+            <Col md={10} className='paper-item paper-container'>
+                <h4 className='title'><strong>{paper.title}</strong></h4>
+                <p className='conference'>{paper.conference}</p>
+                <p className='authors'>{paper.authors.join(', ')}</p>
+                <p className='affiliations'><i>{paper.affiliations}</i></p>
+                <p className='explanation'>{paper.explanation}</p>
+                <p className='abstract'>
+                    <span style={{display:more}}>{paper.abstract}</span>
+                    <span 
+                    className='see-more' 
+                    role='button'
+                    onClick={(e) => {
+                        isLess === 'view' ? setMore('inline'):setMore('none');
+                        isLess === 'view' ? setIsLess('hide'):setIsLess('view');
+                    }}
+                    > {isLess} abstract</span>
+                </p>
+            </Col>
+            <Col md={1}></Col>
+        </Row>
     )
 }
 
@@ -69,12 +67,14 @@ function SearchResult() {
             <header className='result-header'>
                 <SearchbarSm q={query}/>
             </header>
-            <h2>Search results: {query}</h2>
+            <br></br>
             <PaperList>
                 <PaperItem paper={testPaper}></PaperItem>
                 <PaperItem paper={testPaper}></PaperItem>
                 <PaperItem paper={testPaper}></PaperItem>
             </PaperList>
+            <br></br>
+            <footer></footer>
         </div>
     )
 }
