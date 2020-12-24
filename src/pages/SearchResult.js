@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom'
 import SearchbarSm from '../components/SearchbarSm';
+import SearchHeader from '../components/SearchHeader';
 
 import '../css/searchResult.css'
 
@@ -64,9 +65,10 @@ function SearchResult() {
     const query = q.get('q');
     return (
         <div className='h-100'>
-            <header className='result-header'>
+            <SearchHeader></SearchHeader>
+            {/* <header className='result-header'>
                 <SearchbarSm q={query}/>
-            </header>
+            </header> */}
             <br></br>
             <PaperList>
                 <PaperItem paper={testPaper}></PaperItem>

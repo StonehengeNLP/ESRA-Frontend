@@ -1,13 +1,6 @@
 import React, { Fragment, useState } from 'react'
 import Select, {defaultTheme} from 'react-select';
 
-// debug option
-const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-]
-
 
 const { colors } = defaultTheme;
 
@@ -32,12 +25,26 @@ function SingleSelect(props) {
 
     const [query, setQuery] = useState(props.q);
 
+    let options = [
+        { value: 'chocolate', label: 'Chocolate' },
+        { value: 'strawberry', label: 'Strawberry' },
+        { value: 'vanilla', label: 'Vanilla' },
+        { value: 'test', label: query }
+    ]
+
     const onSelectChange = (value) => {
-        // console.log(value);
+        console.log(value);
         value == null ? setQuery(''):setQuery(value.label);
     };
 
     const customStyle = {
+        container: (provided, state) => ({
+            ...provided,
+            width: '100%',
+            display: props.isHome ? 'block':'flex',
+            alignItems: props.isHome ? 'flex-start':'center',
+            justifyContent: props.isHome ? 'flex-start':'center',
+        }), 
         menu: (provided, state) => ({
             ...provided,
             width: props.width,
@@ -49,7 +56,7 @@ function SingleSelect(props) {
             boxShadow: 'none',
             ":hover": {
                 borderColor: 'transparent',
-                borderLeft: '3px solid #76B900',
+                borderLeft: props.isHome ? '3px solid #76B900':'none',
             },
             borderLeft: props.isHome ? '3px solid #76B900':'none',
             width: props.width,
