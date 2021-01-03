@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import SearchHeader from '../components/SearchHeader'
+import GraphVis from '../components/GraphVis'
 
 import '../css/paper.css'
 
@@ -31,6 +32,7 @@ function Paper() {
                 <p className='citation'><span className='cc'>{testPaper.cc}</span> citations</p>
                 <p className='abstract'>{testPaper.abstract}</p>
             </div>
+            <GraphVis />
         </Fragment>
     )
 }
