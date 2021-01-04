@@ -1,4 +1,6 @@
 
-.graph-vis {
+.graph-vis-container {
     display: flex !important;
+    margin: 3em 0;
+    /* border: 2px solid black; */
 }
