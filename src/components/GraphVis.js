@@ -58,7 +58,7 @@ function GraphVis() {
     }
 
     return (
-        <div className='paper-info-container'>
+        <div className='paper-info-container graph-vis-container'>
             <Graph
             id='graph-vis-69'
             className='graph-vis'
