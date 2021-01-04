@@ -12,7 +12,7 @@ const testPaper =  {
     'affiliations': 'Gang of Four',
     'conference': 'GoF Con 2021',
     'explanation': 'DoubleBERT is a model presented by Red Sensei at GoF Con 2021',
-    'abstract': 'I, Red Sensei, hereby presents deep pretreined bidirectional transformer for Dharma understaning called DoubleBERT'
+    'abstract': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure explicabo ipsam quia natus est sint, voluptatibus, quo placeat, quis repellendus inventore voluptate ad aliquam ullam at recusandae dolore maiores sunt!'
 }
 
 

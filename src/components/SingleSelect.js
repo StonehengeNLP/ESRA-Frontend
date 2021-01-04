@@ -1,8 +1,14 @@
+import axios from 'axios';
 import React, { Fragment, useState } from 'react'
+import { useHistory } from 'react-router-dom';
 import Select, {defaultTheme} from 'react-select';
+import AsyncSelect from 'react-select/async';
 
 
 const { colors } = defaultTheme;
+
+const debug = false;
+const autoCompletePath = 'http://localhost:8000/api/complete';
 
 const DropdownIndicator = (props) => {
 
@@ -23,18 +29,50 @@ const DropdownIndicator = (props) => {
 
 function SingleSelect(props) {
 
-    const [query, setQuery] = useState(props.q);
+    const [inputValue, setInputValue] = useState(props.q);
+    const [selectedValue, setSelectedValue] = useState(null);
+    const history = useHistory();
 
     let options = [
         { value: 'chocolate', label: 'Chocolate' },
         { value: 'strawberry', label: 'Strawberry' },
         { value: 'vanilla', label: 'Vanilla' },
-        { value: 'test', label: query }
+        // { value: 'test', label: query }
     ]
 
     const onSelectChange = (value) => {
-        console.log(value);
-        value == null ? setQuery(''):setQuery(value.label);
+        // debug mode
+        if (debug) {
+            console.log(value);
+        }
+
+        value == null ? setSelectedValue(''):setSelectedValue(value.label);
+        if (value != null) {
+            history.push('/search?q=' + value.label);
+        }
+    };
+
+    const onInputChange = (value) => {
+        // debug mode
+        if (debug) {
+            console.log(value);
+        }
+        setInputValue(value);
+    };
+
+    const loadOptions = async(inputValue) => {
+        const res = await axios.get(autoCompletePath, {
+            params: {
+                keywords: inputValue
+            },
+        }).then(response => response.data);
+        
+        // debug
+        if (debug) {
+            console.log(res);
+        }
+
+        return res;
     };
 
     const customStyle = {
@@ -67,7 +105,10 @@ function SingleSelect(props) {
     
     return (
         <Fragment>
-            <Select
+            <AsyncSelect
+            cacheOptions
+            defaultOptions
+            loadOptions={loadOptions}
             className='single-select'
             classNamePrefix='select'
             components= {{DropdownIndicator}}
@@ -77,13 +118,15 @@ function SingleSelect(props) {
             isRtl={false}
             isSearchable={true}
             name='search bar'
-            options={options}
             styles={customStyle}
             placeholder='Search any topics'
-            defaultInputValue={query}
+            defaultInputValue={inputValue}
             onChange={onSelectChange}
+            onInputChange={onInputChange}
+            getOptionLabel={e => e.label}
+            getOptionValue={e => e.value}
             >
-            </Select>
+            </AsyncSelect>
         </Fragment>
     )
 }
