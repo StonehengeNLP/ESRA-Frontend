@@ -33,12 +33,12 @@ function SingleSelect(props) {
     const [selectedValue, setSelectedValue] = useState(null);
     const history = useHistory();
 
-    let options = [
-        { value: 'chocolate', label: 'Chocolate' },
-        { value: 'strawberry', label: 'Strawberry' },
-        { value: 'vanilla', label: 'Vanilla' },
-        // { value: 'test', label: query }
-    ]
+    // let options = [
+    //     { value: 'chocolate', label: 'Chocolate' },
+    //     { value: 'strawberry', label: 'Strawberry' },
+    //     { value: 'vanilla', label: 'Vanilla' },
+    //     { value: 'test', label: query }
+    // ]
 
     const onSelectChange = (value) => {
         // debug mode
@@ -48,7 +48,7 @@ function SingleSelect(props) {
 
         value == null ? setSelectedValue(''):setSelectedValue(value.label);
         if (value != null) {
-            history.push('/search?q=' + value.label);
+            history.push('/search?q=' + value.label + '&page=1');
         }
     };
 
@@ -107,7 +107,6 @@ function SingleSelect(props) {
         <Fragment>
             <AsyncSelect
             cacheOptions
-            defaultOptions
             loadOptions={loadOptions}
             className='single-select'
             classNamePrefix='select'

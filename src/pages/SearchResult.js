@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import axios from 'axios';
+import React, {useState, useEffect} from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom'
 import SearchbarSm from '../components/SearchbarSm';
@@ -15,10 +16,33 @@ const testPaper =  {
     'abstract': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure explicabo ipsam quia natus est sint, voluptatibus, quo placeat, quis repellendus inventore voluptate ad aliquam ullam at recusandae dolore maiores sunt!'
 }
 
+// const vars
+const backendPaperIds = 'http://localhost:8000/api/search';
+const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
+const responseArraySize = 10;
 
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
+// async function getPaperIds(keywords, skip) {
+//     const paperIds = await axios.get(backendPaperIds, {
+//         params: {
+//             q: keywords,
+//             lim: responseArraySize,
+//             skip: skip
+//         }
+//     }).then(res => res.data);
+//     return paperIds;
+// }
+
+// async function getPapers(paperIds) {
+//     let serializedPaperIds = paperIds.join(',');
+//     const papers = await axios.get(backendPaperList, {
+//         params: {
+//             paper_ids: serializedPaperIds
+//         }
+//     }).then(
+//         res => res.data
+//     )
+//     return papers;
+// }
 
 function PaperList(props) {
     return (
@@ -28,6 +52,9 @@ function PaperList(props) {
     )
 }
 
+function useQuery() {
+    return new URLSearchParams(useLocation().search);
+}
 
 function PaperItem(props) {
     const paper = props.paper;
@@ -61,15 +88,47 @@ function PaperItem(props) {
 }
 
 function SearchResult() {
-    let q = useQuery();
-    const query = q.get('q');
+    
+    let params = useQuery();
+    const page = params.get('page');
+    let skip = (page-1)*10;
+    const keywords = params.get('q');
+
+    const [paperIds, setPaperIds] = useState([]);
+    const [papers, setPapers] = useState([]);
+
+    // fetch paper ids
+    useEffect( () => {
+        console.log('useEffect');
+        const fetchPaperIds = async () => {
+            const req = await axios.get(backendPaperIds, {
+                params: {
+                    q: keywords,
+                    lim: responseArraySize,
+                    skip: skip
+                },
+            }).then(res => {
+                setPaperIds(res.data);
+                
+                let serializedPaperIds = res.data.join(',');
+                console.log(serializedPaperIds);
+                axios.get(backendPaperList, {
+                    params: {
+                        paper_ids: serializedPaperIds
+                    }
+                }).then(res => {
+                    setPapers(res.data);
+                });
+            });
+        };
+        fetchPaperIds();
+    }, []);
+    
     return (
         <div className='h-100'>
             <SearchHeader></SearchHeader>
-            {/* <header className='result-header'>
-                <SearchbarSm q={query}/>
-            </header> */}
             <br></br>
+            <h2>{page}</h2>
             <PaperList>
                 <PaperItem paper={testPaper}></PaperItem>
                 <PaperItem paper={testPaper}></PaperItem>
