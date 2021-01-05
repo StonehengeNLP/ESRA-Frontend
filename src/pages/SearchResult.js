@@ -67,9 +67,9 @@ function PaperItem(props) {
             <Col md={1}></Col>
             <Col md={10} className='paper-item paper-container'>
                 <h4 className='title'><strong>{paper.paper_title}</strong></h4>
-                <p className='conference'>{paper.conference}</p>
-                <p className='authors'>{paper.authors.join(', ')}</p>
-                <p className='affiliations'><i>{paper.affiliations}</i></p>
+                <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
+                <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
+                <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
                 <p className='explanation'>{paper.explanation}</p>
                 <p className='abstract'>
                     <span style={{display:more}}>{paper.abstract}</span>
@@ -115,7 +115,8 @@ function SearchResult() {
                 console.log(serializedPaperIds);
                 axios.get(backendPaperList, {
                     params: {
-                        paper_ids: serializedPaperIds
+                        paper_ids: serializedPaperIds,
+                        keywords: keywords
                     }
                 }).then(res => {
                     setPapers(res.data);
@@ -129,9 +130,8 @@ function SearchResult() {
         <div className='h-100'>
             <SearchHeader></SearchHeader>
             <br></br>
-            <h2>{page}</h2>
             <PaperList>
-                {papers.map(paper => (<PaperItem paper={paper}></PaperItem>))}
+                {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper}></PaperItem>))}
             </PaperList>
             <br></br>
             <footer></footer>
