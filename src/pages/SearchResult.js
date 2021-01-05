@@ -8,7 +8,7 @@ import SearchHeader from '../components/SearchHeader';
 import '../css/searchResult.css'
 
 const testPaper =  {
-    'title': 'DoubleBERT: pretrained BERT for Dharma understanding',
+    'paper_title': 'DoubleBERT: pretrained BERT for Dharma understanding',
     'authors': ['Red Sensei', 'H. Sasada'],
     'affiliations': 'Gang of Four',
     'conference': 'GoF Con 2021',
@@ -58,6 +58,7 @@ function useQuery() {
 
 function PaperItem(props) {
     const paper = props.paper;
+    const paper_id = paper.paper_id;
     const [more, setMore] = useState('none');
     const [isLess, setIsLess] = useState('view');
 
@@ -65,7 +66,7 @@ function PaperItem(props) {
         <Row>
             <Col md={1}></Col>
             <Col md={10} className='paper-item paper-container'>
-                <h4 className='title'><strong>{paper.title}</strong></h4>
+                <h4 className='title'><strong>{paper.paper_title}</strong></h4>
                 <p className='conference'>{paper.conference}</p>
                 <p className='authors'>{paper.authors.join(', ')}</p>
                 <p className='affiliations'><i>{paper.affiliations}</i></p>
@@ -130,9 +131,7 @@ function SearchResult() {
             <br></br>
             <h2>{page}</h2>
             <PaperList>
-                <PaperItem paper={testPaper}></PaperItem>
-                <PaperItem paper={testPaper}></PaperItem>
-                <PaperItem paper={testPaper}></PaperItem>
+                {papers.map(paper => (<PaperItem paper={paper}></PaperItem>))}
             </PaperList>
             <br></br>
             <footer></footer>
