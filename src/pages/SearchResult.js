@@ -1,9 +1,9 @@
 import axios from 'axios';
 import React, {useState, useEffect} from 'react'
-import { Container, Row, Col } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom'
-import SearchbarSm from '../components/SearchbarSm';
 import SearchHeader from '../components/SearchHeader';
+import PaperList from '../components/PaperList';
+import PaperItem from '../components/PaperItem';
 
 import '../css/searchResult.css'
 
@@ -21,71 +21,8 @@ const backendPaperIds = 'http://localhost:8000/api/search';
 const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
 const responseArraySize = 10;
 
-// async function getPaperIds(keywords, skip) {
-//     const paperIds = await axios.get(backendPaperIds, {
-//         params: {
-//             q: keywords,
-//             lim: responseArraySize,
-//             skip: skip
-//         }
-//     }).then(res => res.data);
-//     return paperIds;
-// }
-
-// async function getPapers(paperIds) {
-//     let serializedPaperIds = paperIds.join(',');
-//     const papers = await axios.get(backendPaperList, {
-//         params: {
-//             paper_ids: serializedPaperIds
-//         }
-//     }).then(
-//         res => res.data
-//     )
-//     return papers;
-// }
-
-function PaperList(props) {
-    return (
-        <Container className='paper-list'>
-            { props.children }
-        </Container>
-    )
-}
-
 function useQuery() {
     return new URLSearchParams(useLocation().search);
-}
-
-function PaperItem(props) {
-    const paper = props.paper;
-    const paper_id = paper.paper_id;
-    const [more, setMore] = useState('none');
-    const [isLess, setIsLess] = useState('view');
-
-    return (
-        <Row>
-            <Col md={1}></Col>
-            <Col md={10} className='paper-item paper-container'>
-                <h4 className='title'><strong>{paper.paper_title}</strong></h4>
-                <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
-                <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
-                <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
-                <p className='explanation'>{paper.explanation}</p>
-                <p className='abstract'>
-                    <span style={{display:more}}>{paper.abstract}</span>
-                    <span 
-                    className='see-more' 
-                    role='button'
-                    onClick={(e) => {
-                        isLess === 'view' ? setMore('inline'):setMore('none');
-                        isLess === 'view' ? setIsLess('hide'):setIsLess('view');
-                    }}
-                    > {isLess} abstract</span>
-                </p>
-            </Col>
-            <Col md={1}></Col>
-        </Row>
-    )
 }
 
 function SearchResult() {
