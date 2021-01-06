@@ -6,3 +6,10 @@
 .cc {
     font-size: 2rem;
 }
+
+.cite-tab {
+    position: relative;
+    padding: 1rem 1rem 0 1rem !important;
+    border: .2rem solid #ececec;
+    border-radius: 8px;
+}
