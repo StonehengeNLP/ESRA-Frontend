@@ -1,8 +1,10 @@
-import React, { Fragment } from 'react'
-import SearchHeader from '../components/SearchHeader'
-import GraphVis from '../components/GraphVis'
+import React, { Fragment, useState, useEffect } from 'react';
+import SearchHeader from '../components/SearchHeader';
+import GraphVis from '../components/GraphVis';
 
-import '../css/paper.css'
+import '../css/paper.css';
+import axios from 'axios';
+import useQuery from '../functions.js';
 
 const testPaper =  {
     'title': 'DoubleBERT: pretrained BERT for Dharma understanding',
@@ -14,8 +16,22 @@ const testPaper =  {
     'cc': 2019,
 }
 
-function Paper() {
+const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper'
 
+function Paper(props) {
+    let params = useQuery();
+    const [paper, setPaper] = useState([]);
+    const paper_id = props.match.params.id; 
+
+    useEffect(() => {
+        axios.get(backendPaperUrl, {
+            params: {
+                paper_id: paper_id,
+            },
+        }).then(res => {
+            setPaper(res.data);
+        });
+    }, []);
 
     return (
         <Fragment>
@@ -23,14 +39,12 @@ function Paper() {
             <br></br>
             <br></br>
             <div className='paper-info-container'>
-                <h3 className='paper-title'>{testPaper.title}</h3>
-                <h4 className='title'><strong>{testPaper.title}</strong></h4>
-                <p className='conference'>{testPaper.conference}</p>
-                <p className='authors'>{testPaper.authors.join(', ')}</p>
-                <p className='affiliations'><i>{testPaper.affiliations}</i></p>
-                <p className='explanation'>{testPaper.explanation}</p>
-                <p className='citation'><span className='cc'>{testPaper.cc}</span> citations</p>
-                <p className='abstract'>{testPaper.abstract}</p>
+                <h3 className='paper-title'>{paper.paper_title}</h3>
+                <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
+                <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
+                <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
+                <p className='citation'><span className='cc'>{paper.citation_count}</span> citations</p>
+                <p className='abstract'>{paper.abstract}</p>
             </div>
             <GraphVis />
             
