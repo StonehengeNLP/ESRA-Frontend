@@ -26,6 +26,7 @@ ul {
     font-weight: lighter;
     border-bottom: 1px solid #999a9d;
     padding-bottom: 5px;
+    color: #212529;
 }
 
 .authors, .affiliations {
@@ -52,4 +53,9 @@ ul {
 footer {
     background-color: #D9D9D9;
     height: 15%;
+}
+
+
+a:hover {
+    color: #212529 !important;
 }

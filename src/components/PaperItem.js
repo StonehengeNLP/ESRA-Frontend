@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 function PaperItem(props) {
     const paper = props.paper;
@@ -11,7 +12,13 @@ function PaperItem(props) {
         <Row>
             <Col md={1}></Col>
             <Col md={10} className='paper-item paper-container'>
-                <h4 className='title'><strong>{paper.paper_title}</strong></h4>
+                <Link
+                to={{
+                    pathname: '/paper/' + paper_id,
+                }}
+                >
+                    <h4 className='title'><strong>{paper.paper_title}</strong></h4>
+                </Link>
                 <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
                 <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
