@@ -24,6 +24,8 @@ ul {
 
 .title {
     font-weight: lighter;
+    border-bottom: 1px solid #999a9d;
+    padding-bottom: 5px;
 }
 
 .authors, .affiliations {

@@ -25,23 +25,29 @@ function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
 
-function SearchResult() {
-    
-    let params = useQuery();
-    const page = params.get('page');
-    let skip = (page-1)*10;
-    const keywords = params.get('q');
+const getUrlParameter = (name) => {
+    let regex = new RegExp('[?&]' + name + '=([^&#]*)');
+    let results = regex.exec(window.location.search);
+    return results[1].replace('%20', ' ');
+};
 
+function SearchResult(props) {
+    
+    const [keywords, setKeywords] = useState('');
     const [paperIds, setPaperIds] = useState([]);
     const [papers, setPapers] = useState([]);
 
     // fetch paper ids
     useEffect( () => {
-        console.log('useEffect');
+        let q = getUrlParameter('q')
+        setKeywords(q);
+        let page = parseInt(getUrlParameter('page'));
+        let skip = (page-1)*10;
+        
         const fetchPaperIds = async () => {
             const req = await axios.get(backendPaperIds, {
                 params: {
-                    q: keywords,
+                    q: q,
                     lim: responseArraySize,
                     skip: skip
                 },
@@ -49,11 +55,10 @@ function SearchResult() {
                 setPaperIds(res.data);
                 
                 let serializedPaperIds = res.data.join(',');
-                console.log(serializedPaperIds);
                 axios.get(backendPaperList, {
                     params: {
                         paper_ids: serializedPaperIds,
-                        keywords: keywords
+                        keywords: q
                     }
                 }).then(res => {
                     setPapers(res.data);
@@ -61,7 +66,7 @@ function SearchResult() {
             });
         };
         fetchPaperIds();
-    }, []);
+    }, [props.location.search]);
     
     return (
         <div className='h-100'>
