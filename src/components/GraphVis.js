@@ -1,71 +1,60 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { Fragment } from 'react'
 import { Graph } from 'react-d3-graph'
 
 import '../css/graph.css'
 
-function GraphVis() {
+import FileSvg from '../svgs/file-svgrepo.svg'
 
-    const data = {
-        nodes: [
-            {
-                id: 'DoubleBERT: pretrained BERT for Dharma understanding',
-                color: 'red'
-            },
-            {id: 'DoubleBERT'},
-            {id: 'Red Sensei'},
-            {id: 'H. Sasada'},
-            {id: 'BERT'},
-            {id: 'Dharma'},
-            {id: 'understanding'},
-            {id: 'religion'},
-            {id: 'ELMO'},
-        ],
-        links: [
-            {
-                source: 'DoubleBERT: pretrained BERT for Dharma understanding',
-                target: 'DoubleBERT'
-            },
-            {
-                source: 'DoubleBERT: pretrained BERT for Dharma understanding',
-                target: 'Red Sensei'
-            },
-            {
-                source: 'DoubleBERT: pretrained BERT for Dharma understanding',
-                target: 'H. Sasada'
-            },
-            {
-                source: 'DoubleBERT: pretrained BERT for Dharma understanding',
-                target: 'BERT'
-            },
-            {
-                source: 'DoubleBERT: pretrained BERT for Dharma understanding',
-                target: 'Dharma'
-            },
-            {
-                source: 'DoubleBERT: pretrained BERT for Dharma understanding',
-                target: 'understanding'
-            },
-            {source: 'Dharma', target: 'understanding'},
-            {source: 'religion', target: 'Dharma'},
-            {source: 'ELMO', target: 'BERT'},
-        ],
-    }
+function GraphVis(props) {
+
+    // test 
+    const [data, setData] = useState({})
+    const [isBusy, setIsBusy] = useState(true);
+    
+    useEffect(() => {
+        setIsBusy(false);
+    }, [props.paper_title]);
+
+    useEffect(() => {
+        if (!isBusy) {
+            axios.get('http://localhost:8000/api/graph', {
+                params: {
+                    keyword: 'bert',
+                    paper_title: props.paper_title,
+                    limit: 10,
+                },
+            }).then(res => {
+                setData(res.data);
+            });
+        }
+    }, [props.paper_title]);
+
 
     const newConfig = {
         collapsible: true,
-        minZoom: 1,
+        initialZoom: 1.5,
+        automaticRearrangeAfterDropNode: true,
+        node: {
+            size: 600,
+        },
+        link: {
+            renderLabel: true,
+        }
     }
 
     return (
         <div className='paper-info-container graph-vis-container'>
-            <Graph
-            id='graph-vis-69'
-            className='graph-vis'
-            data={data}
-            config={newConfig}
-            >
-            </Graph>
+            <div className='graph-wrapper'>
+                <Graph
+                id='graph-vis-69'
+                className='graph-vis'
+                data={data}
+                config={newConfig}
+                >
+                </Graph>
+            </div>
         </div>
     )
 }

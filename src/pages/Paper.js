@@ -40,7 +40,7 @@ function Paper(props) {
             setPaper(res.data);
             document.title = res.data.paper_title;
             c = res.data.cited_by;
-            let refIds = res.data.cite_to.join(',');
+            let refIds = res.data.cite_to.slice(0,10).join(',');
             return axios.get(backendPaperList, {
                 params: {
                     paper_ids: refIds,
@@ -74,7 +74,7 @@ function Paper(props) {
                 <p className='citation'><span className='cc'>{paper.citation_count}</span> citations</p>
                 <p className='abstract'>{paper.abstract}</p>
             </div>
-            <GraphVis />
+            <GraphVis paper_title={paper.paper_title} />
             <br></br>
             <div className='paper-info-container'>
                 <div className='cite-tab'>
