@@ -19,7 +19,7 @@ function PaperItem(props) {
                 >
                     <h4 className='title'><strong>{paper.paper_title}</strong></h4>
                 </Link>
-                <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
+                <p className='conference'>{paper.conference=='Nan' ? '':paper.conference}</p>
                 <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
                 { paper.explanation ? (<p className='explanation'><strong>Explanation: </strong>{paper.explanation}</p>):null }
