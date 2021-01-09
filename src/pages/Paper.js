@@ -7,19 +7,31 @@ import axios from 'axios';
 import {useQuery} from '../functions';
 import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
-import { Tabs, Tab } from 'react-bootstrap';
+import { Tabs, Tab, Pagination } from 'react-bootstrap';
 
 const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper'
 const backendPaperList = 'http://localhost:8000/api/paper/paper_list'
 
+function PaperPagination(props) {
+    return (
+        <Pagination>
+            <Pagination.Prev disabled={props.page==1 ? true:false} onClick={props.prevHandler} />
+            <Pagination.Next disabled={props.page*10>props.refs.length ? true:false} onClick={props.nextHandler}/>
+        </Pagination>
+    )
+}
 
 function Paper(props) {
-    const [paper, setPaper] = useState([]);
+    const [paper, setPaper] = useState({});
     const [refs, setRefs] = useState([]);
     const [cited, setCited] = useState([]);
+    const [refPage, setRefPage] = useState(1);
+    const [citedPage, setCitedPage] = useState(1);
     
     useEffect(() => {
 
+        setRefPage(1);
+        setCitedPage(1);
         const paper_id = props.match.params.id; 
 
         let c = null;
@@ -52,6 +64,35 @@ function Paper(props) {
         });
     }, [props.match.params]);
 
+    useEffect(() => {
+        if (paper.cite_to!=undefined){
+            let refIds = paper.cite_to.slice((refPage-1)*10, refPage*10).join(',');
+            axios.get(backendPaperList, {
+                params: {
+                    paper_ids: refIds,
+                    no_ex: true
+                }
+            }).then(res => {
+                setRefs(res.data);
+            })
+        }
+
+    }, [refPage]);
+
+    useEffect(() => {
+        if (paper.cited_by!=undefined){
+            let cited_ids = paper.cited_by.slice((citedPage-1)*10,citedPage*10).join(',');
+            axios.get(backendPaperList, {
+                params: {
+                    paper_ids: cited_ids,
+                    no_ex: true
+                }
+            }).then(res => {
+                setCited(res.data);
+            });
+        }
+    }, [citedPage]);
+
     return (
         <Fragment>
             <SearchHeader></SearchHeader>
@@ -74,11 +115,21 @@ function Paper(props) {
                             <PaperList>
                                 {refs.map(paper => (<PaperItem key={paper.paper_id} paper={paper}></PaperItem>))}
                             </PaperList>
+                            { paper.cite_to!=undefined ? (<PaperPagination 
+                            page={refPage}
+                            refs={paper.cite_to}
+                            prevHandler={(e) => setRefPage(refPage-1)}
+                            nextHandler={(e) => setRefPage(refPage+1)} />):null }
                         </Tab>
                         <Tab eventKey='cited_by' title='Cited by'>
                             <PaperList>
                                 {cited.map(paper => (<PaperItem key={paper.paper_id} paper={paper}></PaperItem>))}
                             </PaperList>
+                            { paper.cited_by!=undefined ? (<PaperPagination 
+                            page={citedPage}
+                            refs={paper.cited_by}
+                            prevHandler={(e) => setCitedPage(citedPage-1)}
+                            nextHandler={(e) => setCitedPage(citedPage+1)} />):null }
                         </Tab>
                     </Tabs>
                 </div>
