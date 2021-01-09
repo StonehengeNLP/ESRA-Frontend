@@ -21,9 +21,8 @@ function GraphVis(props) {
         if (!isBusy) {
             axios.get('http://localhost:8000/api/graph', {
                 params: {
-                    keyword: 'bert',
                     paper_title: props.paper_title,
-                    limit: 10,
+                    limit: 40,
                 },
             }).then(res => {
                 setData(res.data);
