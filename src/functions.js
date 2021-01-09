@@ -1,5 +1,13 @@
 import { useLocation } from 'react-router-dom'
 
-export default function useQuery() {
+function useQuery() {
     return new URLSearchParams(useLocation().search);
 }
+
+function getUrlParameter(name) {
+    let regex = new RegExp('[?&]' + name + '=([^&#]*)');
+    let results = regex.exec(window.location.search);
+    return results[1].replace('%20', ' ');
+}
+
+export {useQuery, getUrlParameter};

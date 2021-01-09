@@ -41,6 +41,10 @@ ul {
     margin: 0 0 5px 0;
 }
 
+.abstract {
+    font-size: small;
+}
+
 .see-more {
     font-weight: normal;
     opacity: 0.7;

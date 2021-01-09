@@ -11,23 +11,16 @@ function GraphVis(props) {
 
     // test 
     const [data, setData] = useState({})
-    const [isBusy, setIsBusy] = useState(true);
-    
-    useEffect(() => {
-        setIsBusy(false);
-    }, [props.paper_title]);
 
     useEffect(() => {
-        if (!isBusy) {
-            axios.get('http://localhost:8000/api/graph', {
-                params: {
-                    paper_title: props.paper_title,
-                    limit: 40,
-                },
-            }).then(res => {
-                setData(res.data);
-            });
-        }
+        axios.get('http://localhost:8000/api/graph', {
+            params: {
+                paper_title: props.paper_title,
+                limit: 40,
+            },
+        }).then(res => {
+            setData(res.data);
+        });
     }, [props.paper_title]);
 
 

@@ -4,33 +4,24 @@ import GraphVis from '../components/GraphVis';
 
 import '../css/paper.css';
 import axios from 'axios';
-import useQuery from '../functions.js';
+import {useQuery} from '../functions';
 import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
 import { Tabs, Tab } from 'react-bootstrap';
-
-const testPaper =  {
-    'paper_title': 'DoubleBERT: pretrained BERT for Dharma understanding',
-    'authors': ['Red Sensei', 'H. Sasada'],
-    'affiliations': 'Gang of Four',
-    'conference': 'GoF Con 2021',
-    'explanation': 'DoubleBERT is a model presented by Red Sensei at GoF Con 2021',
-    'abstract': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure explicabo ipsam quia natus est sint, voluptatibus, quo placeat, quis repellendus inventore voluptate ad aliquam ullam at recusandae dolore maiores sunt!',
-    'cc': 2019,
-}
 
 const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper'
 const backendPaperList = 'http://localhost:8000/api/paper/paper_list'
 
 
 function Paper(props) {
-    let params = useQuery();
     const [paper, setPaper] = useState([]);
     const [refs, setRefs] = useState([]);
     const [cited, setCited] = useState([]);
-    const paper_id = props.match.params.id; 
-
+    
     useEffect(() => {
+
+        const paper_id = props.match.params.id; 
+
         let c = null;
         axios.get(backendPaperUrl, {
             params: {
@@ -38,7 +29,7 @@ function Paper(props) {
             },
         }).then(res => {
             setPaper(res.data);
-            document.title = res.data.paper_title;
+            document.title = res.data.paper_title + " | ESRA";
             c = res.data.cited_by;
             let refIds = res.data.cite_to.slice(0,10).join(',');
             return axios.get(backendPaperList, {
@@ -59,7 +50,7 @@ function Paper(props) {
         }).then(res => {
             setCited(res.data);
         });
-    }, []);
+    }, [props.match.params]);
 
     return (
         <Fragment>

@@ -22,7 +22,7 @@ function PaperItem(props) {
                 <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
                 <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
-                <p className='explanation'>{paper.explanation}</p>
+                { paper.explanation ? (<p className='explanation'><strong>Explanation: </strong>{paper.explanation}</p>):null }
                 <p className='abstract'>
                     <span style={{display:more}}>{paper.abstract}</span>
                     <span 
