@@ -14,7 +14,7 @@ const backendPaperList = 'http://localhost:8000/api/paper/paper_list'
 
 function PaperPagination(props) {
     return (
-        <Pagination>
+        <Pagination className='page-pagination'>
             <Pagination.Prev disabled={props.page==1 ? true:false} onClick={props.prevHandler} />
             <Pagination.Next disabled={props.page*10>props.refs.length ? true:false} onClick={props.nextHandler}/>
         </Pagination>

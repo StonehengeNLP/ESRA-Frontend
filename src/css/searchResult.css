@@ -63,3 +63,8 @@ footer {
 a:hover {
     color: #212529 !important;
 }
+
+.page-pagination {
+    display: flex;
+    justify-content: center;
+}

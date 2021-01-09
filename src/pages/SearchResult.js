@@ -16,7 +16,7 @@ const responseArraySize = 10;
 function ResultPagination(props) {
 
     return (
-        <Pagination>
+        <Pagination className='page-pagination'>
             <Pagination.Prev disabled={props.page==1 ? true:false} onClick={props.prevHandler}/>
             <Pagination.Next disabled={props.length<10 ? true:false} onClick={props.nextHandler}/>
         </Pagination>
