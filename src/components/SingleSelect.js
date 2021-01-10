@@ -158,7 +158,7 @@ function SingleSelect(props) {
             onInputChange={onInputChange}
             getOptionLabel={e => e.label}
             getOptionValue={e => e.value}
-            ref={selectRef}
+            // ref={selectRef}
             >
             </AsyncSelect>
         </Fragment>
