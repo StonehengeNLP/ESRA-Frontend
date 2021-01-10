@@ -4,3 +4,15 @@
     margin: 3em 0;
     /* border: 2px solid black; */
 }
+
+.graph-wrapper {
+    position: relative;
+    width: 100%;
+    border: .2rem solid #ececec;
+    border-radius: 8px;
+    z-index: 10;
+}
+
+.graph-vis {
+    z-index: 0;
+}
