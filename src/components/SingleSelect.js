@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect, useRef } from 'react'
 import { useHistory } from 'react-router-dom';
 import Select, {defaultTheme} from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -27,11 +27,40 @@ const DropdownIndicator = (props) => {
     );
 };
 
+function useReactSelectFocusFix() {
+    const selectRef = useRef()
+    useEffect(() => {
+        if (selectRef.current && selectRef.current.select) {
+            selectRef.current.select.getNextFocusedOption = () => null
+        }
+    }, [selectRef.current])
+    return selectRef
+}
+
 function SingleSelect(props) {
 
     const [inputValue, setInputValue] = useState(props.q);
     const [selectedValue, setSelectedValue] = useState(null);
     const history = useHistory();
+    const selectRef = useRef(null);
+
+    useEffect(() => {
+        if (selectRef.current && selectRef.current.select) {
+            selectRef.current.select.getNextFocusedOption = () => null
+        }
+        // let select = selectRef.current?.select?.select
+        // // select ??= selectRef.current?.select // <-- for multi input
+    
+        // if (select) {
+        //     const original = select.getNextFocusedOption.bind(select)
+    
+        //     select.getNextFocusedOption = options => {
+        //             const inputValue = selectRef.current?.state?.inputValue
+        //             if (inputValue) return original(options)
+        //     }
+        // }
+    }, [selectRef.current])
+
 
     // let options = [
     //     { value: 'chocolate', label: 'Chocolate' },
@@ -102,6 +131,11 @@ function SingleSelect(props) {
             margin: '1% 0 1% 0',
         }),
     }
+
+    // const filterOption = (option, inputValue) {
+        
+    // }
+
     
     return (
         <Fragment>
@@ -124,6 +158,7 @@ function SingleSelect(props) {
             onInputChange={onInputChange}
             getOptionLabel={e => e.label}
             getOptionValue={e => e.value}
+            ref={selectRef}
             >
             </AsyncSelect>
         </Fragment>
