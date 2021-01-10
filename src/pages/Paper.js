@@ -8,9 +8,34 @@ import {useQuery} from '../functions';
 import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
 import { Tabs, Tab, Pagination } from 'react-bootstrap';
+import ForceGraph from '../components/ForceGraph';
 
-const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper'
-const backendPaperList = 'http://localhost:8000/api/paper/paper_list'
+const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper';
+const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
+const backendPaperD3 = 'http://localhost:8000/api/graph_d3';
+
+const fakeData = {
+    'nodes': [
+        {
+            'id': 1,
+            'name': 'BERT',
+            'labels': 'Method',
+        },
+        {
+            'id': 2,
+            'name': 'attention is all',
+            'labels': 'Paper',
+        }
+    ],
+    'links': [
+        {
+            'source': 1,
+            'target': 2,
+            'label': 'asd'
+        }
+    ]
+}
+
 
 function PaperPagination(props) {
     return (
@@ -27,12 +52,13 @@ function Paper(props) {
     const [cited, setCited] = useState([]);
     const [refPage, setRefPage] = useState(1);
     const [citedPage, setCitedPage] = useState(1);
+    const [d3Data, setD3Data] = useState(null);
     
     useEffect(() => {
 
         setRefPage(1);
         setCitedPage(1);
-        const paper_id = props.match.params.id; 
+        const paper_id = props.match.params.id;
 
         let c = null;
         axios.get(backendPaperUrl, {
@@ -93,6 +119,18 @@ function Paper(props) {
         }
     }, [citedPage]);
 
+    useEffect(() => {
+        const paper_id = props.match.params.id;
+        axios.get(backendPaperD3, {
+            params: {
+                'paper_id': paper_id,
+                'limit': 30,
+            },
+        }).then(res => {
+            setD3Data(res.data);
+        })
+    }, [props.match.params])
+
     return (
         <Fragment>
             <SearchHeader></SearchHeader>
@@ -107,6 +145,9 @@ function Paper(props) {
                 <p className='abstract'>{paper.abstract}</p>
             </div>
             <GraphVis paper_title={paper.paper_title} />
+            <div className='paper-info-container'>
+                { d3Data!=null ? (<ForceGraph linksData={d3Data.links} nodesData={d3Data.nodes}/>):null }
+            </div>
             <br></br>
             <div className='paper-info-container'>
                 <div className='cite-tab'>

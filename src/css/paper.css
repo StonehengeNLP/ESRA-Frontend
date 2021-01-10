@@ -14,3 +14,24 @@
     border: .2rem solid #ececec;
     border-radius: 8px;
 }
+
+.force-container {
+    width: 100%;
+    height: 80vh;
+    position: relative;
+    background-color: gray;
+    border: .2rem solid #ececec;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+.force-container svg {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.label {
+    word-wrap: break-word;
+}
