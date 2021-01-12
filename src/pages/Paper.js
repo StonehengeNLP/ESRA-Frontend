@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import SearchHeader from '../components/SearchHeader';
 import GraphVis from '../components/GraphVis';
 
@@ -53,7 +53,10 @@ function Paper(props) {
     const [refPage, setRefPage] = useState(1);
     const [citedPage, setCitedPage] = useState(1);
     const [d3Data, setD3Data] = useState(null);
-    
+    const nodesHoverTooltip = useCallback((node) => {
+        return `<div>${node.name}</div>`;
+    },[]);
+
     useEffect(() => {
 
         setRefPage(1);
@@ -146,7 +149,8 @@ function Paper(props) {
             </div>
             <GraphVis paper_title={paper.paper_title} />
             <div className='paper-info-container'>
-                { d3Data!=null ? (<ForceGraph linksData={d3Data.links} nodesData={d3Data.nodes}/>):null }
+                { d3Data!=null ? (<ForceGraph key={props.match.params.id} linksData={d3Data.links} nodesData={d3Data.nodes}
+                nodesHoverTooltip={nodesHoverTooltip}/>):null }
             </div>
             <br></br>
             <div className='paper-info-container'>

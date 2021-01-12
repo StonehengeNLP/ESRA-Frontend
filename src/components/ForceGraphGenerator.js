@@ -1,6 +1,8 @@
 import * as d3 from 'd3';
 import "@fortawesome/fontawesome-free/css/all.min.css";
-export default function runForceGraph(container, linksData, nodesData){
+import styles from '../css/forceGraph.module.css';
+
+export default function runForceGraph(container, linksData, nodesData, nodesHoverTooltip){
     
     const links = linksData.map((d) => Object.assign({}, d));
     const nodes = nodesData.map((d) => Object.assign({}, d));
@@ -9,7 +11,33 @@ export default function runForceGraph(container, linksData, nodesData){
     const height = containerRect.height;
     const width = containerRect.width;
 
+    const tooltip = document.querySelector('#graph-tooltip');
+    if (!tooltip) {
+        const tooltipDiv = document.createElement('div');
+        tooltipDiv.classList.add(styles.tooltip);
+        tooltipDiv.style.opacity = '0';
+        tooltipDiv.id = 'graph-tooltip';
+        document.body.appendChild(tooltipDiv);
+    }
     
+    const div = d3.select('#graph-tooltip');
+
+    const addTooltip = (hoverTooltip, d, x, y) => {
+        
+        div.transition()
+           .duration(200)
+           .style('opacity', 0.9);
+        
+        div.html(hoverTooltip(d))
+           .style('left', `${x}px`)
+           .style('top', `${y-28}px`);
+    }
+
+    const removeTooltip = () => {
+        div.transition()
+           .duration(200)
+           .style('opacity', 0);
+    }
 
     const color = (d) => {
         let colorCode;
@@ -114,28 +142,32 @@ export default function runForceGraph(container, linksData, nodesData){
     const simulation = d3
         .forceSimulation(nodes)
         .force('link', d3.forceLink(links).id(d => d.id))
-        .force('charge', d3.forceManyBody().strength(-150))
-        .force('x', d3.forceX())
-        .force('y', d3.forceY());
+        .force('charge', d3.forceManyBody().strength(-300).distanceMin(90))
+        .force("center", d3.forceCenter().x(width * .5).y(height * .5))
+        .force('x', d3.forceX(width/2).strength(0.1))
+        .force('y', d3.forceY(height/2).strength(0.1));
+        // .force("collide",d3.forceCollide().radius(d => d.r * 10));
     
     const svg = d3
         .select(container)
         .append('svg')
         .attr('viewbox', [-width / 2, -height / 2, width, height])
         .call(d3.zoom().on('zoom', function () {
-            svg.attr('transform', d3.event.transform);
+            g.attr('transform', d3.event.transform);
         }));
     
-    const link = svg
+    const g = svg.append('g');
+
+    const link = g
         .append('g')
-        .attr('stroke', '#999')
+        .attr('stroke', '#fff')
         .attr("stroke-opacity", 0.6)
         .selectAll("line")
         .data(links)
         .join("line")
         .attr("stroke-width", d => Math.sqrt(d.value));
     
-    const node = svg
+    const node = g
         .append("g")
         .attr("stroke", "#fff")
         .attr("stroke-width", 2)
@@ -152,7 +184,7 @@ export default function runForceGraph(container, linksData, nodesData){
         .attr('text-anchor', 'end')
         .text(d => { return d.name; });
         
-    const label = svg.append("g")
+    const label = g.append("g")
         .attr("class", "labels")
         .selectAll("text")
         .data(nodes)
@@ -164,7 +196,7 @@ export default function runForceGraph(container, linksData, nodesData){
         .text(d => {return icon(d);})
         .call(drag(simulation));
     
-    const name = svg.append("g")
+    const name = g.append("g")
         .attr("class", "names")
         .selectAll("text")
         .data(nodes)
@@ -176,6 +208,22 @@ export default function runForceGraph(container, linksData, nodesData){
         .attr('dominant-baseline', 'central')
         .text(d => {return d.name;})
         .call(drag(simulation));
+
+    const linkLabel = g.append('g')
+        .attr('class', 'link-label')
+        .selectAll('text')
+        .data(links)
+        .enter()
+        .append('text')
+        .attr('class', 'link-label-text')
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '10px')
+        .text(l => { return l.label; })
+        .call(drag(simulation));
+
+    label
+        .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
+        .on('mouseout', () => { removeTooltip(); }); 
 
     simulation.on("tick", () => {
         //update link positions
@@ -198,6 +246,14 @@ export default function runForceGraph(container, linksData, nodesData){
         name
             .attr("x", d => { return d.x; })
             .attr("y", d => { return d.y; })
+        
+        linkLabel
+            .attr("x", d => { 
+                return d.source.x < d.target.x ? (d.source.x + (d.target.x-d.source.x)/2) : (d.target.x + (d.source.x-d.target.x)/2);
+             })
+            .attr("y", d => {
+                return d.source.y < d.target.y ? (d.source.y + (d.target.y-d.source.y)/2) : (d.target.y + (d.source.y-d.target.y)/2);
+            })
         });
     
     return {
