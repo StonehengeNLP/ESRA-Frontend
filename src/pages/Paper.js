@@ -147,7 +147,8 @@ function Paper(props) {
                 <p className='citation'><span className='cc'>{paper.citation_count}</span> citations</p>
                 <p className='abstract'>{paper.abstract}</p>
             </div>
-            <GraphVis paper_title={paper.paper_title} />
+            <br></br>
+            {/* <GraphVis paper_title={paper.paper_title} /> */}
             <div className='paper-info-container'>
                 { d3Data!=null ? (<ForceGraph key={props.match.params.id} linksData={d3Data.links} nodesData={d3Data.nodes}
                 nodesHoverTooltip={nodesHoverTooltip}/>):null }

@@ -128,8 +128,8 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         const dragended = (d) => {
             if (!d3.event.active)
                 simulation.alphaTarget(0);
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
+            d.fx = null;
+            d.fy = null;
         }
 
         return d3.drag()
@@ -141,12 +141,10 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     const simulation = d3
         .forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id))
-        .force('charge', d3.forceManyBody().strength(-300).distanceMin(90))
+        .force('link', d3.forceLink(links).id(d => d.id).distance(90))
+        .force('charge', d3.forceManyBody().strength(-1000).distanceMax(1000))
         .force("center", d3.forceCenter().x(width * .5).y(height * .5))
-        .force('x', d3.forceX(width/2).strength(0.1))
-        .force('y', d3.forceY(height/2).strength(0.1));
-        // .force("collide",d3.forceCollide().radius(d => d.r * 10));
+        .force("collide",d3.forceCollide().radius(d => d.r * 10));
     
     const svg = d3
         .select(container)
@@ -158,15 +156,30 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     
     const g = svg.append('g');
 
+    g.append("defs").append('marker')
+        .attr('id', 'arrow')
+        .attr('viewBox', '-0 -5 10 10')
+        .attr('refX', '0')
+        .attr('refY', '0')
+        .attr('orient', 'auto')
+        .attr('markerWidth', '6')
+        .attr('markerHeight', '6')
+        .attr('xoverflow', 'visible')
+        .append("path")
+        .attr("fill", '#000')
+        .attr("d", "M0,-5 L10,0 L0,5")
+
     const link = g
         .append('g')
-        .attr('stroke', '#fff')
+        .attr('stroke', '#000')
         .attr("stroke-opacity", 0.6)
         .selectAll("line")
         .data(links)
         .join("line")
-        .attr("stroke-width", d => Math.sqrt(d.value));
+        .attr("stroke-width", '1.5px')
+        .attr('marker-end', 'url(#arrow)');
     
+    const nodeRadius = 30;
     const node = g
         .append("g")
         .attr("stroke", "#fff")
@@ -174,7 +187,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .selectAll("circle")
         .data(nodes)
         .join("circle")
-        .attr("r", 20)
+        .attr("r", nodeRadius)
         .attr("fill", d => {return color(d);})
         .call(drag(simulation));
     
@@ -193,6 +206,8 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr("class", "fa")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
+        .attr('font-size', '20px')
+        .attr('dy', '-0.25em')
         .text(d => {return icon(d);})
         .call(drag(simulation));
     
@@ -202,11 +217,11 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .data(nodes)
         .enter()
         .append("text")
-        .attr("dx", "1.5em")
-        .attr("dy", "0em")
-        .attr('text-anchor', 'start')
+        .attr("dy", "1.1em")
+        .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
-        .text(d => {return d.name;})
+        .attr('font-size', '10px')
+        .text(d => {return (d.name.length<=8 ? d.name:d.name.slice(0,6)+"...");})
         .call(drag(simulation));
 
     const linkLabel = g.append('g')
@@ -230,8 +245,20 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
+            .attr("x2", d => {
+                let dx = Math.abs(d.target.x-d.source.x);
+                let dy = Math.abs(d.target.y-d.source.y);
+                let angle = Math.atan(dx/dy);
+                let marginX = nodeRadius * Math.sin(angle) * 1.4;
+                return d.target.x<d.source.x ? d.target.x+marginX:d.target.x-marginX;
+            })
+            .attr("y2", d => {
+                let dx = Math.abs(d.target.x-d.source.x);
+                let dy = Math.abs(d.target.y-d.source.y);
+                let angle = Math.atan(dx/dy);
+                let marginY = nodeRadius * Math.cos(angle) * 1.4;
+                return d.target.y<d.source.y ? d.target.y+marginY:d.target.y-marginY;
+            });
         
         // update node positions
         node
@@ -254,8 +281,8 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
             .attr("y", d => {
                 return d.source.y < d.target.y ? (d.source.y + (d.target.y-d.source.y)/2) : (d.target.y + (d.source.y-d.target.y)/2);
             })
-        });
-    
+    });
+
     return {
         destroy: () => {
             simulation.stop();
