@@ -2,6 +2,11 @@ import * as d3 from 'd3';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import styles from '../css/forceGraph.module.css';
 
+const legend = [
+    'Paper', 'Author', 'Affiliation', 'Method', 'OtherScientificTerm',
+    'Task', 'Metric', 'Material', 'Abbreviation',
+]
+
 export default function runForceGraph(container, linksData, nodesData, nodesHoverTooltip){
     
     const links = linksData.map((d) => Object.assign({}, d));
@@ -41,9 +46,9 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     const color = (d) => {
         let colorCode;
-        switch(d.labels) {
+        switch(d) {
             case 'Paper':
-                colorCode = '#ececec';
+                colorCode = '#cccccc';
                 break;
             case 'Author':
                 colorCode = '#B9D9F7';
@@ -154,8 +159,10 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
             g.attr('transform', d3.event.transform);
         }));
     
+    // gelement canvas
     const g = svg.append('g');
 
+    // Arrow head
     g.append("defs").append('marker')
         .attr('id', 'arrow')
         .attr('viewBox', '-0 -5 10 10')
@@ -167,8 +174,53 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr('xoverflow', 'visible')
         .append("path")
         .attr("fill", '#000')
-        .attr("d", "M0,-5 L10,0 L0,5")
+        .style('opacity', 0.6)
+        .attr("d", "M0,-5 L10,0 L0,5");
+    
+    // legend box
+    const boxRadius = 5;
+    svg.append('rect')
+        .attr('x', width - 170)
+        .attr('y', 27.5)
+        .attr('rx', `${boxRadius}px`)
+        .attr('ry', `${boxRadius}px`)
+        .attr('height', legend.length*25)
+        .attr('width', 145)
+        .style('fill', '#fff')
+        .style('stoke', '#acacac')
+        .style('stoke-width', '1px');
 
+
+    // legend dot
+    svg.selectAll('legendDot')
+        .data(legend)
+        .enter()
+        .append('circle')
+        .attr('cx', width - 150)
+        .attr('cy', (d,i) => {return 40 + i*25})
+        .attr('r', 7)
+        .style('fill', (d) => {return color(d);})
+        .style('stroke', '#000')
+        .style('stroke-width', '1px')
+        .style('stroke-opacity', 0.6);
+    
+    // legend text
+    svg.selectAll('legendText')
+        .data(legend)
+        .enter()
+        .append('text')
+        .attr('x', width - 140)
+        .attr('y', (d,i) => {return 41 + i*25})
+        .text((d) => d)
+        .style('font-size', '12px')
+        .style('fill', (d) => {return color(d);})
+        .attr('text-anchor', 'left')
+        .style('alignment-baseline', 'middle')
+        .style('stroke', '#000')
+        .style('stroke-width', '0.2px')
+        .style('stroke-opacity', 0.6);
+
+        
     const link = g
         .append('g')
         .attr('stroke', '#000')
@@ -182,13 +234,14 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     const nodeRadius = 30;
     const node = g
         .append("g")
-        .attr("stroke", "#fff")
-        .attr("stroke-width", 2)
+        .attr("stroke", "#000")
+        .attr("stroke-opacity", 0.6)
+        .attr("stroke-width", 1)
         .selectAll("circle")
         .data(nodes)
         .join("circle")
         .attr("r", nodeRadius)
-        .attr("fill", d => {return color(d);})
+        .attr("fill", (d) => {return color(d.labels);})
         .call(drag(simulation));
     
     node.append('g')
