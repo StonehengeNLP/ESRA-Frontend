@@ -5,7 +5,7 @@ import { Graph } from 'react-d3-graph'
 
 import '../css/graph.css'
 
-import FileSvg from '../svgs/file-svgrepo.svg'
+// import FileSvg from '../svgs/file-svgrepo.svg'
 
 function GraphVis(props) {
 
