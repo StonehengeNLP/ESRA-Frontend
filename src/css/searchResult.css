@@ -68,3 +68,15 @@ a:hover {
     display: flex;
     justify-content: center;
 }
+
+.sortby-dropdown {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sortby-toggle {
+    padding: 4px 6px;
+    border: 1px solid #212529;
+    border-radius: 3px;
+    color: #212529;
+}

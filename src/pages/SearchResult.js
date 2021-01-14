@@ -5,13 +5,59 @@ import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
 import { getUrlParameter } from "../functions";
 import '../css/searchResult.css'
-import { Pagination } from 'react-bootstrap';
+import { Pagination, Dropdown, Container, Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 // const vars
 const backendPaperIds = 'http://localhost:8000/api/search';
 const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
 const responseArraySize = 10;
+
+const CustomToggle = React.forwardRef(({children, onClick}, ref) => (
+    <a
+    className='sortby-toggle'
+    href=""
+    ref={ref}
+    onClick={(e) => {
+        e.preventDefault();
+        onClick(e);
+    }}
+    >
+        {children} &#x25bc;
+    </a>
+));
+
+function SortByDropdown(props) {
+
+    return (
+        <Container>
+            <Row>
+                <Col md={1}></Col>
+                <Col md={10}>
+                    <Dropdown className='sortby-dropdown'>
+                        <Dropdown.Toggle as={CustomToggle}>
+                            Sort By
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu align="right">
+                            <Dropdown.Header>Relevance</Dropdown.Header>
+                            <Dropdown.Item eventKey='1'>Most Relevant</Dropdown.Item>
+                            <Dropdown.Item eventKey='2'>Least Relevant</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Header>Date</Dropdown.Header>
+                            <Dropdown.Item eventKey='3'>Newest First</Dropdown.Item>
+                            <Dropdown.Item eventKey='4'>Oldest First</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Header>Citations</Dropdown.Header>
+                            <Dropdown.Item eventKey='5'>Most Citations</Dropdown.Item>
+                            <Dropdown.Item eventKey='6'>Least Citations</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Col>
+                <Col md={1}></Col>
+            </Row>
+        </Container>
+    )
+}
 
 function ResultPagination(props) {
 
@@ -70,6 +116,7 @@ function SearchResult(props) {
         <div className='h-100'>
             <SearchHeader></SearchHeader>
             <br></br>
+            <SortByDropdown />
             <PaperList>
                 {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper}></PaperItem>))}
             </PaperList>
