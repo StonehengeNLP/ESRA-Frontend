@@ -77,7 +77,7 @@ function SingleSelect(props) {
 
         value == null ? setSelectedValue(''):setSelectedValue(value.label);
         if (value != null) {
-            history.push('/search?q=' + value.label + '&page=1');
+            history.push('/search?q=' + value.label + '&page=1&sortBy=0&sortOrder=0');
         }
     };
 
