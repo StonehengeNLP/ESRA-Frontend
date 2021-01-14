@@ -16,3 +16,7 @@
 .graph-vis {
     z-index: 0;
 }
+
+.link-label-text {
+    background-color: aquamarine;
+}

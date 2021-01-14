@@ -148,9 +148,8 @@ function Paper(props) {
                 <p className='abstract'>{paper.abstract}</p>
             </div>
             <br></br>
-            {/* <GraphVis paper_title={paper.paper_title} /> */}
             <div className='paper-info-container'>
-                { d3Data!=null ? (<ForceGraph key={props.match.params.id} linksData={d3Data.links} nodesData={d3Data.nodes}
+                { (d3Data!=null && d3Data.nodes.length!=0) ? (<ForceGraph key={props.match.params.id} linksData={d3Data.links} nodesData={d3Data.nodes}
                 nodesHoverTooltip={nodesHoverTooltip}/>):null }
             </div>
             <br></br>

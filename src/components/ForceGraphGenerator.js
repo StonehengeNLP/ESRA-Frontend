@@ -286,10 +286,14 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr('class', 'link-label-text')
         .attr('text-anchor', 'middle')
         .attr('font-size', '10px')
-        .text(l => { return l.label; })
+        .text(l => { return l.label.replace('_', ' '); })
         .call(drag(simulation));
+    
+    const testLabel = node.append('text')
+        .attr('class', 'test-label')
+        .text('fuck');
 
-    label
+    name
         .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
         .on('mouseout', () => { removeTooltip(); }); 
 
