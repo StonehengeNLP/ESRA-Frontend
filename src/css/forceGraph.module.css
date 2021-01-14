@@ -1,0 +1,15 @@
+div.tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 6px 10px;
+    font: .8em sans-serif;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    pointer-events: none;
+    display: inline-block;
+    border-radius: 3px;
+}
+
+g text {
+    cursor: default;
+}
