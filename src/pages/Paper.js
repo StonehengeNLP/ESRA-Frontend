@@ -106,7 +106,22 @@ function Paper(props) {
                 <p className='citation'><span className='cc'>{paper.citation_count}</span> citations</p>
                 <p className='abstract'>{paper.abstract}</p>
             </div>
+<<<<<<< Updated upstream
             <GraphVis paper_title={paper.paper_title} />
+||||||| merged common ancestors
+            <br></br>
+            {/* <GraphVis paper_title={paper.paper_title} /> */}
+            <div className='paper-info-container'>
+                { d3Data!=null ? (<ForceGraph key={props.match.params.id} linksData={d3Data.links} nodesData={d3Data.nodes}
+                nodesHoverTooltip={nodesHoverTooltip}/>):null }
+            </div>
+=======
+            <br></br>
+            <div className='paper-info-container'>
+                { (d3Data!=null && d3Data.nodes.length!=0) ? (<ForceGraph key={props.match.params.id} linksData={d3Data.links} nodesData={d3Data.nodes}
+                nodesHoverTooltip={nodesHoverTooltip}/>):null }
+            </div>
+>>>>>>> Stashed changes
             <br></br>
             <div className='paper-info-container'>
                 <div className='cite-tab'>
