@@ -23,7 +23,7 @@ export const App = () => {
             <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/search" component={SearchResult} />
-                <Route path="/paper/:id" component={props => <Paper {...props} />} key={window.location.pathname}/>
+                <Route path="/paper/:id/" component={props => <Paper {...props} />} key={window.location.pathname}/>
             </Switch>
         </Router>
     )

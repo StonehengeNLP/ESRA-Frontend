@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 function PaperItem(props) {
     const paper = props.paper;
     const paper_id = paper.paper_id;
+    const keyword = props.keyword;
     const [more, setMore] = useState('none');
     const [isLess, setIsLess] = useState('view');
 
@@ -14,7 +15,7 @@ function PaperItem(props) {
             <Col md={10} className='paper-item paper-container'>
                 <Link
                 to={{
-                    pathname: '/paper/' + paper_id,
+                    pathname: `/paper/${paper_id}/?q=${keyword}`,
                 }}
                 >
                     <h4 className='title'><strong>{paper.paper_title}</strong></h4>
