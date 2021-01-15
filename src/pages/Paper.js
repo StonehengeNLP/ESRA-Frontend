@@ -56,12 +56,14 @@ function Paper(props) {
     const nodesHoverTooltip = useCallback((node) => {
         return `<div>${node.name}</div>`;
     },[]);
+    let query = useQuery();
 
     useEffect(() => {
 
         setRefPage(1);
         setCitedPage(1);
         const paper_id = props.match.params.id;
+        const q = query.get('q');
 
         let c = null;
         axios.get(backendPaperUrl, {
@@ -168,7 +170,7 @@ function Paper(props) {
                         </Tab>
                         <Tab eventKey='cited_by' title='Cited by'>
                             <PaperList>
-                                {cited.map(paper => (<PaperItem key={paper.paper_id} paper={paper}></PaperItem>))}
+                                {cited.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keyword={''}></PaperItem>))}
                             </PaperList>
                             { paper.cited_by!=undefined ? (<PaperPagination 
                             page={citedPage}

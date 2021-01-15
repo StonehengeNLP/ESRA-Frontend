@@ -80,3 +80,7 @@ a:hover {
     border-radius: 3px;
     color: #212529;
 }
+
+.date-menu {
+    width: 400px;
+}

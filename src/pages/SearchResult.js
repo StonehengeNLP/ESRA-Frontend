@@ -5,8 +5,10 @@ import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
 import { getUrlParameter } from "../functions";
 import '../css/searchResult.css'
-import { Pagination, Dropdown, Container, Col, Row } from 'react-bootstrap';
+import { Pagination, Dropdown, Container, Col, Row, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import Slider, { SliderTooltip } from 'rc-slider';
+import 'rc-slider/assets/index.css'
 
 // const vars
 const backendPaperIds = 'http://localhost:8000/api/search';
@@ -49,52 +51,98 @@ function SortByDropdown(props) {
     } 
 
     return (
+        <Dropdown className='sortby-dropdown'>
+            <Dropdown.Toggle as={CustomToggle}>
+                Sort By
+            </Dropdown.Toggle>
+            <Dropdown.Menu align="right">
+                <Dropdown.Header>Relevance</Dropdown.Header>
+                <Dropdown.Item eventKey='1' 
+                href={ getHref(props.location, 0, 0) }
+                active={ getActive(props.location, 0, 0) }>
+                    Most Relevant
+                </Dropdown.Item>
+                <Dropdown.Item eventKey='2' 
+                href={ getHref(props.location, 0, 1) }
+                active={ getActive(props.location, 0, 1) }>
+                    Least Relevant
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Header>Date</Dropdown.Header>
+                <Dropdown.Item eventKey='3' 
+                href={ getHref(props.location, 1, 0) }
+                active={ getActive(props.location, 1, 0) }>
+                    Newest First
+                </Dropdown.Item>
+                <Dropdown.Item eventKey='4' 
+                href={ getHref(props.location, 1, 1) }
+                active={ getActive(props.location, 1, 1) }>
+                    Oldest First
+                </Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Header>Citations</Dropdown.Header>
+                <Dropdown.Item eventKey='5' 
+                href={ getHref(props.location, 2, 0) }
+                active={ getActive(props.location, 2, 0) }>
+                    Most Citations
+                </Dropdown.Item>
+                <Dropdown.Item eventKey='6' 
+                href={ getHref(props.location, 2, 1) }
+                active={ getActive(props.location, 2, 1) }>
+                    Least Citations
+                </Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+    )
+}
+
+const CustomDateRange = React.forwardRef(({children, style, className, 'aria-labelledby': labeledBy, ...props}, ref) => {
+    const { createSliderWithTooltip } = Slider;
+    const Range = createSliderWithTooltip(Slider.Range);
+    const wrapperStyle = { width: "90%", margin: 20};
+
+    return (
+        <div 
+        ref={ref}
+        className={className}
+        style={style}
+        aria-labelledby={labeledBy}>
+            <p style={{margin: "5px 0 0px 15px"}}>Year:</p>
+            <div style={wrapperStyle}>
+                <Range 
+                min={1900}
+                max={new Date().getFullYear()} 
+                defaultValue={props.defaultValue} 
+                tipFormatter={value => `${value}`} 
+                marks={{ 1900:1900, 2021:2021 }}
+                onAfterChange={(e) => {console.log(e);}}
+                />
+            </div>
+        </div>
+    )
+})
+function DateRangeDropdown(props) {
+
+    return (
+        <Dropdown className='date-dropdown'>
+            <Dropdown.Toggle as={CustomToggle}>
+                Date Range
+            </Dropdown.Toggle>
+            <Dropdown.Menu as={CustomDateRange} defaultValue={[1911,2020]} className='date-menu'>
+                <Dropdown.Item eventKey='1'>asd</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+    )
+}
+
+function DropdownContainer(props) {
+
+    return (
         <Container>
             <Row>
                 <Col md={1}></Col>
                 <Col md={10}>
-                    <Dropdown className='sortby-dropdown'>
-                        <Dropdown.Toggle as={CustomToggle}>
-                            Sort By
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu align="right">
-                            <Dropdown.Header>Relevance</Dropdown.Header>
-                            <Dropdown.Item eventKey='1' 
-                            href={ getHref(props.location, 0, 0) }
-                            active={ getActive(props.location, 0, 0) }>
-                                Most Relevant
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='2' 
-                            href={ getHref(props.location, 0, 1) }
-                            active={ getActive(props.location, 0, 1) }>
-                                Least Relevant
-                            </Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Header>Date</Dropdown.Header>
-                            <Dropdown.Item eventKey='3' 
-                            href={ getHref(props.location, 1, 0) }
-                            active={ getActive(props.location, 1, 0) }>
-                                Newest First
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='4' 
-                            href={ getHref(props.location, 1, 1) }
-                            active={ getActive(props.location, 1, 1) }>
-                                Oldest First
-                            </Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Header>Citations</Dropdown.Header>
-                            <Dropdown.Item eventKey='5' 
-                            href={ getHref(props.location, 2, 0) }
-                            active={ getActive(props.location, 2, 0) }>
-                                Most Citations
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='6' 
-                            href={ getHref(props.location, 2, 1) }
-                            active={ getActive(props.location, 2, 1) }>
-                                Least Citations
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    {props.children}
                 </Col>
                 <Col md={1}></Col>
             </Row>
@@ -109,6 +157,18 @@ function ResultPagination(props) {
             <Pagination.Prev disabled={props.page==1 ? true:false} onClick={props.prevHandler}/>
             <Pagination.Next disabled={props.length<10 ? true:false} onClick={props.nextHandler}/>
         </Pagination>
+    )
+}
+
+const LoadingSpinner = () => {
+    return (
+        <div style={{display:'flex', justifyContent: 'center'}}>
+            <br />
+            <Spinner animation="grow" variant="dark" />
+            <Spinner animation="grow" variant="dark" />
+            <Spinner animation="grow" variant="dark" />
+            <br />
+        </div>
     )
 }
 
@@ -163,9 +223,13 @@ function SearchResult(props) {
         <div className='h-100'>
             <SearchHeader></SearchHeader>
             <br></br>
-            <SortByDropdown location={props.location}/>
+            <DropdownContainer>
+                <DateRangeDropdown />
+                <SortByDropdown location={props.location}/>
+            </DropdownContainer>
+            { papers.length==0 ? <LoadingSpinner />:null }
             <PaperList>
-                {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper}></PaperItem>))}
+                {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keyword={keywords}></PaperItem>))}
             </PaperList>
             <br></br>
             { paperIds!=[] ? (<ResultPagination
