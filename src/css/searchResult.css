@@ -95,4 +95,5 @@ a:hover {
 
 .dropdown-container {
     display: inline-block;
+    padding: 0 !important;
 }

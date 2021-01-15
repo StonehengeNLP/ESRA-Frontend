@@ -9,6 +9,14 @@ function PaperItem(props) {
     const [more, setMore] = useState('none');
     const [isLess, setIsLess] = useState('view');
 
+    const boldKeyword = (text) => {
+        if (keyword == null)
+            return {__html: text};
+        const reg = new RegExp(`${keyword}`, 'ig');
+        const boldFunc = (t) => {return t.bold()};
+        return {__html: text.replaceAll(reg, boldFunc)};
+    }
+
     return (
         <Row>
             <Col md={1}></Col>
@@ -23,9 +31,14 @@ function PaperItem(props) {
                 <p className='conference'>{paper.conference=='Nan' ? '':paper.conference}</p>
                 <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
-                { paper.explanation ? (<p className='explanation'><strong>Explanation: </strong>{paper.explanation}</p>):null }
+                { paper.explanation ? 
+                    (<p 
+                    className='explanation' 
+                    dangerouslySetInnerHTML={boldKeyword(`<strong>Explanation: </strong>${paper.explanation}`)}/>):null }
                 <p className='abstract'>
-                    <span style={{display:more}}>{paper.abstract}</span>
+                    <span 
+                    style={{display:more}} 
+                    dangerouslySetInnerHTML={boldKeyword(paper.abstract)} />
                     <span 
                     className='see-more' 
                     role='button'
