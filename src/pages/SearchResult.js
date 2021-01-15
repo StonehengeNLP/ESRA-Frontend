@@ -100,6 +100,22 @@ const CustomDateRange = React.forwardRef(({children, style, className, 'aria-lab
     const { createSliderWithTooltip } = Slider;
     const Range = createSliderWithTooltip(Slider.Range);
     const wrapperStyle = { width: "90%", margin: 20};
+    const maxYear = new Date().getFullYear();
+    const minYear = 1900;
+    const history = useHistory();
+
+    const handleOnAfterChange = (e) => {
+        let params = props.params;
+        const reg = /filterBy=([0-9]+)\-([0-9]+)/i;
+
+        if (params.search(reg) > -1) {
+            params = params.replace(reg, `filterBy=${e[0]}-${e[1]}`);
+        } 
+        else {
+            params = params + `&filterBy=${e[0]}-${e[1]}`;
+        }
+        history.push(`/search${params}`);
+    }
 
     return (
         <div 
@@ -110,27 +126,45 @@ const CustomDateRange = React.forwardRef(({children, style, className, 'aria-lab
             <p style={{margin: "5px 0 0px 15px"}}>Year:</p>
             <div style={wrapperStyle}>
                 <Range 
-                min={1900}
-                max={new Date().getFullYear()} 
+                min={minYear}
+                max={maxYear} 
                 defaultValue={props.defaultValue} 
                 tipFormatter={value => `${value}`} 
-                marks={{ 1900:1900, 2021:2021 }}
-                onAfterChange={(e) => {console.log(e);}}
+                marks={{ 1900:minYear, 2021:maxYear }}
+                onAfterChange={(e) => {handleOnAfterChange(e)}}
                 />
             </div>
         </div>
     )
 })
+
 function DateRangeDropdown(props) {
+
+    const getDefaultValue = () => {
+        const reg = /([0-9]+)-([0-9]+)/i;
+        const filterBy = getUrlParameter('filterBy');
+        
+        // check null query param
+        if (filterBy==null) {
+            return [1950, new Date().getFullYear()];
+        }
+        let res = reg.exec(filterBy);
+        let y1 = parseInt(res[1]);
+        let y2 = parseInt(res[2]); 
+        return y1<y2 ? [y1,y2]:[y2,y1];
+    }
 
     return (
         <Dropdown className='date-dropdown'>
             <Dropdown.Toggle as={CustomToggle}>
                 Date Range
             </Dropdown.Toggle>
-            <Dropdown.Menu as={CustomDateRange} defaultValue={[1911,2020]} className='date-menu'>
-                <Dropdown.Item eventKey='1'>asd</Dropdown.Item>
-            </Dropdown.Menu>
+            <Dropdown.Menu 
+            as={CustomDateRange} 
+            defaultValue={getDefaultValue()} 
+            className='date-menu' 
+            params={props.params}
+            />
         </Dropdown>
     )
 }
@@ -141,7 +175,7 @@ function DropdownContainer(props) {
         <Container>
             <Row>
                 <Col md={1}></Col>
-                <Col md={10}>
+                <Col md={10} className='dropdown-container'>
                     {props.children}
                 </Col>
                 <Col md={1}></Col>
@@ -190,7 +224,9 @@ function SearchResult(props) {
         let skip = (page-1)*10;
         let sortBy = getUrlParameter('sortBy');
         let sortOrder = getUrlParameter('sortOrder');
-        
+        let filterBy = getUrlParameter('filterBy');
+        console.log(filterBy)
+
         document.title = q + ' - ESRA';
 
         const fetchPaperIds = async () => {
@@ -200,20 +236,22 @@ function SearchResult(props) {
                     lim: responseArraySize,
                     skip: skip,
                     sortBy: sortBy,
-                    sortOrder: sortOrder
+                    sortOrder: sortOrder,
+                    filterYear: filterBy
                 },
             }).then(res => {
                 setPaperIds(res.data);
-                
-                let serializedPaperIds = res.data.join(',');
-                axios.get(backendPaperList, {
-                    params: {
-                        paper_ids: serializedPaperIds,
-                        keywords: q
-                    }
-                }).then(res => {
-                    setPapers(res.data);
-                });
+                if (res.data.length > 0){
+                    let serializedPaperIds = res.data.join(',');
+                    axios.get(backendPaperList, {
+                        params: {
+                            paper_ids: serializedPaperIds,
+                            keywords: q
+                        }
+                    }).then(res => {
+                        setPapers(res.data);
+                    });
+                }
             });
         };
         fetchPaperIds();
@@ -224,7 +262,7 @@ function SearchResult(props) {
             <SearchHeader></SearchHeader>
             <br></br>
             <DropdownContainer>
-                <DateRangeDropdown />
+                <DateRangeDropdown params={props.location.search} />
                 <SortByDropdown location={props.location}/>
             </DropdownContainer>
             { papers.length==0 ? <LoadingSpinner />:null }

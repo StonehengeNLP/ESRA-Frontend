@@ -7,6 +7,8 @@ function useQuery() {
 function getUrlParameter(name) {
     let regex = new RegExp('[?&]' + name + '=([^&#]*)');
     let results = regex.exec(window.location.search);
+    if (results == null)  
+        return null;
     return results[1].replace('%20', ' ');
 }
 
