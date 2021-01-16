@@ -3,6 +3,8 @@ import React, {useState, useEffect, useCallback} from 'react'
 import SearchHeader from '../components/SearchHeader';
 import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
+import FactList from '../components/FactList';
+import FactItem from '../components/FactItem';
 import { getUrlParameter } from "../functions";
 import '../css/searchResult.css'
 import { Pagination, Dropdown, Container, Col, Row, Spinner, Tabs, Tab } from 'react-bootstrap';
@@ -216,6 +218,7 @@ function SearchResult(props) {
     const [paperIds, setPaperIds] = useState([]);
     const [papers, setPapers] = useState([]);
     const [facts, setFacts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const nodesHoverTooltip = useCallback((node) => {
         return `<div>${node.name}</div>`;
     },[]);
@@ -223,6 +226,7 @@ function SearchResult(props) {
     // fetch paper ids
     useEffect( () => {
         setPapers([]);
+        setLoading(true);
         let q = getUrlParameter('q')
         setKeywords(q);
         let page = parseInt(getUrlParameter('page'));
@@ -259,6 +263,7 @@ function SearchResult(props) {
                     });
                 }
             });
+            setLoading(false);
         };
         fetchPaperIds();
     }, [props.location.search]);
@@ -280,7 +285,6 @@ function SearchResult(props) {
         <div className='h-100'>
             <SearchHeader></SearchHeader>
             <br></br>
-            { papers.length==0 ? <LoadingSpinner />:null }
             <br></br>
             <h3 className='indent-text'>Knowledge about "{keywords}"</h3>
             <br></br>
@@ -309,6 +313,8 @@ function SearchResult(props) {
                             <DateRangeDropdown params={props.location.search} />
                             <SortByDropdown location={props.location}/>
                         </DropdownContainer>
+                        <br />
+                        { loading ? <LoadingSpinner />:null }
                         <PaperList>
                             {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keyword={keywords}></PaperItem>))}
                         </PaperList>
@@ -320,7 +326,19 @@ function SearchResult(props) {
                         />):null }
                     </Tab>
                     <Tab eventKey='facts' title='Facts'>
-
+                        { facts.facts!=undefined ? (
+                            <FactList>
+                                {facts.facts.map(fact => 
+                                            (<FactItem 
+                                                n={fact.key}
+                                                n_label={fact.n_labels}
+                                                m={fact.name}
+                                                m_label={fact.m_labels}
+                                                type={fact.type}
+                                                isSubject={fact.isSubject}
+                                                papers={fact.papers}/>)
+                                            )}
+                            </FactList>):null }
                     </Tab>
                 </Tabs>
             </div>

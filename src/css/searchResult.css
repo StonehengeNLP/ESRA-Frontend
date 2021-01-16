@@ -125,3 +125,7 @@ a:hover {
     border: .2rem solid #ececec;
     border-radius: 8px;
 }
+
+.fact-text {
+    margin-bottom: 0;
+}
