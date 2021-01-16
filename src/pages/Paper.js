@@ -4,7 +4,7 @@ import GraphVis from '../components/GraphVis';
 
 import '../css/paper.css';
 import axios from 'axios';
-import {useQuery} from '../functions';
+import {getUrlParameter, useQuery} from '../functions';
 import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
 import { Tabs, Tab, Pagination } from 'react-bootstrap';
@@ -13,29 +13,6 @@ import ForceGraph from '../components/ForceGraph';
 const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper';
 const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
 const backendPaperD3 = 'http://localhost:8000/api/graph_d3';
-
-const fakeData = {
-    'nodes': [
-        {
-            'id': 1,
-            'name': 'BERT',
-            'labels': 'Method',
-        },
-        {
-            'id': 2,
-            'name': 'attention is all',
-            'labels': 'Paper',
-        }
-    ],
-    'links': [
-        {
-            'source': 1,
-            'target': 2,
-            'label': 'asd'
-        }
-    ]
-}
-
 
 function PaperPagination(props) {
     return (
@@ -53,6 +30,8 @@ function Paper(props) {
     const [refPage, setRefPage] = useState(1);
     const [citedPage, setCitedPage] = useState(1);
     const [d3Data, setD3Data] = useState(null);
+    const [keywords, setKeywords] = useState(''); 
+
     const nodesHoverTooltip = useCallback((node) => {
         return `<div>${node.name}</div>`;
     },[]);
@@ -63,7 +42,8 @@ function Paper(props) {
         setRefPage(1);
         setCitedPage(1);
         const paper_id = props.match.params.id;
-        const q = query.get('q');
+        const q = getUrlParameter('q');
+        setKeywords(q);
 
         let c = null;
         axios.get(backendPaperUrl, {
@@ -151,8 +131,24 @@ function Paper(props) {
             </div>
             <br></br>
             <div className='paper-info-container'>
-                { (d3Data!=null && d3Data.nodes.length!=0) ? (<ForceGraph key={props.match.params.id} linksData={d3Data.links} nodesData={d3Data.nodes}
-                nodesHoverTooltip={nodesHoverTooltip}/>):null }
+                <Tabs defaultActiveKey='paper'>
+                    <Tab eventKey='paper' title='Paper knowledge'>
+                    { (d3Data!=null && d3Data.nodes.length!=0) ? (
+                        <ForceGraph 
+                        key={props.match.params.id} 
+                        linksData={d3Data.links} 
+                        nodesData={d3Data.nodes} 
+                        height='80vh'
+                        nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
+                    </Tab>
+                    <Tab 
+                    eventKey='key-paper' 
+                    title='Keyword to Paper' 
+                    disabled={keywords=='' || keywords==undefined || keywords==null}>
+
+                    </Tab>
+                </Tabs>
+                
             </div>
             <br></br>
             <div className='paper-info-container'>

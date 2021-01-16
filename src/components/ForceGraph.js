@@ -3,7 +3,7 @@ import { propTypes } from 'react-bootstrap/esm/Image';
 import runForceGraph from "./ForceGraphGenerator";
 
 
-function ForceGraph({ linksData, nodesData, nodesHoverTooltip }) {
+function ForceGraph({ linksData, nodesData, nodesHoverTooltip, ...props }) {
     
     const containerRef = useRef(null);
 
@@ -18,7 +18,7 @@ function ForceGraph({ linksData, nodesData, nodesHoverTooltip }) {
     }, [linksData, nodesData]);
 
     return (
-        <div ref={containerRef} className='force-container'>    
+        <div ref={containerRef} className='force-container' style={{height:props.height}}>    
         </div>
     )
 }
