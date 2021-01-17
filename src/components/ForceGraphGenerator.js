@@ -7,12 +7,12 @@ const legend = [
     'Task', 'Metric', 'Material', 'Abbreviation',
 ]
 
-export default function runForceGraph(container, linksData, nodesData, nodesHoverTooltip){
+export default function runForceGraph(container, linksData, nodesData, nodesHoverTooltip, id){
     
     const links = linksData.map((d) => Object.assign({}, d));
     const nodes = nodesData.map((d) => Object.assign({}, d));
-
-    const containerRect = container.getBoundingClientRect();
+    // console.log(container.parentElement.parentElement);
+    const containerRect = container.parentElement.parentElement.getBoundingClientRect();
     const height = containerRect.height;
     const width = containerRect.width;
 
@@ -164,7 +164,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     // Arrow head
     g.append("defs").append('marker')
-        .attr('id', 'arrow')
+        .attr('id', `arrow-${id}`)
         .attr('viewBox', '-0 -5 10 10')
         .attr('refX', '0')
         .attr('refY', '0')
@@ -229,7 +229,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .data(links)
         .join("line")
         .attr("stroke-width", '1.5px')
-        .attr('marker-end', 'url(#arrow)');
+        .attr('marker-end', `url(#arrow-${id})`);
     
     const nodeRadius = 30;
     const node = g

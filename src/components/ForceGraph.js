@@ -11,7 +11,7 @@ function ForceGraph({ linksData, nodesData, nodesHoverTooltip, ...props }) {
         console.log('graph');
         let destroyFn;
         if (containerRef.current) {
-            const { destroy } = runForceGraph(containerRef.current, linksData, nodesData, nodesHoverTooltip);
+            const { destroy } = runForceGraph(containerRef.current, linksData, nodesData, nodesHoverTooltip, props.id);
             destroyFn = destroy;
         }
         return destroyFn;

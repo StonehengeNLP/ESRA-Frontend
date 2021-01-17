@@ -156,6 +156,7 @@ function Paper(props) {
                         linksData={d3Data.links} 
                         nodesData={d3Data.nodes} 
                         height='80vh'
+                        id='1'
                         nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                     </Tab>
                     <Tab 
@@ -167,6 +168,7 @@ function Paper(props) {
                         linksData={kwGraph.links} 
                         nodesData={kwGraph.nodes} 
                         height='80vh'
+                        id='2'
                         nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                     </Tab>
                 </Tabs>
