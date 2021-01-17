@@ -336,7 +336,8 @@ function SearchResult(props) {
                                                 m_label={fact.m_labels}
                                                 type={fact.type}
                                                 isSubject={fact.isSubject}
-                                                papers={fact.papers}/>)
+                                                papers={fact.papers}
+                                                keywords={keywords}/>)
                                             )}
                             </FactList>):null }
                     </Tab>

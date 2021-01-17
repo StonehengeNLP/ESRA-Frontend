@@ -129,3 +129,17 @@ a:hover {
 .fact-text {
     margin-bottom: 0;
 }
+
+.fact-container {
+    padding: 0 8% !important;
+}
+
+ul li i {
+    font-size: 15px;
+    font-weight: bold;
+  
+}
+
+ul li {
+    padding-left: 10px;
+}
