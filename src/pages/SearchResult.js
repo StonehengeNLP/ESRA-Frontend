@@ -12,6 +12,9 @@ import { useHistory } from 'react-router-dom';
 import Slider, { SliderTooltip } from 'rc-slider';
 import 'rc-slider/assets/index.css'
 import ForceGraph from '../components/ForceGraph';
+import DropdownContainer from '../components/DropdownContainer';
+import SortByDropdown from '../components/SortByDropdown';
+import DateRangeDropdown from '../components/DateRangeDropdown';
 
 // const vars
 const backendPaperIds = 'http://localhost:8000/api/search';
@@ -19,174 +22,174 @@ const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
 const backendFacts = 'http://localhost:8000/api/facts';
 const responseArraySize = 10;
 
-const CustomToggle = React.forwardRef(({children, onClick}, ref) => (
-    <a
-    className='sortby-toggle'
-    href=""
-    ref={ref}
-    onClick={(e) => {
-        e.preventDefault();
-        onClick(e);
-    }}
-    >
-        {children} &#x25bc;
-    </a>
-));
+// const CustomToggle = React.forwardRef(({children, onClick}, ref) => (
+//     <a
+//     className='sortby-toggle'
+//     href=""
+//     ref={ref}
+//     onClick={(e) => {
+//         e.preventDefault();
+//         onClick(e);
+//     }}
+//     >
+//         {children} &#x25bc;
+//     </a>
+// ));
 
-function SortByDropdown(props) {
+// function SortByDropdown(props) {
 
-    const getHref = (location, sortBy, sortOrder) => {
-        const reg_sortby = /sortBy=[0-9]/i;
-        const reg_sortorder = /sortOrder=[0-9]/i;
-        let path = location.pathname;
-        let params = location.search;
-        params = params.replace(reg_sortby, `sortBy=${sortBy}`);
-        params = params.replace(reg_sortorder, `sortOrder=${sortOrder}`);
-        return path + params;
-    }
+//     const getHref = (location, sortBy, sortOrder) => {
+//         const reg_sortby = /sortBy=[0-9]/i;
+//         const reg_sortorder = /sortOrder=[0-9]/i;
+//         let path = location.pathname;
+//         let params = location.search;
+//         params = params.replace(reg_sortby, `sortBy=${sortBy}`);
+//         params = params.replace(reg_sortorder, `sortOrder=${sortOrder}`);
+//         return path + params;
+//     }
 
-    const getActive = (location, sortBy, sortOrder) => {
-        let params = location.search;
-        const reg_sortby = /sortBy=([0-9])/i;
-        const reg_sortorder = /sortOrder=([0-9])/i;
-        let query_sortby = parseInt(reg_sortby.exec(params)[1]);
-        let query_sortorder = parseInt(reg_sortorder.exec(params)[1]);
-        return (sortBy == query_sortby) && (sortOrder == query_sortorder);
-    } 
+//     const getActive = (location, sortBy, sortOrder) => {
+//         let params = location.search;
+//         const reg_sortby = /sortBy=([0-9])/i;
+//         const reg_sortorder = /sortOrder=([0-9])/i;
+//         let query_sortby = parseInt(reg_sortby.exec(params)[1]);
+//         let query_sortorder = parseInt(reg_sortorder.exec(params)[1]);
+//         return (sortBy == query_sortby) && (sortOrder == query_sortorder);
+//     } 
 
-    return (
-        <Dropdown className='sortby-dropdown'>
-            <Dropdown.Toggle as={CustomToggle}>
-                Sort By
-            </Dropdown.Toggle>
-            <Dropdown.Menu align="right">
-                <Dropdown.Header>Relevance</Dropdown.Header>
-                <Dropdown.Item eventKey='1' 
-                href={ getHref(props.location, 0, 0) }
-                active={ getActive(props.location, 0, 0) }>
-                    Most Relevant
-                </Dropdown.Item>
-                <Dropdown.Item eventKey='2' 
-                href={ getHref(props.location, 0, 1) }
-                active={ getActive(props.location, 0, 1) }>
-                    Least Relevant
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Header>Date</Dropdown.Header>
-                <Dropdown.Item eventKey='3' 
-                href={ getHref(props.location, 1, 0) }
-                active={ getActive(props.location, 1, 0) }>
-                    Newest First
-                </Dropdown.Item>
-                <Dropdown.Item eventKey='4' 
-                href={ getHref(props.location, 1, 1) }
-                active={ getActive(props.location, 1, 1) }>
-                    Oldest First
-                </Dropdown.Item>
-                <Dropdown.Divider />
-                <Dropdown.Header>Citations</Dropdown.Header>
-                <Dropdown.Item eventKey='5' 
-                href={ getHref(props.location, 2, 0) }
-                active={ getActive(props.location, 2, 0) }>
-                    Most Citations
-                </Dropdown.Item>
-                <Dropdown.Item eventKey='6' 
-                href={ getHref(props.location, 2, 1) }
-                active={ getActive(props.location, 2, 1) }>
-                    Least Citations
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        </Dropdown>
-    )
-}
+//     return (
+//         <Dropdown className='sortby-dropdown'>
+//             <Dropdown.Toggle as={CustomToggle}>
+//                 Sort By
+//             </Dropdown.Toggle>
+//             <Dropdown.Menu align="right">
+//                 <Dropdown.Header>Relevance</Dropdown.Header>
+//                 <Dropdown.Item eventKey='1' 
+//                 href={ getHref(props.location, 0, 0) }
+//                 active={ getActive(props.location, 0, 0) }>
+//                     Most Relevant
+//                 </Dropdown.Item>
+//                 <Dropdown.Item eventKey='2' 
+//                 href={ getHref(props.location, 0, 1) }
+//                 active={ getActive(props.location, 0, 1) }>
+//                     Least Relevant
+//                 </Dropdown.Item>
+//                 <Dropdown.Divider />
+//                 <Dropdown.Header>Date</Dropdown.Header>
+//                 <Dropdown.Item eventKey='3' 
+//                 href={ getHref(props.location, 1, 0) }
+//                 active={ getActive(props.location, 1, 0) }>
+//                     Newest First
+//                 </Dropdown.Item>
+//                 <Dropdown.Item eventKey='4' 
+//                 href={ getHref(props.location, 1, 1) }
+//                 active={ getActive(props.location, 1, 1) }>
+//                     Oldest First
+//                 </Dropdown.Item>
+//                 <Dropdown.Divider />
+//                 <Dropdown.Header>Citations</Dropdown.Header>
+//                 <Dropdown.Item eventKey='5' 
+//                 href={ getHref(props.location, 2, 0) }
+//                 active={ getActive(props.location, 2, 0) }>
+//                     Most Citations
+//                 </Dropdown.Item>
+//                 <Dropdown.Item eventKey='6' 
+//                 href={ getHref(props.location, 2, 1) }
+//                 active={ getActive(props.location, 2, 1) }>
+//                     Least Citations
+//                 </Dropdown.Item>
+//             </Dropdown.Menu>
+//         </Dropdown>
+//     )
+// }
 
-const CustomDateRange = React.forwardRef(({children, style, className, 'aria-labelledby': labeledBy, ...props}, ref) => {
-    const { createSliderWithTooltip } = Slider;
-    const Range = createSliderWithTooltip(Slider.Range);
-    const wrapperStyle = { width: "90%", margin: 20};
-    const maxYear = new Date().getFullYear();
-    const minYear = 1900;
-    const history = useHistory();
+// const CustomDateRange = React.forwardRef(({children, style, className, 'aria-labelledby': labeledBy, ...props}, ref) => {
+//     const { createSliderWithTooltip } = Slider;
+//     const Range = createSliderWithTooltip(Slider.Range);
+//     const wrapperStyle = { width: "90%", margin: 20};
+//     const maxYear = new Date().getFullYear();
+//     const minYear = 1900;
+//     const history = useHistory();
 
-    const handleOnAfterChange = (e) => {
-        let params = props.params;
-        const reg = /filterBy=([0-9]+)\-([0-9]+)/i;
+//     const handleOnAfterChange = (e) => {
+//         let params = props.params;
+//         const reg = /filterBy=([0-9]+)\-([0-9]+)/i;
 
-        if (params.search(reg) > -1) {
-            params = params.replace(reg, `filterBy=${e[0]}-${e[1]}`);
-        } 
-        else {
-            params = params + `&filterBy=${e[0]}-${e[1]}`;
-        }
-        history.push(`/search${params}`);
-    }
+//         if (params.search(reg) > -1) {
+//             params = params.replace(reg, `filterBy=${e[0]}-${e[1]}`);
+//         } 
+//         else {
+//             params = params + `&filterBy=${e[0]}-${e[1]}`;
+//         }
+//         history.push(`/search${params}`);
+//     }
 
-    return (
-        <div 
-        ref={ref}
-        className={className}
-        style={style}
-        aria-labelledby={labeledBy}>
-            <p style={{margin: "5px 0 0px 15px"}}>Year:</p>
-            <div style={wrapperStyle}>
-                <Range 
-                min={minYear}
-                max={maxYear} 
-                defaultValue={props.defaultValue} 
-                tipFormatter={value => `${value}`} 
-                marks={{ 1900:minYear, 2021:maxYear }}
-                onAfterChange={(e) => {handleOnAfterChange(e)}}
-                />
-            </div>
-        </div>
-    )
-})
+//     return (
+//         <div 
+//         ref={ref}
+//         className={className}
+//         style={style}
+//         aria-labelledby={labeledBy}>
+//             <p style={{margin: "5px 0 0px 15px"}}>Year:</p>
+//             <div style={wrapperStyle}>
+//                 <Range 
+//                 min={minYear}
+//                 max={maxYear} 
+//                 defaultValue={props.defaultValue} 
+//                 tipFormatter={value => `${value}`} 
+//                 marks={{ 1900:minYear, 2021:maxYear }}
+//                 onAfterChange={(e) => {handleOnAfterChange(e)}}
+//                 />
+//             </div>
+//         </div>
+//     )
+// })
 
-function DateRangeDropdown(props) {
+// function DateRangeDropdown(props) {
 
-    const getDefaultValue = () => {
-        const reg = /([0-9]+)-([0-9]+)/i;
-        const filterBy = getUrlParameter('filterBy');
+//     const getDefaultValue = () => {
+//         const reg = /([0-9]+)-([0-9]+)/i;
+//         const filterBy = getUrlParameter('filterBy');
         
-        // check null query param
-        if (filterBy==null) {
-            return [1950, new Date().getFullYear()];
-        }
-        let res = reg.exec(filterBy);
-        let y1 = parseInt(res[1]);
-        let y2 = parseInt(res[2]); 
-        return y1<y2 ? [y1,y2]:[y2,y1];
-    }
+//         // check null query param
+//         if (filterBy==null) {
+//             return [1950, new Date().getFullYear()];
+//         }
+//         let res = reg.exec(filterBy);
+//         let y1 = parseInt(res[1]);
+//         let y2 = parseInt(res[2]); 
+//         return y1<y2 ? [y1,y2]:[y2,y1];
+//     }
 
-    return (
-        <Dropdown className='date-dropdown'>
-            <Dropdown.Toggle as={CustomToggle}>
-                Date Range
-            </Dropdown.Toggle>
-            <Dropdown.Menu 
-            as={CustomDateRange} 
-            defaultValue={getDefaultValue()} 
-            className='date-menu' 
-            params={props.params}
-            />
-        </Dropdown>
-    )
-}
+//     return (
+//         <Dropdown className='date-dropdown'>
+//             <Dropdown.Toggle as={CustomToggle}>
+//                 Date Range
+//             </Dropdown.Toggle>
+//             <Dropdown.Menu 
+//             as={CustomDateRange} 
+//             defaultValue={getDefaultValue()} 
+//             className='date-menu' 
+//             params={props.params}
+//             />
+//         </Dropdown>
+//     )
+// }
 
-function DropdownContainer(props) {
+// function DropdownContainer(props) {
 
-    return (
-        <Container>
-            <Row>
-                <Col md={1}></Col>
-                <Col md={10} className='dropdown-container'>
-                    {props.children}
-                </Col>
-                <Col md={1}></Col>
-            </Row>
-        </Container>
-    )
-}
+//     return (
+//         <Container>
+//             <Row>
+//                 <Col md={1}></Col>
+//                 <Col md={10} className='dropdown-container'>
+//                     {props.children}
+//                 </Col>
+//                 <Col md={1}></Col>
+//             </Row>
+//         </Container>
+//     )
+// }
 
 function ResultPagination(props) {
 

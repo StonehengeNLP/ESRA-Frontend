@@ -13,6 +13,7 @@ import ForceGraph from '../components/ForceGraph';
 const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper';
 const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
 const backendPaperD3 = 'http://localhost:8000/api/graph_d3';
+const backendKwGraph = 'http://localhost:8000/api/kwGraph';
 
 function PaperPagination(props) {
     return (
@@ -30,6 +31,7 @@ function Paper(props) {
     const [refPage, setRefPage] = useState(1);
     const [citedPage, setCitedPage] = useState(1);
     const [d3Data, setD3Data] = useState(null);
+    const [kwGraph, setKwGraph] = useState(null);
     const [keywords, setKeywords] = useState(''); 
 
     const nodesHoverTooltip = useCallback((node) => {
@@ -116,6 +118,21 @@ function Paper(props) {
         })
     }, [props.match.params])
 
+    useEffect(() => {
+        if (keywords==null || keywords=='' || keywords==undefined)
+            return ;
+        axios.get(backendKwGraph, {
+            params:{
+                keywords: keywords,
+                paper_id: props.match.params.id,
+                limit: 30
+            }
+        }).then(res => {
+            setKwGraph(res.data);
+        })
+        
+    }, [keywords])
+
     return (
         <Fragment>
             <SearchHeader></SearchHeader>
@@ -145,7 +162,12 @@ function Paper(props) {
                     eventKey='key-paper' 
                     title='Keyword to Paper' 
                     disabled={keywords=='' || keywords==undefined || keywords==null}>
-
+                        { (kwGraph!=null && kwGraph.nodes.length!=0) ? (
+                        <ForceGraph 
+                        linksData={kwGraph.links} 
+                        nodesData={kwGraph.nodes} 
+                        height='80vh'
+                        nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                     </Tab>
                 </Tabs>
                 
