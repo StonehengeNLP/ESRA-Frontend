@@ -296,7 +296,7 @@ function SearchResult(props) {
                 <div className='facts-graph-container'>
                     { (facts!=null && facts!=[] && facts.nodes!=undefined && facts.links!=undefined) ? (
                         <ForceGraph 
-                        key={props.match.params.id} 
+                        key={props.location.search} 
                         linksData={facts.links} 
                         nodesData={facts.nodes} 
                         height="100%"

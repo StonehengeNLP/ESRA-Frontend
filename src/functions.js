@@ -9,7 +9,7 @@ function getUrlParameter(name) {
     let results = regex.exec(window.location.search);
     if (results == null)  
         return null;
-    return results[1].replace('%20', ' ');
+    return results[1].replaceAll('%20', ' ');
 }
 
 export {useQuery, getUrlParameter};
