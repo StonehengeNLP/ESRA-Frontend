@@ -300,6 +300,7 @@ function SearchResult(props) {
                         linksData={facts.links} 
                         nodesData={facts.nodes} 
                         height="100%"
+                        onPaperPage={false}
                         nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                 </div>
             </div>

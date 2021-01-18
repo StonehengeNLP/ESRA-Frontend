@@ -7,12 +7,13 @@ const legend = [
     'Task', 'Metric', 'Material', 'Abbreviation',
 ]
 
-export default function runForceGraph(container, linksData, nodesData, nodesHoverTooltip, id){
+export default function runForceGraph(container, linksData, nodesData, nodesHoverTooltip, id, onPaperPage){
     
     const links = linksData.map((d) => Object.assign({}, d));
     const nodes = nodesData.map((d) => Object.assign({}, d));
     // console.log(container.parentElement.parentElement);
-    const containerRect = container.parentElement.parentElement.getBoundingClientRect();
+    const containerRect = onPaperPage ? 
+        container.parentElement.parentElement.getBoundingClientRect():container.getBoundingClientRect();
     const height = containerRect.height;
     const width = containerRect.width;
 
@@ -153,6 +154,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     
     const svg = d3
         .select(container)
+        .html('')
         .append('svg')
         .attr('viewbox', [-width / 2, -height / 2, width, height])
         .call(d3.zoom().on('zoom', function () {

@@ -9,9 +9,13 @@ import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
 import { Tabs, Tab, Pagination } from 'react-bootstrap';
 import ForceGraph from '../components/ForceGraph';
+import DropdownContainer from '../components/DropdownContainer';
+import SortByDropdown from '../components/SortByDropdown';
+import PaperSortByDropdown from '../components/PaperSortByDropdown';
 
 const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper';
 const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
+const backendRef = 'http://localhost:8000/api/citePaper';
 const backendPaperD3 = 'http://localhost:8000/api/graph_d3';
 const backendKwGraph = 'http://localhost:8000/api/kwGraph';
 
@@ -33,11 +37,36 @@ function Paper(props) {
     const [d3Data, setD3Data] = useState(null);
     const [kwGraph, setKwGraph] = useState(null);
     const [keywords, setKeywords] = useState(''); 
+    const [refOrdering, setRefOrdering] = useState(1);
+    const [citeOrdering, setCiteOrdering] = useState(1);
 
     const nodesHoverTooltip = useCallback((node) => {
         return `<div>${node.name}</div>`;
     },[]);
     let query = useQuery();
+
+    const dropdownOnSelectHandler = useCallback((e, setFunc) => {
+        setFunc(parseInt(e));
+    })
+
+    const getFieldAndOrder = (n) => {
+        switch(n) {
+            case 1:
+                return [0, 0];
+                break;
+            case 2:
+                return [0, 1];
+                break;
+            case 3: 
+                return [1, 0];
+                break;
+            case 4:
+                return [1, 1];
+                break;
+            default:
+                return [0, 0];
+        }
+    }
 
     useEffect(() => {
 
@@ -56,21 +85,26 @@ function Paper(props) {
             setPaper(res.data);
             document.title = res.data.paper_title + " | ESRA";
             c = res.data.cited_by;
-            let refIds = res.data.cite_to.slice(0,10).join(',');
-            return axios.get(backendPaperList, {
-                params: {
-                    paper_ids: refIds,
-                    no_ex: true
-                }
+            let refIds = res.data.cite_to;
+            let fieldAndOrder = getFieldAndOrder(refOrdering);
+            let field = fieldAndOrder[0];
+            let order = fieldAndOrder[1];
+            return axios.post(backendRef, {
+                paper_ids: refIds,
+                skip: (refPage-1)*10,
+                field: field,
+                ordering: order
             })
         }).then(res => {
             setRefs(res.data);
-            let cited_ids = c.slice(0,10).join(',');
-            return axios.get(backendPaperList, {
-                params: {
-                    paper_ids: cited_ids,
-                    no_ex: true
-                }
+            let fieldAndOrder = getFieldAndOrder(citeOrdering);
+            let field = fieldAndOrder[0];
+            let order = fieldAndOrder[1];
+            return axios.post(backendRef, {
+                paper_ids: c,
+                skip: (citedPage-1)*10,
+                field: field,
+                ordering: order
             })
         }).then(res => {
             setCited(res.data);
@@ -78,33 +112,37 @@ function Paper(props) {
     }, [props.match.params]);
 
     useEffect(() => {
+        let fieldAndOrder = getFieldAndOrder(refOrdering);
+        let field = fieldAndOrder[0];
+        let order = fieldAndOrder[1];
         if (paper.cite_to!=undefined){
-            let refIds = paper.cite_to.slice((refPage-1)*10, refPage*10).join(',');
-            axios.get(backendPaperList, {
-                params: {
-                    paper_ids: refIds,
-                    no_ex: true
-                }
+            axios.post(backendRef, {
+                paper_ids: paper.cite_to,
+                skip: (refPage-1)*10,
+                field: field,
+                ordering: order
             }).then(res => {
                 setRefs(res.data);
             })
         }
 
-    }, [refPage]);
+    }, [refPage, refOrdering]);
 
     useEffect(() => {
         if (paper.cited_by!=undefined){
-            let cited_ids = paper.cited_by.slice((citedPage-1)*10,citedPage*10).join(',');
-            axios.get(backendPaperList, {
-                params: {
-                    paper_ids: cited_ids,
-                    no_ex: true
-                }
+            let fieldAndOrder = getFieldAndOrder(citeOrdering);
+            let field = fieldAndOrder[0];
+            let order = fieldAndOrder[1];
+            axios.post(backendRef, {
+                paper_ids: paper.cited_by,
+                skip: (citedPage-1)*10,
+                field: field,
+                ordering: order
             }).then(res => {
                 setCited(res.data);
-            });
+            })
         }
-    }, [citedPage]);
+    }, [citedPage, citeOrdering]);
 
     useEffect(() => {
         const paper_id = props.match.params.id;
@@ -157,6 +195,7 @@ function Paper(props) {
                         nodesData={d3Data.nodes} 
                         height='80vh'
                         id='1'
+                        onPaperPage={true}
                         nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                     </Tab>
                     <Tab 
@@ -169,6 +208,7 @@ function Paper(props) {
                         nodesData={kwGraph.nodes} 
                         height='80vh'
                         id='2'
+                        onPaperPage={true}
                         nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                     </Tab>
                 </Tabs>
@@ -179,6 +219,11 @@ function Paper(props) {
                 <div className='cite-tab'>
                     <Tabs defaultActiveKey='reference'>
                         <Tab eventKey='reference' title='Reference'>
+                            <DropdownContainer>
+                                <PaperSortByDropdown 
+                                onSelect={dropdownOnSelectHandler} 
+                                setFunc={setRefOrdering}/>
+                            </DropdownContainer>
                             <PaperList>
                                 {refs.map(paper => (<PaperItem key={paper.paper_id} paper={paper}></PaperItem>))}
                             </PaperList>
@@ -189,6 +234,11 @@ function Paper(props) {
                             nextHandler={(e) => setRefPage(refPage+1)} />):null }
                         </Tab>
                         <Tab eventKey='cited_by' title='Cited by'>
+                        <DropdownContainer>
+                                <PaperSortByDropdown 
+                                onSelect={dropdownOnSelectHandler} 
+                                setFunc={setCiteOrdering}/>
+                            </DropdownContainer>
                             <PaperList>
                                 {cited.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keyword={''}></PaperItem>))}
                             </PaperList>
