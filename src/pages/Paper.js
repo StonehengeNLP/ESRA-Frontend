@@ -76,7 +76,6 @@ function Paper(props) {
         const q = getUrlParameter('q');
         setKeywords(q);
 
-        let c = null;
         axios.get(backendPaperUrl, {
             params: {
                 paper_id: paper_id,
@@ -84,27 +83,29 @@ function Paper(props) {
         }).then(res => {
             setPaper(res.data);
             document.title = res.data.paper_title + " | ESRA";
-            c = res.data.cited_by;
-            let refIds = res.data.cite_to;
             let fieldAndOrder = getFieldAndOrder(refOrdering);
             let field = fieldAndOrder[0];
             let order = fieldAndOrder[1];
+            let type = 0;
             return axios.post(backendRef, {
-                paper_ids: refIds,
+                paper_id: paper_id,
                 skip: (refPage-1)*10,
                 field: field,
-                ordering: order
+                ordering: order,
+                type: type
             })
         }).then(res => {
             setRefs(res.data);
             let fieldAndOrder = getFieldAndOrder(citeOrdering);
             let field = fieldAndOrder[0];
             let order = fieldAndOrder[1];
+            let type = 1;
             return axios.post(backendRef, {
-                paper_ids: c,
+                paper_id: paper_id,
                 skip: (citedPage-1)*10,
                 field: field,
-                ordering: order
+                ordering: order,
+                type: type
             })
         }).then(res => {
             setCited(res.data);
@@ -117,10 +118,11 @@ function Paper(props) {
         let order = fieldAndOrder[1];
         if (paper.cite_to!=undefined){
             axios.post(backendRef, {
-                paper_ids: paper.cite_to,
+                paper_id: paper.paper_id,
                 skip: (refPage-1)*10,
                 field: field,
-                ordering: order
+                ordering: order,
+                type: 0
             }).then(res => {
                 setRefs(res.data);
             })
@@ -134,10 +136,11 @@ function Paper(props) {
             let field = fieldAndOrder[0];
             let order = fieldAndOrder[1];
             axios.post(backendRef, {
-                paper_ids: paper.cited_by,
+                paper_ids: paper.paper_id,
                 skip: (citedPage-1)*10,
                 field: field,
-                ordering: order
+                ordering: order,
+                type: 1
             }).then(res => {
                 setCited(res.data);
             })

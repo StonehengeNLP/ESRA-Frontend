@@ -254,8 +254,8 @@ function SearchResult(props) {
                 },
             }).then(res => {
                 setPaperIds(res.data);
-                if (res.data.length > 0){
-                    let serializedPaperIds = res.data.join(',');
+                if (res.data.paper_id.length > 0){
+                    let serializedPaperIds = res.data.paper_id.join(',');
                     axios.get(backendPaperList, {
                         params: {
                             paper_ids: serializedPaperIds,
