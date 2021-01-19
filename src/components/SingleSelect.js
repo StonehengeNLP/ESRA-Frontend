@@ -41,43 +41,20 @@ function SingleSelect(props) {
 
     const [inputValue, setInputValue] = useState(props.q);
     const [selectedValue, setSelectedValue] = useState(null);
+    const [isDnKey, setIsDnKey] = useState(false);
     const history = useHistory();
-    // const selectRef = useRef(null);
-
-    // useEffect(() => {
-    //     selectRef.current.select.getNextFocusedOption = () => null;
-    //   }, []);
-    // useEffect(() => {
-    //     if (selectRef.current && selectRef.current.select) {
-    //         selectRef.current.select.getNextFocusedOption = () => null
-    //     }
-    //     // let select = selectRef.current?.select?.select
-    //     // // select ??= selectRef.current?.select // <-- for multi input
     
-    //     // if (select) {
-    //     //     const original = select.getNextFocusedOption.bind(select)
-    
-    //     //     select.getNextFocusedOption = options => {
-    //     //             const inputValue = selectRef.current?.state?.inputValue
-    //     //             if (inputValue) return original(options)
-    //     //     }
-    //     // }
-    // }, [selectRef.current])
     const selectRef = React.useRef(null)
       
     useEffect(() => {
         let select = selectRef.current?.select?.select
-        console.log(select)
-        // select ??= selectRef.current?.select // <-- for multi input
+
     
         if (select) {
             const original = select.getNextFocusedOption.bind(select)
             
             select.getNextFocusedOption = () => null;
-            // select.getNextFocusedOption = options => {
-            //     const inputValue = selectRef.current?.state?.inputValue
-            //     if (inputValue) return original(options)
-            // }
+
         }
     }, [selectRef.current])
 
@@ -103,10 +80,14 @@ function SingleSelect(props) {
     };
 
     const onKeyDown = (e) => {
-        if (e.keyCode==13) {
-            e.preventDefault();
-            // console.log('press enter!');
+        if (e.keyCode==13 && !isDnKey) {
             history.push(`/search?q=${inputValue}&page=1&sortBy=0&sortOrder=0`);
+        }
+        if (e.keyCode==40 || e.keyCode==38) {
+            setIsDnKey(true);
+        }
+        if (e.keyCode==13 || e.keyCode==27) {
+            setIsDnKey(false);
         }
     }
 
@@ -165,7 +146,7 @@ function SingleSelect(props) {
             loadOptions={loadOptions}
             className='single-select'
             classNamePrefix='select'
-            components= {{DropdownIndicator}}
+            components={{DropdownIndicator}}
             isDisabled={false}
             isClearable={true}
             isLoading={false}
@@ -175,7 +156,7 @@ function SingleSelect(props) {
             styles={customStyle}
             placeholder='Search any topics'
             defaultInputValue={inputValue}
-            // onChange={onSelectChange}
+            onChange={onSelectChange}
             onInputChange={onInputChange}
             // onInputChange={(value: string) =>{ selectRef.select.getNextFocusedOption = ()=>null; }}
             getOptionLabel={e => e.label}
