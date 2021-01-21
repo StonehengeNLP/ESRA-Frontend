@@ -191,7 +191,7 @@ function Paper(props) {
             <div className='paper-info-container'>
                 <Tabs defaultActiveKey='paper'>
                     <Tab eventKey='paper' title='Paper knowledge'>
-                    { (d3Data!=null && d3Data.nodes.length!=0) ? (
+                    { (d3Data!=null && d3Data!=[] && d3Data.nodes.length!=0) ? (
                         <ForceGraph 
                         key={props.match.params.id} 
                         linksData={d3Data.links} 
@@ -205,7 +205,7 @@ function Paper(props) {
                     eventKey='key-paper' 
                     title='Keyword to Paper' 
                     disabled={keywords=='' || keywords==undefined || keywords==null}>
-                        { (kwGraph!=null && kwGraph.nodes.length!=0) ? (
+                        { (kwGraph!=null && kwGraph!=[] && kwGraph.nodes.length!=0) ? (
                         <ForceGraph 
                         linksData={kwGraph.links} 
                         nodesData={kwGraph.nodes} 

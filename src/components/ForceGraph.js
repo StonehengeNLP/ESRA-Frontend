@@ -8,7 +8,7 @@ function ForceGraph({ linksData, nodesData, nodesHoverTooltip, ...props }) {
     const containerRef = useRef(null);
 
     useEffect(() => {
-        console.log('graph');
+        
         let destroyFn;
         if (containerRef.current) {
             const { destroy } = runForceGraph(containerRef.current, linksData, nodesData, 

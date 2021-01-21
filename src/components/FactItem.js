@@ -20,18 +20,18 @@ function FactItem({ n, n_label, m, m_label, type, isSubject, papers, ...props })
     }
 
     const getFacts = (n,m,n_label,m_label, isSubject, type) => {
-        return ( !isSubject ? 
-                    `${n}(${get_label(n_label)}) ${process_type(type)} ${m}(${get_label(m_label)})`:
-                    `${m}(${get_label(m_label)}) ${process_type(type)} ${n}(${get_label(n_label)})`
+        return ( isSubject ? 
+                    `${n.bold()}(${get_label(n_label)}) ${process_type(type)} ${m}(${get_label(m_label)})`:
+                    `${m}(${get_label(m_label)}) ${process_type(type)} ${n.bold()}(${get_label(n_label)})`
         )
     }
     
     const boldKeyword = (text) => {
-        if (props.keywords == null)
-            return {__html: text};
-        const reg = new RegExp(`${props.keywords}`, 'ig');
-        const boldFunc = (t) => {return t.bold()};
-        return {__html: text.replaceAll(reg, boldFunc)};
+        // if (props.keywords == null)
+        return {__html: text};
+        // const reg = new RegExp(`${props.keywords}`, 'ig');
+        // const boldFunc = (t) => {return t.bold()};
+        // return {__html: text.replaceAll(reg, boldFunc)};
     }
     
     return (
