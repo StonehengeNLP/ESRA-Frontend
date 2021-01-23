@@ -268,15 +268,26 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .style('stroke-opacity', 0.6);
 
         
+    // const link = g
+    //     .append('path')
+    //     .attr('stroke', '#000')
+    //     .attr("stroke-opacity", 0.6)
+    //     .selectAll("path")
+    //     .data(links)
+    //     .join("path")
+    //     .attr("stroke-width", '1.5px')
+    //     .attr('marker-end', `url(#arrow-${id})`);
     const link = g
         .append('g')
-        .attr('stroke', '#000')
-        .attr("stroke-opacity", 0.6)
-        .selectAll("line")
+        .attr('fill', 'none')
+        .style("stroke-width", '1.5px')
+        .selectAll('path')
         .data(links)
-        .join("line")
-        .attr("stroke-width", '1.5px')
+        .enter()
+        .append('path')
+        .style('stroke', '#000')
         .attr('marker-end', `url(#arrow-${id})`);
+
     
     const nodeRadius = 30;
     const node = g
@@ -336,33 +347,55 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .text(l => { return l.label.replace('_', ' '); })
         .call(drag(simulation));
     
-    const testLabel = node.append('text')
-        .attr('class', 'test-label')
-        .text('fuck');
-
     name
         .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
         .on('mouseout', () => { removeTooltip(); }); 
 
+    // calculate svg curve
+    const setPath = (d) => {
+        let dr = 500/d.linkNum;
+        return `M ${d.source.x},${d.source.y}` +
+               `A ${dr} ${dr} 0 0 1 ${d.target.x},${d.target.y}`;
+    }
+
     simulation.on("tick", () => {
         //update link positions
+        // link
+        //     .attr("x1", d => d.source.x)
+        //     .attr("y1", d => d.source.y)
+        //     .attr("x2", d => {
+        //         let dx = Math.abs(d.target.x-d.source.x);
+        //         let dy = Math.abs(d.target.y-d.source.y);
+        //         let angle = Math.atan(dx/dy);
+        //         let marginX = nodeRadius * Math.sin(angle) * 1.4;
+        //         return d.target.x<d.source.x ? d.target.x+marginX:d.target.x-marginX;
+        //     })
+        //     .attr("y2", d => {
+        //         let dx = Math.abs(d.target.x-d.source.x);
+        //         let dy = Math.abs(d.target.y-d.source.y);
+        //         let angle = Math.atan(dx/dy);
+        //         let marginY = nodeRadius * Math.cos(angle) * 1.4;
+        //         return d.target.y<d.source.y ? d.target.y+marginY:d.target.y-marginY;
+        //     });
+        
+    // change from g element to path element
+        // update link's svg path 
         link
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => {
-                let dx = Math.abs(d.target.x-d.source.x);
-                let dy = Math.abs(d.target.y-d.source.y);
-                let angle = Math.atan(dx/dy);
-                let marginX = nodeRadius * Math.sin(angle) * 1.4;
-                return d.target.x<d.source.x ? d.target.x+marginX:d.target.x-marginX;
-            })
-            .attr("y2", d => {
-                let dx = Math.abs(d.target.x-d.source.x);
-                let dy = Math.abs(d.target.y-d.source.y);
-                let angle = Math.atan(dx/dy);
-                let marginY = nodeRadius * Math.cos(angle) * 1.4;
-                return d.target.y<d.source.y ? d.target.y+marginY:d.target.y-marginY;
+            .attr('d', (d) => {
+                return setPath(d);
             });
+
+        // update link's svg arrow position on node edge
+        link
+            .attr('d', function(d) {
+                let pl = this.getTotalLength(),
+                    r = 30 + 8.48528, // radius + arrow's marker size(Math.sqrt(6**2 + 6**2))
+                    m = this.getPointAtLength(pl - r),
+                    dr = 500/d.linkNum;
+                return `M ${d.source.x},${d.source.y}` + 
+                       `A ${dr} ${dr} 0 0 1 ${m.x},${m.y}`;
+            });
+    // end of change
         
         // update node positions
         node
