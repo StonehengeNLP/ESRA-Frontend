@@ -27,11 +27,7 @@ function FactItem({ n, n_label, m, m_label, type, isSubject, papers, ...props })
     }
     
     const boldKeyword = (text) => {
-        // if (props.keywords == null)
         return {__html: text};
-        // const reg = new RegExp(`${props.keywords}`, 'ig');
-        // const boldFunc = (t) => {return t.bold()};
-        // return {__html: text.replaceAll(reg, boldFunc)};
     }
     
     return (

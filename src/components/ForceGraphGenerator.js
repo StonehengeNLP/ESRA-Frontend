@@ -117,6 +117,51 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         return iconCode; 
     }
 
+    // const lineColor = (l) => {
+    //     let color;
+    //     switch(l.label) {
+    //         case 'hyponym_of':
+    //             color = '#F03EBF';
+    //             break;
+    //         case 'refer_to':
+    //             color = '#FC2869';
+    //             break;
+    //         case 'related_to':
+    //             color = '#1B67F5';
+    //             break;
+    //         case 'used_for':
+    //             color = '#D4F00E';
+    //             break;
+    //         case 'author_of':
+    //             color = '#B9D9F7';
+    //             break;
+    //         case 'affiliate_with':
+    //             color = '#D9D1AA';
+    //             break;
+    //         case 'appear_in':
+    //             color = '#000';
+    //             break;
+    //         case 'feature_of':
+    //             color = '#FA260F';
+    //             break;
+    //         case 'evaluate_for':
+    //             color = '#35F51E';
+    //             break;
+    //         case 'part_of':
+    //             color = '';
+    //             break;
+    //         case 'compare':
+    //             color = '';
+    //             break;
+    //         case 'cite':
+    //             color = '';
+    //             break;
+    //         default:
+    //             color = '';
+    //     }
+    //     return color;
+    // }
+
     const drag = (simulation) => {
         const dragstarted = (d) => {
             if (!d3.event.active)
