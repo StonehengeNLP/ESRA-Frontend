@@ -277,17 +277,32 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     //     .join("path")
     //     .attr("stroke-width", '1.5px')
     //     .attr('marker-end', `url(#arrow-${id})`);
-    const link = g
+
+    const linkG = g
         .append('g')
         .attr('fill', 'none')
-        .style("stroke-width", '1.5px')
+        .style("stroke-width", '1.5px');
+    
+    const link = linkG
         .selectAll('path')
         .data(links)
         .enter()
         .append('path')
         .style('stroke', '#000')
-        .attr('marker-end', `url(#arrow-${id})`);
-
+        .attr('marker-end', `url(#arrow-${id})`)
+        .attr('id', (d) => `link-${d.id}`);
+    
+    const linkText = linkG
+        .selectAll('text')
+        .data(links)
+        .enter()
+        .append('text')
+        .attr('class', 'link-label-text')
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '10px')
+        .text(l => { return l.label.replace('_', ' '); })
+        .attr('fill', '#000')
+        .call(drag(simulation));
     
     const nodeRadius = 30;
     const node = g
@@ -335,17 +350,17 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .text(d => {return (d.name.length<=8 ? d.name:d.name.slice(0,6)+"...");})
         .call(drag(simulation));
 
-    const linkLabel = g.append('g')
-        .attr('class', 'link-label')
-        .selectAll('text')
-        .data(links)
-        .enter()
-        .append('text')
-        .attr('class', 'link-label-text')
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '10px')
-        .text(l => { return l.label.replace('_', ' '); })
-        .call(drag(simulation));
+    // const linkLabel = g.append('g')
+    //     .attr('class', 'link-label')
+    //     .selectAll('text')
+    //     .data(links)
+    //     .enter()
+    //     .append('text')
+    //     .attr('class', 'link-label-text')
+    //     .attr('text-anchor', 'middle')
+    //     .attr('font-size', '10px')
+    //     .text(l => { return l.label.replace('_', ' '); })
+    //     .call(drag(simulation));
     
     name
         .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
@@ -353,32 +368,14 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     // calculate svg curve
     const setPath = (d) => {
-        let dr = 500/d.linkNum;
+        let dr = (d.linkNum===1 && d.counter===0) ? 0:500/d.linkNum;
         return `M ${d.source.x},${d.source.y}` +
                `A ${dr} ${dr} 0 0 1 ${d.target.x},${d.target.y}`;
     }
 
     simulation.on("tick", () => {
-        //update link positions
-        // link
-        //     .attr("x1", d => d.source.x)
-        //     .attr("y1", d => d.source.y)
-        //     .attr("x2", d => {
-        //         let dx = Math.abs(d.target.x-d.source.x);
-        //         let dy = Math.abs(d.target.y-d.source.y);
-        //         let angle = Math.atan(dx/dy);
-        //         let marginX = nodeRadius * Math.sin(angle) * 1.4;
-        //         return d.target.x<d.source.x ? d.target.x+marginX:d.target.x-marginX;
-        //     })
-        //     .attr("y2", d => {
-        //         let dx = Math.abs(d.target.x-d.source.x);
-        //         let dy = Math.abs(d.target.y-d.source.y);
-        //         let angle = Math.atan(dx/dy);
-        //         let marginY = nodeRadius * Math.cos(angle) * 1.4;
-        //         return d.target.y<d.source.y ? d.target.y+marginY:d.target.y-marginY;
-        //     });
         
-    // change from g element to path element
+        // change from g element to path element
         // update link's svg path 
         link
             .attr('d', (d) => {
@@ -391,11 +388,22 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
                 let pl = this.getTotalLength(),
                     r = 30 + 8.48528, // radius + arrow's marker size(Math.sqrt(6**2 + 6**2))
                     m = this.getPointAtLength(pl - r),
-                    dr = 500/d.linkNum;
+                    dr = (d.linkNum===1 && d.counter===0) ? 0:500/d.linkNum/3;
                 return `M ${d.source.x},${d.source.y}` + 
                        `A ${dr} ${dr} 0 0 1 ${m.x},${m.y}`;
             });
-    // end of change
+
+        linkText
+            .attr('x', (d) => {
+                let path = document.getElementById(`link-${d.id}`);
+                const len = path.getTotalLength() + 15;
+                return path.getPointAtLength(len/2).x + 5;
+            })
+            .attr('y', (d) => {
+                let path = document.getElementById(`link-${d.id}`);
+                const len = path.getTotalLength() + 15;
+                return path.getPointAtLength(len/2).y;
+            });
         
         // update node positions
         node
@@ -411,13 +419,13 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
             .attr("x", d => { return d.x; })
             .attr("y", d => { return d.y; })
         
-        linkLabel
-            .attr("x", d => { 
-                return d.source.x < d.target.x ? (d.source.x + (d.target.x-d.source.x)/2) : (d.target.x + (d.source.x-d.target.x)/2);
-             })
-            .attr("y", d => {
-                return d.source.y < d.target.y ? (d.source.y + (d.target.y-d.source.y)/2) : (d.target.y + (d.source.y-d.target.y)/2);
-            })
+        // linkLabel
+        //     .attr("x", d => { 
+        //         return d.source.x < d.target.x ? (d.source.x + (d.target.x-d.source.x)/2) : (d.target.x + (d.source.x-d.target.x)/2);
+        //      })
+        //     .attr("y", d => {
+        //         return d.source.y < d.target.y ? (d.source.y + (d.target.y-d.source.y)/2) : (d.target.y + (d.source.y-d.target.y)/2);
+        //     })
     });
 
     return {
