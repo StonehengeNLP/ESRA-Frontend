@@ -6,7 +6,7 @@ import PaperItem from '../components/PaperItem';
 import FactList from '../components/FactList';
 import FactItem from '../components/FactItem';
 import { getUrlParameter } from "../functions";
-import '../css/searchResult.css'
+import '../css/searchResult.css';
 import { Pagination, Dropdown, Container, Col, Row, Spinner, Tabs, Tab } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import Slider, { SliderTooltip } from 'rc-slider';
@@ -293,44 +293,10 @@ function SearchResult(props) {
             <br></br>
             <div className='facts-graph'>
                 {/* <div className='flex-break' /> */}
-                <div className='facts-graph-container'>
-                    { (facts!=null && facts!=[] && facts.nodes!=undefined && facts.links!=undefined) ? (
-                        <ForceGraph 
-                        key={props.location.search} 
-                        linksData={facts.links} 
-                        nodesData={facts.nodes} 
-                        height="100%"
-                        onPaperPage={false}
-                        nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
-                </div>
-            </div>
-            <br />
-
-
-            <h3 className='indent-text'>Search Result of "{keywords}"</h3>
-            <br />
-            <div className='search-tab'>
-                <Tabs defaultActiveKey='search-result'>
-                    <Tab eventKey='search-result' title='Search result'>
-                        <br />
-                        <DropdownContainer>
-                            <DateRangeDropdown params={props.location.search} />
-                            <SortByDropdown location={props.location}/>
-                        </DropdownContainer>
-                        <br />
-                        { loading ? <LoadingSpinner />:null }
-                        <PaperList>
-                            {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keyword={keywords}></PaperItem>))}
-                        </PaperList>
-                        { paperIds!=[] ? (<ResultPagination
-                        page={page}
-                        length={paperIds.length}
-                        prevHandler={(e) => history.push("/search?q=" + keywords + "&page=" + (page-1))}
-                        nextHandler={(e) => history.push("/search?q=" + keywords + "&page=" + (page+1))}
-                        />):null }
-                    </Tab>
-                    <Tab eventKey='facts' title='Facts'>
-                        { facts.facts!=undefined ? (
+                <div className='facts-gl-container'>
+                    <div className='facts-list-container'>
+                        was
+                        {/* { facts.facts!=undefined ? (
                             <FactList>
                                 {facts.facts.map(fact => 
                                             (<FactItem 
@@ -343,9 +309,42 @@ function SearchResult(props) {
                                                 papers={fact.papers}
                                                 keywords={keywords}/>)
                                             )}
-                            </FactList>):null }
-                    </Tab>
-                </Tabs>
+                            </FactList>):null } */}
+                    </div>
+                    <div className='facts-graph-container'>
+                        { (facts!=null && facts!=[] && facts.nodes!=undefined && facts.links!=undefined) ? (
+                            <ForceGraph 
+                            key={props.location.search} 
+                            linksData={facts.links} 
+                            nodesData={facts.nodes} 
+                            height="100%"
+                            onPaperPage={false}
+                            nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
+                    </div>
+                </div>
+            </div>
+            <br />
+
+
+            <h3 className='indent-text'>Search Result of "{keywords}"</h3>
+            <br />
+            <div className='search-tab'>
+                <br />
+                <DropdownContainer>
+                    <DateRangeDropdown params={props.location.search} />
+                    <SortByDropdown location={props.location}/>
+                </DropdownContainer>
+                <br />
+                { loading ? <LoadingSpinner />:null }
+                <PaperList>
+                    {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keyword={keywords}></PaperItem>))}
+                </PaperList>
+                { paperIds!=[] ? (<ResultPagination
+                page={page}
+                length={paperIds.length}
+                prevHandler={(e) => history.push("/search?q=" + keywords + "&page=" + (page-1))}
+                nextHandler={(e) => history.push("/search?q=" + keywords + "&page=" + (page+1))}
+                />):null }
             </div>
             <br></br>
             <footer></footer>
