@@ -85,7 +85,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         let iconCode;
         switch(d.labels) {
             case 'Paper':
-                iconCode = "\uf15b";
+                iconCode = "\uf15c";
                 break;
             case 'Author':
                 iconCode = "\uf007";
@@ -112,7 +112,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
                 iconCode = "\uf303";
                 break;
             default:
-                iconCode = "\uf11a";
+                iconCode = "\uf128";
         }
         return iconCode; 
     }

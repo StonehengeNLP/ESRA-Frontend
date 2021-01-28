@@ -152,11 +152,36 @@ ul li {
     height: 96%;
     padding: 5px;
     margin: 8px;
-    background-color: #D9D9D9;
     overflow-y: scroll;
 }
 
 .facts-graph-container {
     width: 70%;
     height: 100%;
+}
+
+.arrow {
+    opacity: 0.4;
+}
+
+li>span:hover span.arrow {
+    opacity: 1;
+}
+
+.minipaper {
+    font-size: 11px;
+}
+
+.papers-div {
+    background-color: #dfdfdf;
+    border-radius: 8px;
+    padding: 4px 0;
+}
+
+.subitem {
+    font-size: 14px;
+}
+
+.fact-link {
+    color: #212529;
 }

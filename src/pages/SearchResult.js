@@ -296,30 +296,15 @@ function SearchResult(props) {
                 <div className='facts-gl-container'>
                     <div className='facts-list-container'>
                         <FactList>
-                            <FactItem></FactItem>
-                            <FactItem></FactItem>
-                            <FactItem></FactItem>
-                            <FactItem></FactItem>
-                            <FactItem></FactItem>
-                            <FactItem></FactItem>
-                            <FactItem></FactItem>
-                            <FactItem></FactItem>
-                            <FactItem></FactItem>
+                            {facts.facts!=undefined ? (facts.facts.map(fact => 
+                                <FactItem 
+                                relation_name={fact.relation_name} 
+                                n_label={fact.n_label}
+                                relations={fact.relations}
+                                keywords={keywords}
+                                />    
+                            )):(<p>null</p>)}
                         </FactList>
-                        {/* { facts.facts!=undefined ? (
-                            <FactList>
-                                {facts.facts.map(fact => 
-                                            (<FactItem 
-                                                n={fact.key}
-                                                n_label={fact.n_labels}
-                                                m={fact.name}
-                                                m_label={fact.m_labels}
-                                                type={fact.type}
-                                                isSubject={fact.isSubject}
-                                                papers={fact.papers}
-                                                keywords={keywords}/>)
-                                            )}
-                            </FactList>):null } */}
                     </div>
                     <div className='facts-graph-container'>
                         { (facts!=null && facts!=[] && facts.nodes!=undefined && facts.links!=undefined) ? (

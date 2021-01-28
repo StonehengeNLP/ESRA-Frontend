@@ -2,41 +2,107 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+function FactIcon({ label, ...props }) {
 
-function FactItem({ n, n_label, m, m_label, type, isSubject, papers, ...props }) {
-    
+    const icon = (d) => {
+        let iconCode;
+        switch(d) {
+            case 'Paper':
+                iconCode = "\uf15c";
+                break;
+            case 'Author':
+                iconCode = "\uf007";
+                break;
+            case 'Affiliation':
+                iconCode = "\uf19c";
+                break;
+            case 'Method':
+                iconCode = "\uf0ad";
+                break;
+            case 'OtherScientificTerm':
+                iconCode = "\uf610";
+                break;
+            case 'Task':
+                iconCode = "\uf0ae";
+                break;
+            case 'Metric':
+                iconCode = "\uf681";
+                break;
+            case 'Material':
+                iconCode = "\uf70e";
+                break;
+            case 'Abbreviation':
+                iconCode = "\uf303";
+                break;
+            default:
+                iconCode = "\uf128";
+        }
+        return iconCode; 
+    }
+
+    return (
+        <span className='fa'>{icon(label)}</span>
+    )
+}
+
+function FactRelation(props) {
+
     const [isHidden, setIsHidden] = useState(true)
 
-    const get_label = (label) => {
-        return label[0]=='BaseEntity' ? label[1]:label[0];
-    }
-
-    const process_type = (t) => {
-        return t.replace('_', ' ');
-    }
-
     const handleOnClick = (e) => {
+        e.preventDefault();
         setIsHidden(!isHidden);
     }
 
-    const getFacts = (n,m,n_label,m_label, isSubject, type) => {
-        return ( isSubject ? 
-                    `${n.bold()}(${get_label(n_label)}) ${process_type(type)} ${m}(${get_label(m_label)})`:
-                    `${m}(${get_label(m_label)}) ${process_type(type)} ${n.bold()}(${get_label(n_label)})`
-        )
-    }
-    
-    const boldKeyword = (text) => {
-        return {__html: text};
-    }
+    return (
+        <li>
+            <span 
+            className='subitem'
+            onClick={handleOnClick}>
+                <FactIcon label={props.m_label} /> { props.m } <span className='arrow'>{isHidden ? '🞂':'🞃'}</span>
+                <div 
+                className='papers-div'
+                style={{display:isHidden ? 'none':'block'}}>
+                    <ul>
+                        {props.papers.map(paper => 
+                            <li>
+                                <span className='minipaper'>
+                                    <Link className='fact-link'
+                                    to={{	
+                                        pathname: `/paper/${paper.id}/?q=${props.keywords}`,	
+                                    }}
+                                    >
+                                        <i class="far fa-file-alt"></i> {paper.title}
+                                    </Link>
+                                </span>
+                            </li>    
+                        )}
+                        
+                    </ul>
+                </div>
+            </span>
+        </li>
+    )
+}
+
+
+function FactItem(props) {
     
     return (
         <div className='fact-item-container paper-item paper-container'>
-            <h4>Lorem is...</h4>
+            <h5 className='fact-header'>
+                <FactIcon label={props.n_label}/> {props.relation_name}
+            </h5>
             <ul>
-                <li><i className='fas fa-question'></i> lorem ipsum</li>
-                <li><i className='fas fa-question'></i> lorem ipsum</li>
-                <li><i className='fas fa-question'></i> lorem ipsum</li>
+                {props.relations!=undefined ? props.relations.map(relation => 
+                    <FactRelation 
+                    m={relation.m}
+                    m_label={relation.m_label}
+                    papers={relation.paper_list}
+                    keywords={props.keywords}
+                    />
+                ):null}
+                
             </ul>
         </div>
     )
