@@ -90,9 +90,9 @@ function FactItem(props) {
     
     return (
         <div className='fact-item-container paper-item paper-container'>
-            <h5 className='fact-header'>
+            <h6 className='fact-header'>
                 <FactIcon label={props.n_label}/> {props.relation_name}
-            </h5>
+            </h6>
             <ul>
                 {props.relations!=undefined ? props.relations.map(relation => 
                     <FactRelation 
