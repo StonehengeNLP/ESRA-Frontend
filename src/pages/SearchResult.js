@@ -295,7 +295,17 @@ function SearchResult(props) {
                 {/* <div className='flex-break' /> */}
                 <div className='facts-gl-container'>
                     <div className='facts-list-container'>
-                        was
+                        <FactList>
+                            <FactItem></FactItem>
+                            <FactItem></FactItem>
+                            <FactItem></FactItem>
+                            <FactItem></FactItem>
+                            <FactItem></FactItem>
+                            <FactItem></FactItem>
+                            <FactItem></FactItem>
+                            <FactItem></FactItem>
+                            <FactItem></FactItem>
+                        </FactList>
                         {/* { facts.facts!=undefined ? (
                             <FactList>
                                 {facts.facts.map(fact => 

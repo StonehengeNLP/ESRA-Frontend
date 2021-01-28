@@ -134,7 +134,7 @@ a:hover {
 }
 
 .fact-container {
-    padding: 0 8% !important;
+    padding: 0 2% !important;
 }
 
 ul li i {
@@ -153,6 +153,7 @@ ul li {
     padding: 5px;
     margin: 8px;
     background-color: #D9D9D9;
+    overflow-y: scroll;
 }
 
 .facts-graph-container {

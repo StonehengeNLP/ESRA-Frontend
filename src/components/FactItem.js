@@ -32,32 +32,11 @@ function FactItem({ n, n_label, m, m_label, type, isSubject, papers, ...props })
     
     return (
         <div className='fact-item-container paper-item paper-container'>
-            <p 
-            className='fact-text'
-            dangerouslySetInnerHTML={boldKeyword(getFacts(n,m,n_label,m_label,isSubject,type))}>
-            </p>
-            <p className='fact-text'>
-                <span 
-                className='see-more' 
-                role='button'
-                onClick={handleOnClick}>
-                    Paper where this knowledge were extracted {isHidden ? '🞂':'🞃'}
-                </span>
-            </p>
-            <ul style={{display:isHidden ? 'none':'inline'}}>
-                {papers.map(paper => (
-                    <li>
-                        <span>
-                            <Link
-                            to={{
-                                pathname: `/paper/${paper.id}/?q=${props.keywords}`,
-                            }}>
-                                {paper.title}
-                            </Link>
-                        </span>
-                        <i class="fa fa-angle-right"></i>
-                    </li>)
-                )}
+            <h4>Lorem is...</h4>
+            <ul>
+                <li><i className='fas fa-question'></i> lorem ipsum</li>
+                <li><i className='fas fa-question'></i> lorem ipsum</li>
+                <li><i className='fas fa-question'></i> lorem ipsum</li>
             </ul>
         </div>
     )
