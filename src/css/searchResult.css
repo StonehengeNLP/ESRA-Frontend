@@ -185,3 +185,22 @@ li>span:hover span.arrow {
 .fact-link {
     color: #212529;
 }
+
+.mat-tooltip:before {
+    content: attr(data-text); /* here's the magic */
+    position: absolute;
+    text-align: center;
+    padding: 6px 10px;
+    font: .6em sans-serif;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    pointer-events: none;
+    display: inline-block;
+    border-radius: 3px;
+    transform: translate(20%, 50%);
+    display:none; 
+}
+
+.mat-tooltip:hover:before {
+    display:block;
+}

@@ -41,7 +41,9 @@ function FactIcon({ label, ...props }) {
     }
 
     return (
-        <span className='fa'>{icon(label)}</span>
+        <span data-text={label.replace('_', ' ')} className='mat-tooltip'>
+            <span className='fa'>{icon(label)}</span>
+        </span>
     )
 }
 
