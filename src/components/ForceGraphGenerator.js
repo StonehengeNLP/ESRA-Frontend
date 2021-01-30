@@ -117,50 +117,50 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         return iconCode; 
     }
 
-    // const lineColor = (l) => {
-    //     let color;
-    //     switch(l.label) {
-    //         case 'hyponym_of':
-    //             color = '#F03EBF';
-    //             break;
-    //         case 'refer_to':
-    //             color = '#FC2869';
-    //             break;
-    //         case 'related_to':
-    //             color = '#1B67F5';
-    //             break;
-    //         case 'used_for':
-    //             color = '#D4F00E';
-    //             break;
-    //         case 'author_of':
-    //             color = '#B9D9F7';
-    //             break;
-    //         case 'affiliate_with':
-    //             color = '#D9D1AA';
-    //             break;
-    //         case 'appear_in':
-    //             color = '#000';
-    //             break;
-    //         case 'feature_of':
-    //             color = '#FA260F';
-    //             break;
-    //         case 'evaluate_for':
-    //             color = '#35F51E';
-    //             break;
-    //         case 'part_of':
-    //             color = '';
-    //             break;
-    //         case 'compare':
-    //             color = '';
-    //             break;
-    //         case 'cite':
-    //             color = '';
-    //             break;
-    //         default:
-    //             color = '';
-    //     }
-    //     return color;
-    // }
+    const textBoxColor = (l) => {
+        let color;
+        switch(l.label) {
+            case 'hyponym_of':
+                color = '#F03EBF';
+                break;
+            case 'refer_to':
+                color = '#FC2869';
+                break;
+            case 'related_to':
+                color = '#1B67F5';
+                break;
+            case 'used_for':
+                color = '#D4F00E';
+                break;
+            case 'author_of':
+                color = '#88A2FC';
+                break;
+            case 'affiliate_with':
+                color = '#D9D1AA';
+                break;
+            case 'appear_in':
+                color = '#95DEEF';
+                break;
+            case 'feature_of':
+                color = '#CFD9B6';
+                break;
+            case 'evaluate_for':
+                color = '#35F51E';
+                break;
+            case 'part_of':
+                color = '#F0C3B7';
+                break;
+            case 'compare':
+                color = '#0CF8A6';
+                break;
+            case 'cite':
+                color = '#F56C00';
+                break;
+            default:
+                color = '#FFFFFF';
+        }
+        return color;
+    }
 
     const drag = (simulation) => {
         const dragstarted = (d) => {
@@ -192,15 +192,16 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     const simulation = d3
         .forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(90))
-        .force('charge', d3.forceManyBody().strength(-1000).distanceMax(1000))
+        .force('link', d3.forceLink(links).id(d => d.id).distance(100))
+        .force('charge', d3.forceManyBody().strength(-1000).distanceMax(500))
         .force("center", d3.forceCenter().x(width * .5).y(height * .5))
-        .force("collide",d3.forceCollide().radius(d => d.r * 10));
+        .force("collide",d3.forceCollide().radius(d => d.r * 3));
     
     const svg = d3
         .select(container)
         .html('')
         .append('svg')
+        .attr('class', `g-${id}`)
         .attr('viewbox', [-width / 2, -height / 2, width, height])
         .call(d3.zoom().on('zoom', function () {
             g.attr('transform', d3.event.transform);
@@ -267,17 +268,6 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .style('stroke-width', '0.2px')
         .style('stroke-opacity', 0.6);
 
-        
-    // const link = g
-    //     .append('path')
-    //     .attr('stroke', '#000')
-    //     .attr("stroke-opacity", 0.6)
-    //     .selectAll("path")
-    //     .data(links)
-    //     .join("path")
-    //     .attr("stroke-width", '1.5px')
-    //     .attr('marker-end', `url(#arrow-${id})`);
-
     const linkG = g
         .append('g')
         .attr('fill', 'none')
@@ -290,7 +280,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .append('path')
         .style('stroke', '#000')
         .attr('marker-end', `url(#arrow-${id})`)
-        .attr('id', (d) => `link-${d.id}`);
+        .attr('id', (d) => `g-${id}-link-${d.id}`);
     
     const linkText = linkG
         .selectAll('text')
@@ -300,9 +290,69 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr('class', 'link-label-text')
         .attr('text-anchor', 'middle')
         .attr('font-size', '10px')
+        .attr('id', (l) => `g-${id}-link-label-${l.id}`)
         .text(l => { return l.label.replace('_', ' '); })
         .attr('fill', '#000')
         .call(drag(simulation));
+    
+
+    const getTextWH = (label) => {
+        let wh;
+        switch(label) {
+            case 'hyponym_of':
+                wh = [53.97, 12.81];
+                break;
+            case 'refer_to':
+                wh = [33.08, 12.81];
+                break;
+            case 'related_to':
+                wh = [43.27, 12.81];
+                break;
+            case 'used_for':
+                wh = [36.77, 12.81];
+                break;
+            case 'author_of':
+                wh = [41.75, 12.81];
+                break;
+            case 'affiliate_with':
+                wh = [63.97, 12.81];
+                break;
+            case 'appear_in':
+                wh = [41.47, 12.81];
+                break;
+            case 'feature_of':
+                wh = [43.81, 12.81];
+                break;
+            case 'evaluate_for':
+                wh = [52.64, 12.81];
+                break;
+            case 'part_of':
+                wh = [30.45, 12.81];
+                break;
+            case 'compare':
+                wh = [39.16, 12.81];
+                break;
+            case 'cite':
+                wh = [16.03, 12.81];
+                break;
+            default:
+                wh = [63.97, 12.81];
+        }
+        return wh;
+    } 
+
+    const linkBox = linkG
+        .selectAll('rect')
+        .data(links)
+        .enter()
+        .append('rect')
+        .attr('class', 'link-rect')
+        .attr('width', (l) => getTextWH(l.label)[0] + 10)
+        .attr('height', (l) => getTextWH(l.label)[1] + 2)
+        .attr('fill', (l) => textBoxColor(l));
+
+    // raise text element 
+    linkText.raise();
     
     const nodeRadius = 30;
     const node = g
@@ -350,17 +400,6 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .text(d => {return (d.name.length<=8 ? d.name:d.name.slice(0,6)+"...");})
         .call(drag(simulation));
 
-    // const linkLabel = g.append('g')
-    //     .attr('class', 'link-label')
-    //     .selectAll('text')
-    //     .data(links)
-    //     .enter()
-    //     .append('text')
-    //     .attr('class', 'link-label-text')
-    //     .attr('text-anchor', 'middle')
-    //     .attr('font-size', '10px')
-    //     .text(l => { return l.label.replace('_', ' '); })
-    //     .call(drag(simulation));
     
     name
         .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
@@ -395,14 +434,24 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
         linkText
             .attr('x', (d) => {
-                let path = document.getElementById(`link-${d.id}`);
+                let path = document.getElementById(`g-${id}-link-${d.id}`);
                 const len = path.getTotalLength() + 15;
                 return path.getPointAtLength(len/2).x + 5;
             })
             .attr('y', (d) => {
-                let path = document.getElementById(`link-${d.id}`);
+                let path = document.getElementById(`g-${id}-link-${d.id}`);
                 const len = path.getTotalLength() + 15;
                 return path.getPointAtLength(len/2).y;
+            });
+        
+        linkBox
+            .attr('x', (d) => {
+                let textBox = document.getElementById(`g-${id}-link-label-${d.id}`);
+                return textBox.getAttribute('x') - 5 - getTextWH(d.label)[0]/2;
+            })
+            .attr('y', (d) => {
+                let textBox = document.getElementById(`g-${id}-link-label-${d.id}`);
+                return textBox.getAttribute('y') - 4 - getTextWH(d.label)[1]/2;
             });
         
         // update node positions
@@ -418,14 +467,6 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         name
             .attr("x", d => { return d.x; })
             .attr("y", d => { return d.y; })
-        
-        // linkLabel
-        //     .attr("x", d => { 
-        //         return d.source.x < d.target.x ? (d.source.x + (d.target.x-d.source.x)/2) : (d.target.x + (d.source.x-d.target.x)/2);
-        //      })
-        //     .attr("y", d => {
-        //         return d.source.y < d.target.y ? (d.source.y + (d.target.y-d.source.y)/2) : (d.target.y + (d.source.y-d.target.y)/2);
-        //     })
     });
 
     return {
