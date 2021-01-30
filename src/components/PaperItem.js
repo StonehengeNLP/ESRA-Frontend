@@ -9,12 +9,18 @@ function PaperItem(props) {
     const [more, setMore] = useState('none');
     const [isLess, setIsLess] = useState('view');
 
-    const boldKeyword = (text) => {
-        if (keyword == null)
+    const boldKeyword = (text, keyword) => {
+        if (keyword == null || keyword == [] || keyword == undefined)
             return {__html: text};
-        const reg = new RegExp(`${keyword}`, 'ig');
+        
         const boldFunc = (t) => {return t.bold()};
-        return {__html: text.replaceAll(reg, boldFunc)};
+        let out = text;
+        let k;
+        for (k of keyword) {
+            let reg = new RegExp(`${k}`, 'ig');
+            out = out.replaceAll(reg, boldFunc);
+        }
+        return {__html: out};
     }
 
     return (
@@ -34,11 +40,12 @@ function PaperItem(props) {
                 { paper.explanation ? 
                     (<p 
                     className='explanation' 
-                    dangerouslySetInnerHTML={boldKeyword(`<strong>Explanation: </strong>${paper.explanation}`)}/>):null }
+                    dangerouslySetInnerHTML={boldKeyword(`<strong>Explanation: </strong>${paper.explanation}`,paper.explanation_keywords)}/>)
+                    :null }
                 <p className='abstract'>
                     <span 
                     style={{display:more}} 
-                    dangerouslySetInnerHTML={boldKeyword(paper.abstract)} />
+                    dangerouslySetInnerHTML={boldKeyword(paper.abstract, paper.explanation_keywords)} />
                     <span 
                     className='see-more' 
                     role='button'
