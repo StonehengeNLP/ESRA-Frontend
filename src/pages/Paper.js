@@ -13,11 +13,12 @@ import DropdownContainer from '../components/DropdownContainer';
 import SortByDropdown from '../components/SortByDropdown';
 import PaperSortByDropdown from '../components/PaperSortByDropdown';
 
-const backendPaperUrl = 'http://localhost:8000/api/paper/get_paper';
-const backendPaperList = 'http://localhost:8000/api/paper/paper_list';
-const backendRef = 'http://localhost:8000/api/citePaper';
-const backendPaperD3 = 'http://localhost:8000/api/graph_d3';
-const backendKwGraph = 'http://localhost:8000/api/kwGraph';
+const basedURL = process.env.REACT_APP_BACKEND_API
+const backendPaperUrl = basedURL + 'api/paper/get_paper';
+const backendPaperList = basedURL + 'api/paper/paper_list';
+const backendRef = basedURL + 'api/citePaper';
+const backendPaperD3 = basedURL + 'api/graph_d3';
+const backendKwGraph = basedURL + 'api/kwGraph';
 
 function PaperPagination(props) {
     return (

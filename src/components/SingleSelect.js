@@ -8,7 +8,7 @@ import AsyncSelect from 'react-select/async';
 const { colors } = defaultTheme;
 
 const debug = false;
-const autoCompletePath = 'http://localhost:8000/api/complete';
+const autoCompletePath = process.env.REACT_APP_BACKEND_API + 'api/complete';
 
 const DropdownIndicator = (props) => {
 

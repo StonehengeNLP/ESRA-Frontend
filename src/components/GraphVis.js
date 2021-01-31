@@ -13,7 +13,7 @@ function GraphVis(props) {
     const [data, setData] = useState({})
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/graph', {
+        axios.get(process.env.REACT_APP_BACKEND_API + 'api/graph', {
             params: {
                 paper_title: props.paper_title,
                 limit: 40,
