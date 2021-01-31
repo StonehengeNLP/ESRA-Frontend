@@ -187,6 +187,8 @@ function Paper(props) {
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
                 <p className='citation'><span className='cc'>{paper.citation_count}</span> citations</p>
                 <p className='abstract'>{paper.abstract}</p>
+                <br /> 
+                <h4>Knowledge graph</h4>
             </div>
             <br></br>
             <div className='paper-info-container'>
@@ -229,7 +231,7 @@ function Paper(props) {
                                 setFunc={setRefOrdering}/>
                             </DropdownContainer>
                             <PaperList>
-                                {refs.map(paper => (<PaperItem key={paper.paper_id} paper={paper}></PaperItem>))}
+                                {refs.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keywords={undefined}></PaperItem>))}
                             </PaperList>
                             { paper.cite_to!=undefined ? (<PaperPagination 
                             page={refPage}
@@ -244,7 +246,7 @@ function Paper(props) {
                                 setFunc={setCiteOrdering}/>
                             </DropdownContainer>
                             <PaperList>
-                                {cited.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keyword={''}></PaperItem>))}
+                                {cited.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keywords={undefined}></PaperItem>))}
                             </PaperList>
                             { paper.cited_by!=undefined ? (<PaperPagination 
                             page={citedPage}
