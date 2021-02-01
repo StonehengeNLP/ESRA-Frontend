@@ -1,6 +1,5 @@
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import SearchHeader from '../components/SearchHeader';
-import GraphVis from '../components/GraphVis';
 
 import '../css/paper.css';
 import axios from 'axios';
