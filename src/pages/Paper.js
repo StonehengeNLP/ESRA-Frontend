@@ -137,7 +137,7 @@ function Paper(props) {
             let field = fieldAndOrder[0];
             let order = fieldAndOrder[1];
             axios.post(backendRef, {
-                paper_ids: paper.paper_id,
+                paper_id: paper.paper_id,
                 skip: (citedPage-1)*10,
                 field: field,
                 ordering: order,
@@ -228,7 +228,8 @@ function Paper(props) {
                             <DropdownContainer>
                                 <PaperSortByDropdown 
                                 onSelect={dropdownOnSelectHandler} 
-                                setFunc={setRefOrdering}/>
+                                setFunc={setRefOrdering}
+                                ordering={refOrdering}/>
                             </DropdownContainer>
                             <PaperList>
                                 {refs.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keywords={undefined}></PaperItem>))}
@@ -243,7 +244,8 @@ function Paper(props) {
                         <DropdownContainer>
                                 <PaperSortByDropdown 
                                 onSelect={dropdownOnSelectHandler} 
-                                setFunc={setCiteOrdering}/>
+                                setFunc={setCiteOrdering}
+                                ordering={citeOrdering}/>
                             </DropdownContainer>
                             <PaperList>
                                 {cited.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keywords={undefined}></PaperItem>))}
