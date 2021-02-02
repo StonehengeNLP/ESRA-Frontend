@@ -165,7 +165,7 @@ function SearchResult(props) {
                 <br />
                 { loading ? <LoadingSpinner />:null }
                 <PaperList>
-                    {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keyword={keywords}></PaperItem>))}
+                    {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keywords={keywords}></PaperItem>))}
                 </PaperList>
                 { paperIds!=[] ? (<ResultPagination
                 page={page}
