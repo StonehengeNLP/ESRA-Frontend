@@ -1,6 +1,7 @@
 {
   "name": "esra-frontend",
   "version": "0.1.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
@@ -10,6 +11,7 @@
     "axios": "^0.21.1",
     "bootstrap": "^4.5.3",
     "d3": "5.5.0",
+    "express": "^4.17.1",
     "jquery": "^3.5.1",
     "rc-slider": "^9.7.1",
     "react": "^17.0.1",
