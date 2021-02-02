@@ -57,25 +57,25 @@ function SortByDropdown(props) {
                 <Dropdown.Divider />
                 <Dropdown.Header>Date</Dropdown.Header>
                 <Dropdown.Item eventKey='3' 
-                href={ getHref(props.location, 1, 0) }
-                active={ getActive(props.location, 1, 0) }>
+                href={ getHref(props.location, 2, 0) }
+                active={ getActive(props.location, 2, 0) }>
                     Newest First
                 </Dropdown.Item>
                 <Dropdown.Item eventKey='4' 
-                href={ getHref(props.location, 1, 1) }
-                active={ getActive(props.location, 1, 1) }>
+                href={ getHref(props.location, 2, 1) }
+                active={ getActive(props.location, 2, 1) }>
                     Oldest First
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Header>Citations</Dropdown.Header>
                 <Dropdown.Item eventKey='5' 
-                href={ getHref(props.location, 2, 0) }
-                active={ getActive(props.location, 2, 0) }>
+                href={ getHref(props.location, 1, 0) }
+                active={ getActive(props.location, 1, 0) }>
                     Most Citations
                 </Dropdown.Item>
                 <Dropdown.Item eventKey='6' 
-                href={ getHref(props.location, 2, 1) }
-                active={ getActive(props.location, 2, 1) }>
+                href={ getHref(props.location, 1, 1) }
+                active={ getActive(props.location, 1, 1) }>
                     Least Citations
                 </Dropdown.Item>
             </Dropdown.Menu>
