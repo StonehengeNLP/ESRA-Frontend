@@ -82,7 +82,8 @@ function Paper(props) {
             },
         }).then(res => {
             setPaper(res.data);
-            document.title = res.data.paper_title + " | ESRA";
+            let k = (q==undefined || q==null) ? '' : ` - ${q}`;
+            document.title = res.data.paper_title + k + " | ESRA";
             let fieldAndOrder = getFieldAndOrder(refOrdering);
             let field = fieldAndOrder[0];
             let order = fieldAndOrder[1];
@@ -187,9 +188,10 @@ function Paper(props) {
                 <p className='citation'><span className='cc'>{paper.citation_count}</span> citations</p>
                 <p className='abstract'>{paper.abstract}</p>
                 <br /> 
-                <h4>Knowledge graph</h4>
+                {(d3Data!=null && d3Data!=[] && d3Data.nodes.length!=0) ? <h4>Knowledge graph</h4>:null}
             </div>
             <br></br>
+            {(d3Data!=null && d3Data!=[] && d3Data.nodes.length!=0) ? 
             <div className='paper-info-container'>
                 <Tabs defaultActiveKey='paper'>
                     <Tab eventKey='paper' title='Paper knowledge'>
@@ -206,7 +208,8 @@ function Paper(props) {
                     <Tab 
                     eventKey='key-paper' 
                     title='Keyword to Paper' 
-                    disabled={keywords=='' || keywords==undefined || keywords==null}>
+                    disabled={keywords=='' || keywords==undefined || keywords==null || 
+                    kwGraph==null || kwGraph.nodes.length==0}>
                         { (kwGraph!=null && kwGraph!=[] && kwGraph.nodes.length!=0) ? (
                         <ForceGraph 
                         linksData={kwGraph.links} 
@@ -218,7 +221,7 @@ function Paper(props) {
                     </Tab>
                 </Tabs>
                 
-            </div>
+            </div>:null}
             <br></br>
             <div className='paper-info-container'>
                 <div className='cite-tab'>
