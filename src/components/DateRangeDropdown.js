@@ -24,7 +24,7 @@ const CustomDateRange = React.forwardRef(({children, style, className, 'aria-lab
     const Range = createSliderWithTooltip(Slider.Range);
     const wrapperStyle = { width: "90%", margin: 20};
     const maxYear = new Date().getFullYear();
-    const minYear = 1900;
+    const minYear = 2000;
     const history = useHistory();
 
     const handleOnAfterChange = (e) => {
@@ -46,14 +46,14 @@ const CustomDateRange = React.forwardRef(({children, style, className, 'aria-lab
         className={className}
         style={style}
         aria-labelledby={labeledBy}>
-            <p style={{margin: "5px 0 0px 15px"}}>Year:</p>
+            <p style={{margin: "5px 0 0px 15px"}}>Year: {`${props.currentYear[0]} - ${props.currentYear[1]}`}</p>
             <div style={wrapperStyle}>
                 <Range 
                 min={minYear}
                 max={maxYear} 
                 defaultValue={props.defaultValue} 
                 tipFormatter={value => `${value}`} 
-                marks={{ 1900:minYear, 2021:maxYear }}
+                marks={{ 2000:minYear, 2021:maxYear }}
                 onAfterChange={(e) => {handleOnAfterChange(e)}}
                 />
             </div>
@@ -68,7 +68,7 @@ function DateRangeDropdown(props) {
         
         // check null query param
         if (filterBy==null) {
-            return [1950, new Date().getFullYear()];
+            return [2000, new Date().getFullYear()];
         }
         let res = reg.exec(filterBy);
         let y1 = parseInt(res[1]);
@@ -86,6 +86,7 @@ function DateRangeDropdown(props) {
             defaultValue={getDefaultValue()} 
             className='date-menu' 
             params={props.params}
+            currentYear={getDefalutValue()}
             />
         </Dropdown>
     )

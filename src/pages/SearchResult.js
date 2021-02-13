@@ -96,10 +96,10 @@ function SearchResult(props) {
                         }
                     }).then(res => {
                         setPapers(res.data);
+                        setLoading(false);
                     });
                 }
             });
-            setLoading(false);
         };
         fetchPaperIds();
     }, [props.location.search]);
