@@ -17,7 +17,7 @@ function PaperItem(props) {
         let out = text;
         let k;
         for (k of keyword) {
-            let reg = new RegExp(`${k}`, 'ig');
+            let reg = new RegExp(`\\b${k}\\b`, 'ig');
             out = out.replaceAll(reg, boldFunc);
         }
         return {__html: out};

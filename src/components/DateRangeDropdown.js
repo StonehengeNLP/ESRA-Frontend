@@ -86,7 +86,7 @@ function DateRangeDropdown(props) {
             defaultValue={getDefaultValue()} 
             className='date-menu' 
             params={props.params}
-            currentYear={getDefalutValue()}
+            currentYear={getDefaultValue()}
             />
         </Dropdown>
     )
