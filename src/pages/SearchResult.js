@@ -57,10 +57,19 @@ function SearchResult(props) {
     const nodesHoverTooltip = useCallback((node) => {
         return `<div>${node.name}</div>`;
     },[]);
+    const [sb, setSb] = useState(0);
+    const [sbOrder, setSbOrder] = useState(0);
+    const [fb, setFb] = useState('');
+
+    const getFb = (fb) => {
+        if(fb!=='' && fb!==null){
+            return `&filterBy=${fb}`
+        }
+        return '';
+    }
 
     // fetch paper ids
     useEffect( () => {
-        console.log(process.env.REACT_APP_BACKEND_API);
         setPapers([]);
         setLoading(true);
         let q = getUrlParameter('q')
@@ -71,7 +80,10 @@ function SearchResult(props) {
         let sortBy = getUrlParameter('sortBy');
         let sortOrder = getUrlParameter('sortOrder');
         let filterBy = getUrlParameter('filterBy');
-        console.log(filterBy)
+        setSb(sortBy);
+        setSbOrder(sortOrder);
+        setFb(filterBy);
+        // console.log(filterBy)
 
         document.title = q + ' - ESRA';
 
@@ -170,8 +182,12 @@ function SearchResult(props) {
                 { paperIds!=[] ? (<ResultPagination
                 page={page}
                 length={paperIds.length}
-                prevHandler={(e) => history.push("/search?q=" + keywords + "&page=" + (page-1))}
-                nextHandler={(e) => history.push("/search?q=" + keywords + "&page=" + (page+1))}
+                prevHandler={(e) => history.push(
+                    `/search?q=${keywords}&page=${page-1}&sortBy=${sb}&sortOrder=${sbOrder}`+ getFb(fb)
+                    )}
+                nextHandler={(e) => history.push(
+                    `/search?q=${keywords}&page=${page+1}&sortBy=${sb}&sortOrder=${sbOrder}`+ getFb(fb)
+                    )}
                 />):null }
             </div>
             <br></br>
