@@ -18,7 +18,7 @@ import DateRangeDropdown from '../components/DateRangeDropdown';
 
 // const vars
 const basedURL = process.env.REACT_APP_BACKEND_API
-const backendPaperIds = basedURL + 'api/search';
+const backendSearch = basedURL + 'api/' + process.env.REACT_APP_SEARCH
 const backendPaperList = basedURL + 'api/paper/paper_list';
 const backendFacts = basedURL + 'api/facts';
 const responseArraySize = 10;
@@ -88,7 +88,8 @@ function SearchResult(props) {
         document.title = q + ' - ESRA';
 
         const fetchPaperIds = async () => {
-            const req = await axios.get(backendPaperIds, {
+
+            const req = await axios.get(backendSearch, {
                 params: {
                     q: q,
                     lim: responseArraySize,
@@ -98,9 +99,16 @@ function SearchResult(props) {
                     filterYear: filterBy
                 },
             }).then(res => {
-                setPaperIds(res.data);
-                if (res.data.paper_id.length > 0){
-                    let serializedPaperIds = res.data.paper_id.join(',');
+                let data;
+                if (process.env.REACT_APP_SEARCH==='elasticsearch'){
+                    data = res.data.result;
+                }
+                else {
+                    data = res.data.paper_id
+                }
+                setPaperIds(data);
+                if (data.length > 0){
+                    let serializedPaperIds = data.join(',');
                     axios.get(backendPaperList, {
                         params: {
                             paper_ids: serializedPaperIds,
