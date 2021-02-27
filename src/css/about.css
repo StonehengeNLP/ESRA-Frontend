@@ -1,15 +1,21 @@
+.list {
+    padding: 0 3%;
+}
+
 .feature-list {
     list-style-type: lower-alpha;
-    padding: 0 3%;
 }
 
 .sublist {
     list-style-type: circle;
-    padding: 0 3%;
+}
+
+.about-page {
+    margin: 10vh 0;
 }
 
 .text-section {
-    margin: 10vh 15vh 0vh 15vh;
+    margin: 5vh 15vh 0 15vh;
 }
 
 .paragraph {

@@ -4,8 +4,8 @@ import '../css/about.css';
 
 function About(props) {
     return (
-        <div>
-            <section className='about text-section'>
+        <div className='about-page'>
+            <div className='about text-section'>
                 <h3>About ESRA</h3>
                 <p className='paragraph'>
                     Explainable Scientific Research Assistant or ESRA is 
@@ -13,10 +13,10 @@ function About(props) {
                     the literature review process. We propose 3 functionalities 
                     in the discovery system that are
                 </p>
-                <ol className='feature-list'>
+                <ol className='feature-list list'>
                     <li>
                         <b>Scientific Knowledge Graph</b>
-                        <ul className='sublist'>
+                        <ul className='sublist list'>
                             <li>
                                 which represents sophisticated interdisciplinary 
                                 scientific information
@@ -25,7 +25,7 @@ function About(props) {
                     </li>
                     <li>
                         <b>Dynamic paper explanation</b>
-                        <ul className='sublist'>
+                        <ul className='sublist list'>
                             <li>
                                 based on most related keywords
                             </li>
@@ -33,7 +33,7 @@ function About(props) {
                     </li>
                     <li>
                         <b>Related facts</b>
-                        <ul className='sublist'>
+                        <ul className='sublist list'>
                             <li>
                                 which suggest top related keywords with their 
                                 relationships.
@@ -41,7 +41,7 @@ function About(props) {
                         </ul>
                     </li>
                 </ol>
-            </section>
+            </div>
             <section className='guideline text-section'>
                 <h3>Guideline</h3>
                 <p className='paragraph'>
@@ -57,6 +57,15 @@ function About(props) {
                      a paper page which contains information of the paper and also provides a 
                      knowledge graph visualization of that paper.
                 </p>
+            </section>
+            <section className='text-section'>
+                <h3>Suggest queries</h3>
+                <p>We suggest these search keywords in order to demonstrate ESRA's dynamic explanation</p>
+                <ol className='list'>
+                    <li>BERT</li>
+                    <li>language representation model</li>
+                    <li>squad</li>
+                </ol>
             </section>
         </div>
     )
