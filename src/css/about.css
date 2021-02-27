@@ -1,0 +1,17 @@
+.feature-list {
+    list-style-type: lower-alpha;
+    padding: 0 3%;
+}
+
+.sublist {
+    list-style-type: circle;
+    padding: 0 3%;
+}
+
+.text-section {
+    margin: 10vh 15vh 0vh 15vh;
+}
+
+.paragraph {
+    text-indent: 3%;
+}
