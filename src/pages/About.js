@@ -1,4 +1,5 @@
 import React from 'react'
+import PageFooter from '../components/PageFooter'
 
 import '../css/about.css';
 
@@ -67,6 +68,8 @@ function About(props) {
                     <li>squad</li>
                 </ol>
             </section>
+            <br />
+            <PageFooter />
         </div>
     )
 }
