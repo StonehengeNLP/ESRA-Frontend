@@ -1,0 +1,12 @@
+.page-footer {
+    height: 15%;
+    padding-right: 10vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.footer-link {
+    margin: 0 2%;
+    color: #212529;
+}

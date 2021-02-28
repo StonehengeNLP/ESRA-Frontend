@@ -26,10 +26,6 @@ footer {
     height:  85%;
 }
 
-.home-footer {
-    height: 15%;
-}
-
 /* Replace bootstrap default */
 h1 {
     font-size: 5rem !important;

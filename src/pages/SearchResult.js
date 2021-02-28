@@ -199,7 +199,7 @@ function SearchResult(props) {
                 />):null }
             </div>
             <br></br>
-            <footer></footer>
+            <PageFooter />
         </div>
     )
 }

@@ -3,6 +3,7 @@ import {Container, Row, Col} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
 import '../css/home.css'
 import SingleSelect from '../components/SingleSelect'
+import PageFooter from '../components/PageFooter'
 
 function home() {
     return (
@@ -22,8 +23,7 @@ function home() {
                     </Row>
                 </Container>
             </div>
-            <footer className="home-footer">
-            </footer>
+            <PageFooter />
         </div>
         
         

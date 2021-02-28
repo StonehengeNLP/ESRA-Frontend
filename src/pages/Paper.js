@@ -262,7 +262,7 @@ function Paper(props) {
                 </div>
             </div>
             <br></br>
-            <footer></footer>
+            <PageFooter />
         </Fragment>
     )
 }
