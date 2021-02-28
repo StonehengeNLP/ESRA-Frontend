@@ -3,6 +3,7 @@ import React, {useState, useEffect, useCallback} from 'react'
 import SearchHeader from '../components/SearchHeader';
 import PaperList from '../components/PaperList';
 import PaperItem from '../components/PaperItem';
+import PageFooter from '../components/PageFooter'
 import FactList from '../components/FactList';
 import FactItem from '../components/FactItem';
 import { getUrlParameter } from "../functions";

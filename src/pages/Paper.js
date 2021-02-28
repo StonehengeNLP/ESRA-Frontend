@@ -5,6 +5,7 @@ import '../css/paper.css';
 import axios from 'axios';
 import {getUrlParameter, useQuery} from '../functions';
 import PaperList from '../components/PaperList';
+import PageFooter from '../components/PageFooter'
 import PaperItem from '../components/PaperItem';
 import { Tabs, Tab, Pagination } from 'react-bootstrap';
 import ForceGraph from '../components/ForceGraph';
