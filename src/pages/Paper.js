@@ -191,8 +191,7 @@ function Paper(props) {
                 <br /> 
                 {(d3Data!=null && d3Data!=[] && d3Data.nodes.length!=0) ? <h4>Knowledge graph</h4>:null}
             </div>
-            <br></br>
-            {(d3Data!=null && d3Data!=[] && d3Data.nodes.length!=0) ? 
+            <br></br> 
             <div className='paper-info-container'>
                 <Tabs defaultActiveKey='paper'>
                     <Tab eventKey='paper' title='Paper knowledge'>
@@ -222,7 +221,7 @@ function Paper(props) {
                     </Tab>
                 </Tabs>
                 
-            </div>:null}
+            </div>
             <br></br>
             <div className='paper-info-container'>
                 <div className='cite-tab'>
