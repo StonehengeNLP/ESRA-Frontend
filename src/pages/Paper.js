@@ -186,7 +186,7 @@ function Paper(props) {
                 <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
                 <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
-                <p className='citation'><span className='cc'>{paper.citation_count.toLocaleString()}</span> citations</p>
+                <p className='citation'><span className='cc'>{paper.citation_count!=undefined ? paper.citation_count.toLocaleString():""}</span> citations</p>
                 <p className='abstract'>{paper.abstract}</p>
                 <br /> 
                 {(d3Data!=null && d3Data!=[] && d3Data.nodes.length!=0) ? <h4>Knowledge graph</h4>:null}
