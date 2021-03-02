@@ -192,10 +192,10 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     const simulation = d3
         .forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(100))
-        .force('charge', d3.forceManyBody().strength(-1000).distanceMax(500))
+        .force('link', d3.forceLink(links).id(d => d.id).distance(110))
+        .force('charge', d3.forceManyBody().strength(-500).distanceMax(200))
         .force("center", d3.forceCenter().x(width * .5).y(height * .5))
-        .force("collide",d3.forceCollide().radius(d => d.r * 3));
+        .force("collide",d3.forceCollide().radius(d => d.r * 2));
     
     const svg = d3
         .select(container)
