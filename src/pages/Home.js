@@ -13,7 +13,7 @@ function home() {
                     <Row className="h-75 align-items-center">
                         <Col xs md>
                             <h1>ESRA</h1>
-                            <h4>Explanable Scientific Research Assistant</h4>
+                            <h4>Explainable Scientific Research Assistant</h4>
                             <SingleSelect q="" width='75%' height='7vh' isHome={true}></SingleSelect>
                             {/* <p>
                                 <span className='trendy'>Trendy Search: </span><a href="#">Red Sensei</a>, <a href="#">DoubleBERT</a>, 
