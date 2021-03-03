@@ -29,7 +29,7 @@ ul {
     color: #212529;
 }
 
-.authors, .affiliations {
+.authors, .affiliations, .citation {
     font-size: 0.8rem !important;
 }
 
@@ -37,7 +37,7 @@ ul {
     margin: 0 0 0px 0;
 }
 
-.affiliations, .explanation, .abstract {
+.affiliations, .explanation, .abstract , .citation{
     margin: 0 0 5px 0;
 }
 
