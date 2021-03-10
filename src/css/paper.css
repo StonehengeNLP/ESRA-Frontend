@@ -31,6 +31,10 @@
     height: 100%;
 }
 
+b {
+    font-weight: 700 !important;
+}
+
 .label {
     word-wrap: break-word;
 }
