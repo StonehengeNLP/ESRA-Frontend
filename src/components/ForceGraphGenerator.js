@@ -353,8 +353,13 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     // raise text element 
     linkText.raise();
-    
-    const nodeRadius = 30;
+
+    const nodeNameOnClick = (d) => {
+        if (window.confirm(`Would you like to search for ${d.name}`)) {
+            window.location.href = `/search?q=${d.name}&page=1&sortBy=0&sortOrder=0`;
+        }
+    }
+    const nodeRadius = 35;
     const node = g
         .append("g")
         .attr("stroke", "#000")
@@ -372,7 +377,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr("class", "nodetext")
         .attr('text-anchor', 'end')
         .text(d => { return d.name; });
-        
+
     const label = g.append("g")
         .attr("class", "labels")
         .selectAll("text")
@@ -393,11 +398,14 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .data(nodes)
         .enter()
         .append("text")
+        .attr('class', 'node-name')
+        .style('cursor', 'pointer')
         .attr("dy", "1.1em")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '10px')
         .text(d => {return (d.name.length<=8 ? d.name:d.name.slice(0,6)+"...");})
+        .on('click', nodeNameOnClick)
         .call(drag(simulation));
 
     
@@ -425,7 +433,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         link
             .attr('d', function(d) {
                 let pl = this.getTotalLength(),
-                    r = 30 + 8.48528, // radius + arrow's marker size(Math.sqrt(6**2 + 6**2))
+                    r = nodeRadius + 8.48528, // radius + arrow's marker size(Math.sqrt(6**2 + 6**2))
                     m = this.getPointAtLength(pl - r),
                     dr = (d.linkNum===1 && d.counter===0) ? 0:500/d.linkNum/3;
                 return `M ${d.source.x},${d.source.y}` + 
@@ -441,7 +449,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
             .attr('y', (d) => {
                 let path = document.getElementById(`g-${id}-link-${d.id}`);
                 const len = path.getTotalLength() + 15;
-                return path.getPointAtLength(len/2).y;
+                return path.getPointAtLength(len/2).y + 5;
             });
         
         linkBox
