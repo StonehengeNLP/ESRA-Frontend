@@ -12,6 +12,8 @@ import ForceGraph from '../components/ForceGraph';
 import DropdownContainer from '../components/DropdownContainer';
 import SortByDropdown from '../components/SortByDropdown';
 import PaperSortByDropdown from '../components/PaperSortByDropdown';
+import LinkButton from '../components/LinkButton';
+import { Link } from 'react-router-dom';
 
 const basedURL = process.env.REACT_APP_BACKEND_API
 const backendPaperUrl = basedURL + 'api/paper/get_paper';
@@ -183,12 +185,19 @@ function Paper(props) {
             <br></br>
             <div className='paper-info-container'>
                 <h3 className='paper-title'>{paper.paper_title}</h3>
+                <p className='publish-date'>{paper.publish_date!=undefined ? paper.publish_date.slice(0,4):""}</p>
                 <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
                 <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
                 <p className='citation-count'><span className='cc'>{paper.citation_count!=undefined ? paper.citation_count.toLocaleString():""}</span> citations</p>
                 <p className='abstract'>{paper.abstract}</p>
                 <br /> 
+                <h6>External resources</h6>
+                <div className='flex-container'>
+                    <LinkButton name='arXiv' url={`https://arxiv.org/abs/${paper.arxiv_id}`}/>
+                    <LinkButton name='PDF(arXiv)' url={`https://arxiv.org/pdf/${paper.arxiv_id}.pdf`}/>
+                </div>
+                <br />
                 {(d3Data!=null && d3Data!=[] && d3Data.nodes.length!=0) ? <h4>Knowledge graph</h4>:null}
             </div>
             <br></br> 

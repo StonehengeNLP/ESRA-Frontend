@@ -60,8 +60,8 @@ function FactRelation(props) {
         <li>
             <span 
             className='subitem'
-            onClick={handleOnClick}>
-                <FactIcon label={props.m_label} /> { props.m } <span className='arrow'>{isHidden ? '🞂':'🞃'}</span>
+            onClick={props.papers.length>0 ? handleOnClick:null}>
+                <FactIcon label={props.m_label} /> { props.m } <span className='arrow' style={{display:props.papers.length>0 ? 'inline':'none'}}>{isHidden ? '🞂':'🞃'}</span>
                 <div 
                 className='papers-div'
                 style={{display:isHidden ? 'none':'block'}}>

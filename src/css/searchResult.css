@@ -29,11 +29,11 @@ ul {
     color: #212529;
 }
 
-.authors, .affiliations, .citation {
+.authors, .affiliations, .citation, .publish-date {
     font-size: 0.8rem !important;
 }
 
-.authors, .conference {
+.authors, .conference, .publish-date{
     margin: 0 0 0px 0;
 }
 

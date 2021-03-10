@@ -32,8 +32,12 @@ function PaperItem(props) {
                     pathname: `/paper/${paper_id}/${keywords==undefined ? '':'?q=' + keywords}`,
                 }}
                 >
-                    <h4 className='title'><strong>{paper.paper_title}</strong></h4>
+                    <h4 
+                    className='title'
+                    dangerouslySetInnerHTML={boldKeyword(`<strong>${paper.paper_title}</strong>`,paper.explanation_keywords)}>
+                    </h4>
                 </Link>
+                <p className='publish-date'>{paper.publish_date=='Nan' ? '':paper.publish_date.slice(0,4)}</p>
                 <p className='conference'>{paper.conference=='Nan' ? '':paper.conference}</p>
                 <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
@@ -44,6 +48,10 @@ function PaperItem(props) {
                     dangerouslySetInnerHTML={boldKeyword(`<strong>Explanation: </strong>${paper.explanation}`,paper.explanation_keywords)}/>)
                     :null }
                 <p className='abstract'>
+                    <span
+                    style={{display:more}}>
+                        <strong>Abstract:</strong>
+                    </span>
                     <span 
                     style={{display:more}} 
                     dangerouslySetInnerHTML={boldKeyword(paper.abstract, paper.explanation_keywords)} />
