@@ -60,7 +60,7 @@ footer {
 }
 
 
-a:hover {
+.neutral-link:hover {
     color: #212529 !important;
 }
 
@@ -162,6 +162,7 @@ ul li {
 
 .arrow {
     opacity: 0.4;
+    cursor: pointer;
 }
 
 li>span:hover span.arrow {

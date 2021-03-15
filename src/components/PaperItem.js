@@ -28,6 +28,7 @@ function PaperItem(props) {
             <Col md={1}></Col>
             <Col md={10} className='paper-item paper-container'>
                 <Link
+                className='neutral-link'
                 to={{
                     pathname: `/paper/${paper_id}/${keywords==undefined ? '':'?q=' + keywords}`,
                 }}
