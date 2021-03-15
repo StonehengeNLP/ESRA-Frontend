@@ -2,12 +2,13 @@ import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import SearchHeader from '../components/SearchHeader';
 
 import '../css/paper.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import axios from 'axios';
 import {getUrlParameter, useQuery} from '../functions';
 import PaperList from '../components/PaperList';
 import PageFooter from '../components/PageFooter'
 import PaperItem from '../components/PaperItem';
-import { Tabs, Tab, Pagination } from 'react-bootstrap';
+import { Tabs, Tab, Pagination, Button } from 'react-bootstrap';
 import ForceGraph from '../components/ForceGraph';
 import DropdownContainer from '../components/DropdownContainer';
 import SortByDropdown from '../components/SortByDropdown';
@@ -185,17 +186,19 @@ function Paper(props) {
             <br></br>
             <div className='paper-info-container'>
                 <h3 className='paper-title'>{paper.paper_title}</h3>
-                <p className='publish-date'>{paper.publish_date!=undefined ? paper.publish_date.slice(0,4):""}</p>
+                <p className='publish-date'>{paper.publish_date!=undefined ? `Published ${paper.publish_date.slice(0,4)}`:""}</p>
                 <p className='conference'>{paper.conference=='nan' ? '':paper.conference}</p>
                 <p className='authors'>{[... new Set(paper.authors)].join(', ')}</p>
                 <p className='affiliations'><i>{[... new Set(paper.affiliations)].join(', ')}</i></p>
                 <p className='citation-count'><span className='cc'>{paper.citation_count!=undefined ? paper.citation_count.toLocaleString():""}</span> citations</p>
                 <p className='abstract'>{paper.abstract}</p>
                 <br /> 
-                <h6>External resources</h6>
+                <h6>Other Links</h6>
                 <div className='flex-container'>
-                    <LinkButton name='arXiv' url={`https://arxiv.org/abs/${paper.arxiv_id}`}/>
-                    <LinkButton name='PDF(arXiv)' url={`https://arxiv.org/pdf/${paper.arxiv_id}.pdf`}/>
+                    {/* <LinkButton name='arXiv' url={`https://arxiv.org/abs/${paper.arxiv_id}`}/> */}
+                    <Button variant="primary" className='link-button' target='_blank' href={`https://arxiv.org/abs/${paper.arxiv_id}`}><span className='far'>{'\uf1c1'}</span> PDF</Button>
+                    <Button className='link-button' target='_blank' variant="outline-primary" href={`https://arxiv.org/pdf/${paper.arxiv_id}.pdf`}>arXiv.org</Button>
+                    {/* <LinkButton name='PDF(arXiv)' url={`https://arxiv.org/pdf/${paper.arxiv_id}.pdf`}/> */}
                 </div>
                 <br />
                 {(d3Data!=null && d3Data!=[] && d3Data.nodes.length!=0) ? <h4>Knowledge graph</h4>:null}
