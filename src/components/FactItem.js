@@ -60,8 +60,8 @@ function FactRelation(props) {
         <li>
             <span 
             className='subitem'
-            onClick={props.papers.length>0 ? handleOnClick:null}>
-                <FactIcon label={props.m_label} /> { props.m } <span className='arrow' style={{display:props.papers.length>0 ? 'inline':'none'}}>{isHidden ? '🞂':'🞃'}</span>
+            >
+                <FactIcon label={props.m_label} /> <a className='fact-link' href={`/search?q=${props.m}&page=1&sortBy=0&sortOrder=0`}>{ props.m }</a> <span onClick={props.papers.length>0 ? handleOnClick:null} className='arrow' style={{display:props.papers.length>0 ? 'inline':'none'}}>{isHidden ? '🞂':'🞃'}</span>
                 <div 
                 className='papers-div'
                 style={{display:isHidden ? 'none':'block'}}>
