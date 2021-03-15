@@ -47,7 +47,7 @@ b {
 
 .link-button {
     height: 100%;
-    display: flex;
+    /* display: flex; */
     justify-content: center;
     margin: 10px 10px 10px 0;
     padding: 4px 10px;
