@@ -12,7 +12,7 @@ function ForceGraph({ linksData, nodesData, nodesHoverTooltip, ...props }) {
         let destroyFn;
         if (containerRef.current) {
             const { destroy } = runForceGraph(containerRef.current, linksData, nodesData, 
-                                              nodesHoverTooltip, props.id, props.onPaperPage);
+                                              nodesHoverTooltip, props.id, props.onPaperPage, props.chargeStrength, props.chargeDistance);
             destroyFn = destroy;
         }
         return destroyFn;

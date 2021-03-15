@@ -168,6 +168,8 @@ function SearchResult(props) {
                             nodesData={facts.nodes} 
                             height="100%"
                             onPaperPage={false}
+                            chargeStrength={-200}
+                            chargeDistance={800}
                             nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                     </div>
                 </div>

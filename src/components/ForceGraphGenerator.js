@@ -7,7 +7,7 @@ const legend = [
     'Task', 'Metric', 'Material', 'Abbreviation',
 ]
 
-export default function runForceGraph(container, linksData, nodesData, nodesHoverTooltip, id, onPaperPage){
+export default function runForceGraph(container, linksData, nodesData, nodesHoverTooltip, id, onPaperPage, chargeStrength, chargeDistance){
     
     const links = linksData.map((d) => Object.assign({}, d));
     const nodes = nodesData.map((d) => Object.assign({}, d));
@@ -192,8 +192,8 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     const simulation = d3
         .forceSimulation(nodes)
-        .force('link', d3.forceLink(links).id(d => d.id).distance(130))
-        .force('charge', d3.forceManyBody().strength(-800).distanceMax(170))
+        .force('link', d3.forceLink(links).id(d => d.id).distance(200))
+        .force('charge', d3.forceManyBody().strength(chargeStrength).distanceMax(chargeDistance))
         .force("center", d3.forceCenter().x(width * .5).y(height * .5))
         .force("collide",d3.forceCollide().radius(d => d.r * 10));
     

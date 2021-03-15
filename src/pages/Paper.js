@@ -215,6 +215,8 @@ function Paper(props) {
                         height='80vh'
                         id='1'
                         onPaperPage={true}
+                        chargeStrength={-800}
+                        chargeDistance={2000}
                         nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                     </Tab>
                     <Tab 
@@ -229,6 +231,8 @@ function Paper(props) {
                         height='80vh'
                         id='2'
                         onPaperPage={true}
+                        chargeStrength={-800}
+                        chargeDistance={2000}
                         nodesHoverTooltip={nodesHoverTooltip}/> ) :null }
                     </Tab>
                 </Tabs>
