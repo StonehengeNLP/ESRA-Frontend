@@ -196,8 +196,8 @@ function Paper(props) {
                 <h6>Other Links</h6>
                 <div className='flex-container'>
                     {/* <LinkButton name='arXiv' url={`https://arxiv.org/abs/${paper.arxiv_id}`}/> */}
-                    <Button variant="primary" className='link-button' target='_blank' href={`https://arxiv.org/abs/${paper.arxiv_id}`}><span className='far'>{'\uf1c1'}</span> PDF</Button>
-                    <Button className='link-button' target='_blank' variant="outline-primary" href={`https://arxiv.org/pdf/${paper.arxiv_id}.pdf`}>arXiv.org</Button>
+                    <Button variant="primary" className='link-button' target='_blank' href={`https://arxiv.org/pdf/${paper.arxiv_id}.pdf`}><span className='far'>{'\uf1c1'}</span> PDF</Button>
+                    <Button className='link-button' target='_blank' variant="outline-primary" href={`https://arxiv.org/abs/${paper.arxiv_id}`}>arXiv</Button>
                     {/* <LinkButton name='PDF(arXiv)' url={`https://arxiv.org/pdf/${paper.arxiv_id}.pdf`}/> */}
                 </div>
                 <br />
