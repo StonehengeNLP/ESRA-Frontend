@@ -195,7 +195,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .force('link', d3.forceLink(links).id(d => d.id).distance(130))
         .force('charge', d3.forceManyBody().strength(-800).distanceMax(170))
         .force("center", d3.forceCenter().x(width * .5).y(height * .5))
-        .force("collide",d3.forceCollide().radius(d => d.r * 2));
+        .force("collide",d3.forceCollide().radius(d => d.r * 10));
     
     const svg = d3
         .select(container)
@@ -355,9 +355,9 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     linkText.raise();
 
     const nodeNameOnClick = (d) => {
-        if (window.confirm(`Would you like to search for ${d.name}`)) {
-            window.location.href = `/search?q=${d.name}&page=1&sortBy=0&sortOrder=0`;
-        }
+        // if (window.confirm(`Would you like to search for ${d.name}`)) {
+        window.location.href = `/search?q=${d.name}&page=1&sortBy=0&sortOrder=0`;
+        // }
     }
     const nodeRadius = 35;
     const node = g
@@ -404,7 +404,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '10px')
-        .text(d => {return (d.name.length<=8 ? d.name:d.name.slice(0,6)+"...");})
+        .text(d => {return (d.name.length<=8 ? d.name:d.name.slice(0,8)+"...");})
         .on('click', nodeNameOnClick)
         .call(drag(simulation));
 
