@@ -370,6 +370,8 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .join("circle")
         .attr("r", nodeRadius)
         .attr("fill", (d) => {return color(d.labels);})
+        .style('cursor', 'pointer')
+        .on('click', nodeNameOnClick)
         .call(drag(simulation));
     
     node.append('g')
@@ -399,12 +401,12 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .enter()
         .append("text")
         .attr('class', 'node-name')
-        .style('cursor', 'pointer')
         .attr("dy", "1.1em")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '10px')
-        .text(d => {return (d.name.length<=8 ? d.name:d.name.slice(0,8)+"...");})
+        .text(d => {return (d.name.length<=10 ? d.name:d.name.slice(0,10)+"...");})
+        .style('cursor', 'pointer')
         .on('click', nodeNameOnClick)
         .call(drag(simulation));
 
