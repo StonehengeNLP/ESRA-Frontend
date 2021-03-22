@@ -15,10 +15,9 @@ function home() {
                             <h1>ESRA</h1>
                             <h4>Explainable Scientific Research Assistant</h4>
                             <SingleSelect q="" width='75%' height='7vh' isHome={true}></SingleSelect>
-                            {/* <p>
-                                <span className='trendy'>Trendy Search: </span><a href="#">Red Sensei</a>, <a href="#">DoubleBERT</a>, 
-                                <Link to={{ pathname: '/search', query: { key: 'Bonk' } }}>Bonk</Link>
-                            </p> */}
+                            <p>
+                                <span className='trendy'>or Try: </span><Link to='/search?q=BERT'>BERT</Link>, <Link to='/search?q=language representation model'>language representation model</Link>, <Link to='/search?q=squad'>squad</Link>
+                            </p>
                         </Col>
                     </Row>
                 </Container>

@@ -32,8 +32,14 @@ function SortByDropdown(props) {
         let params = location.search;
         const reg_sortby = /sortBy=([0-9])/i;
         const reg_sortorder = /sortOrder=([0-9])/i;
-        let query_sortby = parseInt(reg_sortby.exec(params)[1]);
-        let query_sortorder = parseInt(reg_sortorder.exec(params)[1]);
+        let query_sortby = 0;
+        let query_sortorder = 0;
+        if (reg_sortby.exec(params)!=null){
+            query_sortby = parseInt(reg_sortby.exec(params)[1]);
+        }
+        if (reg_sortorder.exec(params)!=null){
+            query_sortorder = parseInt(reg_sortorder.exec(params)[1]);
+        }
         return (sortBy == query_sortby) && (sortOrder == query_sortorder);
     } 
 

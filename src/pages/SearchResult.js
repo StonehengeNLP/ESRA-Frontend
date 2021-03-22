@@ -75,11 +75,11 @@ function SearchResult(props) {
         setLoading(true);
         let q = getUrlParameter('q')
         setKeywords(q);
-        let page = parseInt(getUrlParameter('page'));
+        let page = parseInt(getUrlParameter('page')) || 1;
         setPage(page);
         let skip = (page-1)*10;
-        let sortBy = getUrlParameter('sortBy');
-        let sortOrder = getUrlParameter('sortOrder');
+        let sortBy = getUrlParameter('sortBy') || 0;
+        let sortOrder = getUrlParameter('sortOrder') || 0;
         let filterBy = getUrlParameter('filterBy');
         setSb(sortBy);
         setSbOrder(sortOrder);
