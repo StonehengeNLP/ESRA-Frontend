@@ -360,25 +360,49 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         // }
     }
     const nodeRadius = 35;
+
     const node = g
-        .append("g")
-        .attr("stroke", "#000")
-        .attr("stroke-opacity", 0.6)
-        .attr("stroke-width", 1)
-        .selectAll("circle")
+        .selectAll("circle.node")
         .data(nodes)
-        .join("circle")
+        .enter().append("g")
+        .attr("class", "node")
+        .call(drag(simulation));
+    
+    node.append('circle')
         .attr("r", nodeRadius)
         .attr("fill", (d) => {return color(d.labels);})
         .style('cursor', 'pointer')
         .on('click', nodeNameOnClick)
-        .call(drag(simulation));
+        .attr("stroke", "#000")
+        .attr("stroke-opacity", 0.6)
+        .attr("stroke-width", 1)
+
+    
+    // const node = g
+    //     .append("g")
+    //     .attr("stroke", "#000")
+    //     .attr("stroke-opacity", 0.6)
+    //     .attr("stroke-width", 1)
+    //     .selectAll("circle")
+    //     .data(nodes)
+    //     .join("circle")
+    //     .attr("r", nodeRadius)
+    //     .attr("fill", (d) => {return color(d.labels);})
+    //     .style('cursor', 'pointer')
+    //     .on('click', nodeNameOnClick)
+    //     .call(drag(simulation));
     
     node.append('g')
         .append("text")
         .attr("class", "nodetext")
-        .attr('text-anchor', 'end')
-        .text(d => { return d.name; });
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'central')
+        .attr('font-size', '10')
+        .attr('dy', '.5em')
+        .text(d => { return d.name; })
+        .on('click', nodeNameOnClick)
+        .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
+        .on('mouseout', () => { removeTooltip(); }); 
 
     const label = g.append("g")
         .attr("class", "labels")
@@ -389,32 +413,56 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr("class", "fa")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
-        .attr('font-size', '20px')
-        .attr('dy', '-0.25em')
+        .attr('font-size', '15px')
+        .attr('dy', '-0.8em')
         .text(d => {return icon(d);})
         .call(drag(simulation));
     
-    const name = g.append("g")
-        .attr("class", "names")
-        .selectAll("text")
-        .data(nodes)
-        .enter()
-        .append("text")
-        .attr('class', 'node-name')
-        .attr("dy", "1.1em")
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'central')
-        .attr('font-size', '10px')
-        .text(d => {return (d.name.length<=10 ? d.name:d.name.slice(0,10)+"...");})
-        .style('cursor', 'pointer')
-        .on('click', nodeNameOnClick)
-        .call(drag(simulation));
+    var nodeLabelMultiLine = function(d){
+        var ele = d3.select(this);
+        var word = d.name;
+        if (word.length > 20){
+            ele.text(d.name.length<=10 ? d.name:d.name.slice(0,10)+"...");
+            return 
+        }
+        var words = word.split(' ');
+        ele.text('');
+        var slice = 10;
+        for(var i=0; i<word.length; i=i+slice){
+        // for(const [i, w] of words.entries()){
+            var tspan = ele.append('tspan').text(word.slice(i, i+slice)).attr('text-anchor', 'middle');
+            if (i>0){
+                tspan
+                .attr('x', 0)
+                .attr("dy", "1.2em")
+            } 
+            ele.append('b')
+        }
+    }
 
-    
-    name
-        .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
-        .on('mouseout', () => { removeTooltip(); }); 
 
+    // const name = g.append("g")
+    //     .attr("class", "names")
+    //     .selectAll("text")
+    //     .data(nodes)
+    //     .enter()
+    //     .append("text")
+    //     .attr('class', 'node-name')
+    //     .attr("dy", "0.3em")
+    //     .attr('text-anchor', 'middle')
+    //     .attr('dominant-baseline', 'central')
+    //     .attr('font-size', '10')
+    //     .text('')
+    //     .style('cursor', 'pointer')
+    //     .on('click', nodeNameOnClick)
+    //     .call(drag(simulation));
+
+    g.selectAll('.nodetext').each(nodeLabelMultiLine);
+
+    // name
+    //     .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
+    //     .on('mouseout', () => { removeTooltip(); }); 
+        
     // calculate svg curve
     const setPath = (d) => {
         let dr = (d.linkNum===1 && d.counter===0) ? 0:500/d.linkNum;
@@ -465,18 +513,21 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
             });
         
         // update node positions
-        node
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y);
+        node.attr("transform", function(d, i) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+        // node
+        //     .attr("cx", d => d.x)
+        //     .attr("cy", d => d.y);
     
         // update label positions
         label
             .attr("x", d => { return d.x; })
             .attr("y", d => { return d.y; })
         
-        name
-            .attr("x", d => { return d.x; })
-            .attr("y", d => { return d.y; })
+        // name
+        //     .attr("x", d => { return d.x; })
+        //     .attr("y", d => { return d.y; })
     });
 
     return {
