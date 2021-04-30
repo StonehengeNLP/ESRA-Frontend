@@ -6,6 +6,7 @@ import  Home from './pages/Home'
 import About from './pages/About'
 import Paper from './pages/Paper'
 import SearchResult from './pages/SearchResult'
+import Fact from './pages/Fact'
 
 const ScrollToTop = () => {
     const { pathname } = useLocation();
@@ -26,6 +27,7 @@ export const App = () => {
                 <Route path="/about" component={About} />
                 <Route path="/search" component={SearchResult} />
                 <Route path="/paper/:id/" component={props => <Paper {...props} />} key={window.location.pathname}/>
+                <Route path='/fact' component={Fact}/>
             </Switch>
         </Router>
     )
