@@ -83,7 +83,8 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
 
     const icon = (d) => {
         let iconCode;
-        switch(d.labels) {
+        var label = d.labels==undefined ? d:d.labels;
+        switch(label) {
             case 'Paper':
                 iconCode = "\uf15c";
                 break;
@@ -246,11 +247,22 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .append('circle')
         .attr('cx', width - 150)
         .attr('cy', (d,i) => {return 40 + i*25})
-        .attr('r', 7)
+        .attr('r', 8)
         .style('fill', (d) => {return color(d);})
         .style('stroke', '#000')
         .style('stroke-width', '1px')
         .style('stroke-opacity', 0.6);
+    
+    // legend symbol 
+    svg.selectAll('legendSym')
+        .data(legend)
+        .enter()
+        .append('text')
+        .attr('x', width-154)
+        .attr('y', (d,i) => {return 43 + i*25})
+        .attr('font-size', '9')
+        .attr("class", "fa")
+        .text(d => {return icon(d);})
     
     // legend text
     svg.selectAll('legendText')
@@ -368,6 +380,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr("class", "node")
         .call(drag(simulation));
     
+    // node circle
     node.append('circle')
         .attr("r", nodeRadius)
         .attr("fill", (d) => {return color(d.labels);})
@@ -392,18 +405,20 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     //     .on('click', nodeNameOnClick)
     //     .call(drag(simulation));
     
+    // node text 
     node.append('g')
         .append("text")
         .attr("class", "nodetext")
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '10')
-        .attr('dy', '.5em')
+        .attr('dy', '.1em')
         .text(d => { return d.name; })
         .on('click', nodeNameOnClick)
         .on('mouseover', (d) => { addTooltip(nodesHoverTooltip,d,d3.event.pageX,d3.event.pageY); })
         .on('mouseout', () => { removeTooltip(); }); 
 
+    // node symbol 
     const label = g.append("g")
         .attr("class", "labels")
         .selectAll("text")
@@ -414,29 +429,33 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr('text-anchor', 'middle')
         .attr('dominant-baseline', 'central')
         .attr('font-size', '15px')
-        .attr('dy', '-0.8em')
+        .attr('dy', '-0.9em')
         .text(d => {return icon(d);})
         .call(drag(simulation));
     
     var nodeLabelMultiLine = function(d){
         var ele = d3.select(this);
         var word = d.name;
-        if (word.length > 20){
-            ele.text(d.name.length<=10 ? d.name:d.name.slice(0,10)+"...");
-            return 
-        }
-        var words = word.split(' ');
+        // var words = word.split(' ');
         ele.text('');
-        var slice = 10;
-        for(var i=0; i<word.length; i=i+slice){
+        if(word.length < 23){
+            ele.attr('dy', '.6em')
+        }
+
+        var slice = [12, 11, 9];
+        var idx = 0;
+        for(const [i,s] of slice.entries()){
         // for(const [i, w] of words.entries()){
-            var tspan = ele.append('tspan').text(word.slice(i, i+slice)).attr('text-anchor', 'middle');
+            var tspan = ele.append('tspan').text(word.slice(idx, idx+s)).attr('text-anchor', 'middle');
+            if(i==slice.length-1 && idx+s<word.length){
+                tspan.text(word.slice(idx, idx+s-3)+"...")
+            }
             if (i>0){
                 tspan
                 .attr('x', 0)
-                .attr("dy", "1.2em")
+                .attr("dy", "1.05em")
             } 
-            ele.append('b')
+            idx = idx+s
         }
     }
 
