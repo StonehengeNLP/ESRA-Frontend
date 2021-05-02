@@ -294,6 +294,13 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr('marker-end', `url(#arrow-${id})`)
         .attr('id', (d) => `g-${id}-link-${d.id}`);
     
+    const process_link_text = (l) => {
+        if (l.label=='hyponym_of'){
+            return 'subcategory of'
+        }
+        return l.label.replace('_', ' ');
+    }
+
     const linkText = linkG
         .selectAll('text')
         .data(links)
@@ -303,7 +310,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         .attr('text-anchor', 'middle')
         .attr('font-size', '10px')
         .attr('id', (l) => `g-${id}-link-label-${l.id}`)
-        .text(l => { return l.label.replace('_', ' '); })
+        .text(l => { return process_link_text(l); })
         .attr('fill', '#000')
         .call(drag(simulation));
     
@@ -312,7 +319,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         let wh;
         switch(label) {
             case 'hyponym_of':
-                wh = [53.97, 12.81];
+                wh = [60.97, 12.81];
                 break;
             case 'refer_to':
                 wh = [33.08, 12.81];
