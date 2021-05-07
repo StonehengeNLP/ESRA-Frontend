@@ -3,7 +3,8 @@ import { Container } from 'react-bootstrap'
 
 function FactList(props) {
     return (
-        <Container className='fact-container'>
+        <Container className='fact-container' 
+        style={{"height": props.height==null?'auto':props.height}}>
             { props.children }
         </Container>
     )

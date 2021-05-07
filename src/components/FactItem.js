@@ -91,7 +91,8 @@ function FactRelation(props) {
 function FactItem(props) {
     
     return (
-        <div className='fact-item-container paper-item paper-container'>
+        <div className='fact-item-container paper-item paper-container'
+        style={{"height": '100%'}}>
             <h6 className='fact-header'>
                 <FactIcon label={props.n_label}/> {props.relation_name}
             </h6>

@@ -296,7 +296,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     
     const process_link_text = (l) => {
         if (l.label=='hyponym_of'){
-            return 'subcategory of'
+            return 'subtype of'
         }
         return l.label.replace('_', ' ');
     }
@@ -319,7 +319,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
         let wh;
         switch(label) {
             case 'hyponym_of':
-                wh = [60.97, 12.81];
+                wh = [45.97, 12.81];
                 break;
             case 'refer_to':
                 wh = [33.08, 12.81];
