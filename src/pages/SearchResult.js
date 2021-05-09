@@ -8,9 +8,8 @@ import FactList from '../components/FactList';
 import FactItem from '../components/FactItem';
 import { getUrlParameter } from "../functions";
 import '../css/searchResult.css';
-import { Pagination, Dropdown, Container, Col, Row, Spinner, Tabs, Tab } from 'react-bootstrap';
+import { Pagination, Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import Slider, { SliderTooltip } from 'rc-slider';
 import 'rc-slider/assets/index.css'
 import ForceGraph from '../components/ForceGraph';
 import DropdownContainer from '../components/DropdownContainer';
@@ -28,7 +27,7 @@ function ResultPagination(props) {
 
     return (
         <Pagination className='page-pagination'>
-            <Pagination.Prev disabled={props.page==1 ? true:false} onClick={props.prevHandler}/>
+            <Pagination.Prev disabled={props.page===1 ? true:false} onClick={props.prevHandler}/>
             <Pagination.Next disabled={props.length<10 ? true:false} onClick={props.nextHandler}/>
         </Pagination>
     )
@@ -127,7 +126,7 @@ function SearchResult(props) {
     
     // fetch facts
     useEffect( () => {
-        if (keywords=='' || keywords==null)
+        if (keywords==='' || keywords==null)
             return null;
         axios.get(backendFacts, {
             params: {
@@ -144,6 +143,12 @@ function SearchResult(props) {
             <br></br>
             <br></br>
             <h3 className='indent-text'>Knowledge about "{keywords}"</h3>
+            <span className='indent-text'>
+                <a href={`/fact?q=${keywords}`} className='fact-link neutral-link'>
+                    {'See more >>'}
+                </a>
+            </span>
+            <br></br>
             <br></br>
             <div className='facts-graph'>
                 {/* <div className='flex-break' /> */}
@@ -190,7 +195,7 @@ function SearchResult(props) {
                 <PaperList>
                     {papers.map(paper => (<PaperItem key={paper.paper_id} paper={paper} keywords={keywords}></PaperItem>))}
                 </PaperList>
-                { paperIds!=[] ? (<ResultPagination
+                { paperIds!==[] ? (<ResultPagination
                 page={page}
                 length={paperIds.length}
                 prevHandler={(e) => history.push(
