@@ -1,0 +1,73 @@
+.app-container {
+    width: auto;
+    min-height: 300px;
+    max-height: 800px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 0 5px 20px rgba(100,100,100,0.6);
+    position: relative;
+    border-radius: 1em;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    
+}
+  
+.item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.app-header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+}
+  
+.fact-papers {
+    border-bottom: 1px solid #ededed;
+}
+  
+.relation-name {
+    margin: 0;
+}
+  
+.task-count {
+    align-self: center;
+    font-size: 12px;
+}
+  
+.app-body {
+    flex-grow: 1; 
+    max-height: 600px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+  
+.todo-list:first-of-type {
+    border-top: 2px solid #ececec;
+}
+
+.todo-list{
+    border-bottom: 1px solid #ededed;
+}
+
+.todo-list:last-of-type {
+    border-bottom: none;
+}
+  
+.list-item-view {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+  
+.app-form {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
