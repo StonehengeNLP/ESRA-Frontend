@@ -171,7 +171,8 @@ function Fact() {
 
         axios.get(backendFacts, {
             params: {
-                q: q
+                q: q,
+                limit: 1000
             }
         }).then(res => {
             setFacts(res.data);
