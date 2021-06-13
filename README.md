@@ -1,6 +1,29 @@
-# Getting Started with Create React App
+# ESRA-Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A repository for frontend web application of the ESRA project. This repository use React and create through [Create-React-App](https://github.com/facebook/create-react-app)
+
+## Repository Struture
+
+```
+[nginx]
+    └── nginx.conf      :   nginx configuration
+[public]                
+    └── ...             :   React public files
+[src]
+    ├── [components]
+    |      └── ...      :   React components for using on each page component
+    ├── [css] 
+    |      └── ...      :   CSS file for each page/component 
+    ├── [pages]
+    |      └── ...      :   Page components 
+    ├── App.js          :   Main React App component 
+    ├── function.js     :   Utility functions
+    └── index.js        :   React index component (Render App component)
+.env                    :   enviroments same as in .env.example
+DockerFile              :   Dockerfile for creating image (serve built production app w/ nginx)
+server.js               :   serve built production app with express [deprived]
+...
+```
 
 ## Available Scripts
 
