@@ -374,10 +374,15 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     linkText.raise();
 
     const nodeNameOnClick = (d) => {
-        // if (window.confirm(`Would you like to search for ${d.name}`)) {
+        if (d.labels==="Author")
+            return 
+        if (d.labels=="Paper") {
+            window.location.href = `/paper/${d.pid}`;
+            return 
+        }
         window.location.href = `/search?q=${d.name}&page=1&sortBy=0&sortOrder=0`;
-        // }
     }
+
     const nodeRadius = 35;
 
     const node = g
@@ -391,7 +396,7 @@ export default function runForceGraph(container, linksData, nodesData, nodesHove
     node.append('circle')
         .attr("r", nodeRadius)
         .attr("fill", (d) => {return color(d.labels);})
-        .style('cursor', 'pointer')
+        .style('cursor', (d) => {return d.labels==='Author' ? 'default':'pointer'})
         .on('click', nodeNameOnClick)
         .attr("stroke", "#000")
         .attr("stroke-opacity", 0.6)

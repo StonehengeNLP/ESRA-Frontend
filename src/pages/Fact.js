@@ -193,7 +193,7 @@ function Fact() {
                     facts={facts}
                     keywords={keywords}
                     />    
-                ):(<p>null</p>)}
+                ):(<p></p>)}
             </Container>
             <PageFooter/>
         </div>
